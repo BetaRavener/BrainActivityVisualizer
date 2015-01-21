@@ -1,0 +1,19 @@
+\begin{thebibliography}{1}
+
+\bibitem{elSys}
+The five percent electrode system for high-resolution eeg and erp measurements.
+
+\bibitem{eegFund}
+Fundamentals of eeg measurement [online].
+
+\bibitem{rapidPos}
+A rapid method for determining standard 10/10 electrode positions for high
+  resolution eeg studies.
+
+\bibitem{Knuth}
+Donald~E. Knuth.
+\newblock {\em The {\TeX}book}.
+\newblock Addison-Wesley Publishing Company, 1996.
+\newblock ISBN~0-201-13447-0.
+
+\end{thebibliography}

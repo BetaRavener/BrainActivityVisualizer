@@ -1,0 +1,220 @@
+%=========================================================================
+% (c) Ivan Ševčík, 2015
+abb:
+EEG
+PC
+
+\chapter{Introduction}
+% Uvod do temy
+The brain is central organ of human nervous system (cite?) and as such has very
+important role in almost every activity. However, its complexity makes it
+difficult to study and understand. Rapid development of computers in recent
+decades provided partial solution to this as it allowed for mapping and
+monitoring both structure and activity of brain with high precision,
+undoubtely resulting in great increase in the rate of new discoveries.
+
+% Aktualny stav, problemy
+But raising interest in EEG technology and brain-computer interfaces also means
+that there is an evident need for user interfaces and applications capable of
+processing these signals for various purposes. One such purpose is visualization
+that allows researchers and users better comprehend measured data as these are
+usually just binary values that may be represented as integer or decimal
+numbers, therefore hard for humans to interpret. (cite?) Another issue is that
+generally users are not interested in raw values, but in some features that
+signal carries such as intensity at certain frequency or specific patterns that
+represent certain activity performed by measured subject.
+
+% Ciele
+Our goal is therefore to create application implementing various means of signal
+processing and visualization, including classification by frequency, graphs
+showing waveform of measured signal in time domain and both two and
+three-dimensional models displaying brain acitivity. Another important task will
+be to create intuitive and clean, yet highly customizable graphical user
+interface that will be responsive also for real-time signal inputs. The
+application should, however, be able to process also large offline data measured
+earlier without noticeable performance decrease.
+
+% O com to tu je
+In this work we will first present background information about brain and
+methods for measuring its activity, particularly EEG, discuss the processing of
+signal on computer and methods for visual representation. Finally, we will
+present our own application in detail, starting with concept and moving on to
+implementation.
+ 
+\chapter{Human brain}
+The necessary information for biological background will be
+provided here. The human brain is central unit of his nervous system..
+\section{Brain biology}
+\emph{2 pages}
+Presenting relevant imformation about brain, its parts and their functions..
+Discusing in short various means to monitor brain and its activity -- EEG, 
+CT scans, optical infrared spectroscopy. Showing images of brain.
+Mostly citations to medicine research.
+
+
+
+\section{Electroencephalography}
+\emph{4 pages}
+Providing broad and exhaustive information about this method for monitoring as
+this is basis for all following work. 
+Again a lot of citations here.
+
+
+\subsection{The setup -- need change}
+The setup used for encephalographic measurments usually consist of: 
+\begin{itemize}
+  \item electrodes with conductive media
+  \item amplifiers with filters
+  \item A/D converter
+  \item recording device
+\end{itemize}
+
+% Electrodes
+The electrodes also exists in various forms but in this work we will focus on
+headbands and electrode caps as these are non-invasive and require the least
+expertise. These caps usually consists of small discs made of very conductive
+material such as gold, silver or stainless steel. Commonly used electrodes are
+made of Ag-AgCl disks with diameter of 1 to 3 mm and have long leads that can be
+plugged into an amplifier. \cite{eegFund} The discs can be in direct contact
+with scalp and measure electric potential produced by brain, but conductive
+media in form of a gel or paste is often used to increase conductivity even more
+by lowering contact impedance and improve readings at the lowest level, while it
+also helps electrodes to stick to surface.
+
+% Cap
+The electrodes are pre-mounted on a silicon cap in locations according to
+standardized placement systems that will be discussed later in this section.
+This both speeds up the setup stage and allows for unified mapping of electrodes
+to head surface, but fails to account for different shape and features of each
+individual's head. \cite{eegFund} This problem is usually solved by involving a
+method for locating 3-D coordinates of electrode positions on the head. Such
+methods include using magnetic field digitizer or elaborate algorithms that can
+calculate position of each electrode from few distance and angle measurements by
+utilizing specific properties of standard placement system. \cite{rapidPos}
+
+% Amplifiers
+
+% Filters
+
+% A/D converter
+
+% Recording device
+
+\subsubsection{Electrode placement systems}
+% Uvod
+The need for standardized electrode placement was evident as early as 1947 when
+the first Internation EEG congress held place in London. Various method of
+standardization were proposed and this effort finally resulted in the definition
+of 10-20 electrode system in 1958 by H.H. Jasper. \cite{elSys} 
+% Popis 10-20
+This system consists of 21 electrodes placed evenly between certain landmarks.
+(dokoncit)
+
+% Popis 10-10
+The 10-20 system offers only limited resolution but it was sufficient at the
+time of its creation because the main limiting factor was technology. However,
+with technological advances in computers and signal processing, using more than
+21 channels became feasible and naturally many seeked to take advantage of
+higher resolution. With more electrodes than what is 10-20 model capable of
+accommodating, first extension to standard placement system was needed. The
+extension was proposed in 1985 and extended the number of electrodes to 74. It
+uses additional coronal contours lying halfway between original contours and
+combines the labels of these original contours to create new label.
+For example, the contour lying betweeen original countours F and C will be
+labelled FC. \cite{elSys}
+
+% Popis 10-5
+The 10-5 electrode placement systems further extends the 10-10 system to allow
+even higher number of channels to be used, as systems with over 128 channels are
+not uncommon any more and have became commercially available. The idea in
+placement of new electrodes is simmiliar to how 10-10 system extended from
+10-20, creating coronal contours halfway between the original ones. The
+nomenclature uses naming in similiar fashion as geographical directions. For
+example, direction between North and North-West is labelled as North-North-West
+and so contour between C-contour and CP-contour will be labelled CCP-contour.
+This doubles the number of contours and also the number of electrodes in
+contour, increasing the number of electrodes approximately 4 times. The total
+number of possible locations is arround 345 and may vary depending on how many
+electrodes are included for the most inferior rows. \cite{elSys} This system is
+in proposition stage and is yet to be recognized as standard but it is currently
+only work in this area, therefore can be considered as relevant.
+
+\subsection{Measurment procedure}
+Before measurment, the electodes are cleaned thoroughly to remove any impurities
+that could impact measurement. The skin is also cleaned from oils and brushed
+from dried parts. It is important to adhere to strict hygiene as
+this could cause irritation and inflamation and with repeated measurements may
+develop into an infection.\cite{eegFund} The subject is then seated comfortably
+to eliminate any unnecessary movement, because it could spoil the measured data.
+(cite?) Elecetrodes are placed on subject's scalp and recording can begin.
+Subject is usually instructed to perform specific tasks (povenovat sa roznym
+uloham co sa bezne vykonavaju).
+
+\subsection{Data analysis}
+Displaying and interpreting brainwave paterns at various frequencies -- alfa,
+beta.. Identifying user's activity and what can be considered noise.
+\chapter{Computer assistance}
+\section{Brain-Computer interface} 
+\section{Signal processing}
+\emph{2 pages}
+Introduction to sampling, fourier transform, various signal filters..
+\section{Data visualization methods}
+\emph{4 pages}
+\subsection{2D representations}
+graph, summary overview table, histogram, unfolded brain map..
+\subsection{3D models}
+mesh, volumetric/voxel graphics.. 
+Means to obtain three-dimensional brain model - CT, modelling..
+\section{Existing solutions}
+\emph{2-3 solutions, 1 page each}
+Analysis of existing solutions, what could serve as inspiration, what could be
+improved from all points of view (ease of installation, usability, features
+friendliness, signal processing, settings, extensibility..)
+\subsection{A}
+\subsection{B}
+\subsection{C}
+\chapter{Concept and design}
+Theoretical concept for practical part.
+\section{User interface}
+\emph{2 pages}
+Drawings, mockups, layouts, command prompt parameters.
+\section{Code structure}
+\emph{3 pages}
+\subsection{Logical division}
+The division on subsystems for graphics context setup, signal processing, gpu
+rendering procedures, user interface and model importer.
+\subsection{Classes and communication}
+Structure of code defined by C++ classes, probably should be just global
+overview with references to doxygen documentation, maybe some graphical code
+maps.
+\chapter{Implementation}
+\emph{? pages}
+Will cover implementation details, algorithms, significant mechanisms, shader
+programming.. The logical division defined earlier will be probably used to
+describe each part separately.
+\section{Tools and libraries}
+\emph{0.5-1 page}
+Short enumeration, links or references to websites.
+\section{Input data processor}
+\subsection{Input format}
+\subsection{Filters}
+\section{Model importer}
+\section{3D rendering system}
+\section{Plugin system}
+\section{Graphical user interface}
+\section{\ldots}
+\chapter{Results}
+Summarization of results obtained by this work, final graphs and tables,
+higlighting of the most interesting parts, presentation of user 
+research -- opinions, suggestions,
+feture requests..
+\chapter{Discussion}
+Discussing the results in regard to referenced literature and their results.
+Showing significance of findings, questioning them, providing several
+perspectives and means for argumentation.
+\chapter{Conclusions}
+Refering to introduction and checking with goals, if everything required was
+done, what couldn't be done and why. Placing the work into wider context of
+relevant areas of research -- medicine, bioinformatics, user interfaces..
+Part about possible plans for future, improvment, enhancements, folow up.. \cite{Knuth}
+%=========================================================================

@@ -1,0 +1,39 @@
+ 
+\chapter{Abstract}
+Abstract in english..
+Extended abstract in czech
+
+\chapter{Keywords}
+Pod nadpisem Klíčová slova je uveden výčet klíčových slov oddělených čárkami. 
+Klíčovým slovem rozumíme i pojem vyjádřený více slovy. 
+Dále je uveden nadpis Keywords a za ním následují klíčová slova anglicky.
+
+Bibliografická citace dle ČSN ISO 690
+Na posledním řádku strany s abstraktem a klíčovými slovy musí být vzor citace bakalářské práce ve tvaru:
+
+Jméno a příjmení autora: Název práce, bakalářská práce, Brno, FIT VUT v Brně, rok 
+
+\chapter{Introduction}
+Motivation for this work and its purpose..
+It is important to have graphical representation of EEG scans, because humans
+are not good at plain text data interpretation (reference?).
+Also the amount of data is overhelming and definitely could not be interpreted
+by human in real time. Therefore a GUI (add to list of abbreviations) is needed
+that will assist with processing and displaying data in more natural form.
+etc..
+
+\chapter{Prohlášení}
+Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením ...
+Další informace mi poskytli ...
+Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.
+
+Brno, \today
+Prohlášení student podepíše.
+ 
+\chapter{Declaration of Honor}
+I do solemnly declare that I prepared this thesis independently and that the thoughts taken
+directly or indirectly from other sources are indicated accordingly. The work
+has not been submitted to any other examination authority and also not yet been published.
+
+Brno, \today
+Signature

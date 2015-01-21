@@ -1,0 +1,6 @@
+/doc/*.log
+/doc/*.out
+/doc/*.pdf
+/doc/*.toc
+/doc/*.blg
+/doc/*.aux
