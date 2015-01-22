@@ -47,39 +47,50 @@ provided here. The human brain is central unit of his nervous system..
 \section{Brain biology}
 \emph{2 pages}
 Presenting relevant imformation about brain, its parts and their functions..
+Electrical signals..  (nieco k tomu co tie el. impulzy robia.. komunikacia etc.)
 Discusing in short various means to monitor brain and its activity -- EEG, 
 CT scans, optical infrared spectroscopy. Showing images of brain.
 Mostly citations to medicine research.
 
-
-
 \section{Electroencephalography}
 \emph{4 pages}
-Providing broad and exhaustive information about this method for monitoring as
-this is basis for all following work. 
-Again a lot of citations here.
+The nature of human nervous system is electrical. It has been proved that the
+variation of surface electrical potential reflects activities performed in
+underlying brain structures. EEG is a method for measuring these potential
+variantion using an array of electrodes placed on measured subject's scalp and
+recording them for later processing.\cite{eegClass}
 
+EEG is commonly used for measurements in medical and research areas. Its main
+advantage over other methods is speed as it can record respond to stimulus
+within fractions of a second.\cite{eegFund}
+% Applications
+Applications include:
+\begin{itemize}
+  \item Research -- monitoring during cognitive and motoric tasks
+  \item Medical -- diagnosis of brain diseases
+  \item Human computer interaction -- performing commands using brain activity  
+\end{itemize}
 
-\subsection{The setup -- need change}
-The setup used for encephalographic measurments usually consist of: 
+\subsection{Measuring equipment}
+The setup used for encephalographic measurements usually consist of: 
 \begin{itemize}
   \item electrodes with conductive media
   \item amplifiers with filters
   \item A/D converter
   \item recording device
 \end{itemize}
-
 % Electrodes
-The electrodes also exists in various forms but in this work we will focus on
+The electrodes exists in various forms but in this work we will focus on
 headbands and electrode caps as these are non-invasive and require the least
-expertise. These caps usually consists of small discs made of very conductive
-material such as gold, silver or stainless steel. Commonly used electrodes are
-made of Ag-AgCl disks with diameter of 1 to 3 mm and have long leads that can be
-plugged into an amplifier. \cite{eegFund} The discs can be in direct contact
-with scalp and measure electric potential produced by brain, but conductive
-media in form of a gel or paste is often used to increase conductivity even more
-by lowering contact impedance and improve readings at the lowest level, while it
-also helps electrodes to stick to surface.
+expertise. These caps usually consists of small discs serving as electrodes made
+of very conductive material such as gold, silver or stainless steel. Commonly
+used electrodes are made of Ag-AgCl disks with diameter of \SIrange[range-units
+= single]{1}{3}{\mm} and have long leads that can be plugged into an
+amplifier. \cite{eegFund} The discs can be in direct contact with scalp and
+measure electric potential produced by brain, but conductive media in form of a
+gel or paste is often used to increase conductivity even more by lowering
+contact impedance and improve readings at the lowest level, while it also helps
+electrodes to stick to surface.
 
 % Cap
 The electrodes are pre-mounted on a silicon cap in locations according to
@@ -87,20 +98,56 @@ standardized placement systems that will be discussed later in this section.
 This both speeds up the setup stage and allows for unified mapping of electrodes
 to head surface, but fails to account for different shape and features of each
 individual's head. \cite{eegFund} This problem is usually solved by involving a
-method for locating 3-D coordinates of electrode positions on the head. Such
+method for locating 3D coordinates of electrode positions on the head. Such
 methods include using magnetic field digitizer or elaborate algorithms that can
 calculate position of each electrode from few distance and angle measurements by
 utilizing specific properties of standard placement system. \cite{rapidPos}
 
 % Amplifiers
-
+The strength of signal measured by electrodes is in order of microvolts and
+normally range from \SIrange{10}{500}{\uV}.\cite{neuralAmp} An amplifier is
+therefore needed to bring the amplitude to higher levels so it can be processed
+by electrical circuits and components. The requirements on amplifiers for use
+with EEG are high as they have to provide amplification only for physiological
+signal which should not be distorted in any way, reject superimposed noise and
+interference signals, and protect both the equipment and measured subject from
+current surges. Amplifiers conforming to these are known as biopotential
+amplifiers. \cite{biopotAmp}
 % Filters
+A bandpass filter is then used to limit frequencies into a ceratin range of
+interest. In some cases it may be already a part of an amplifier.
+Another common filter is notch filter which is used to filter out noise
+at frequency of power line. Depending on country it may be set to
+\SIlist[list-units = single, list-pair-separator = { or }]{50;60}{\Hz}.
+\cite{deltaCompNREM} Such filter is only used if it is desirable to keep also
+high frequencies as the information of interest usually lies bellow this
+frequency.
+% Trend in amplifier miniaturization
+The trend in development of neural recording devices is heading in direction of
+fully implanted systems, therefore energy efficient amplifiers are being
+designed lately that are very small in size, may run on battery for long period
+of time and disipate only little heat so they don't damage surrounding tissue.
+\cite{neuralAmp}
 
 % A/D converter
+An A/D converter unit is then used to convert analog values to digital
+representation. The converter should have resolution of at least 12 bits.
+With high number of electrodes, analog multiplexers are sometimes used to lower
+the number of necessary converter units at the expense of limited update
+frequency. The sampling frequency should be at least double of the highest
+recorded frequency, for example the upper frequency limit set for bandpass
+filter. This is known as Nyquist-Shannon sampling theorem and is fundamental for
+correct signal reconstruction without aliasing artifact. The preffered sampling
+frequency is \SIrange{256}{400}{\Hz}. \cite{guidDigEEG}
 
 % Recording device
+Converted samples from A/D converters are then stored in memory for further
+processing which will be presented later in this section. A recording device
+might be represented by a computer or a different kind of equipment.
+%TODO: mozno nieco viac?
 
-\subsubsection{Electrode placement systems}
+\subsection{Electrode placement systems}
+%TODO: Zmienka o vybere referencnej elektrody
 % Uvod
 The need for standardized electrode placement was evident as early as 1947 when
 the first Internation EEG congress held place in London. Various method of
@@ -127,7 +174,7 @@ labelled FC. \cite{elSys}
 The 10-5 electrode placement systems further extends the 10-10 system to allow
 even higher number of channels to be used, as systems with over 128 channels are
 not uncommon any more and have became commercially available. The idea in
-placement of new electrodes is simmiliar to how 10-10 system extended from
+placement of new electrodes is simmiliar to how 10-10 system extends from
 10-20, creating coronal contours halfway between the original ones. The
 nomenclature uses naming in similiar fashion as geographical directions. For
 example, direction between North and North-West is labelled as North-North-West
@@ -137,27 +184,76 @@ contour, increasing the number of electrodes approximately 4 times. The total
 number of possible locations is arround 345 and may vary depending on how many
 electrodes are included for the most inferior rows. \cite{elSys} This system is
 in proposition stage and is yet to be recognized as standard but it is currently
-only work in this area, therefore can be considered as relevant.
+only work in this area, therefore can be considered as relevant and some
+equipment already adheres to it.
 
 \subsection{Measurment procedure}
 Before measurment, the electodes are cleaned thoroughly to remove any impurities
-that could impact measurement. The skin is also cleaned from oils and brushed
-from dried parts. It is important to adhere to strict hygiene as
-this could cause irritation and inflamation and with repeated measurements may
-develop into an infection.\cite{eegFund} The subject is then seated comfortably
-to eliminate any unnecessary movement, because it could spoil the measured data.
-(cite?) Elecetrodes are placed on subject's scalp and recording can begin.
-Subject is usually instructed to perform specific tasks (povenovat sa roznym
-uloham co sa bezne vykonavaju).
+that could have an impact on it. The skin is also cleaned from oils and brushed
+from dried parts. It is important to adhere to strict hygiene as this could
+cause irritation and inflamation and with repeated measurements may develop into
+an infection.\cite{eegFund} The subject is then seated comfortably to eliminate
+any unnecessary movement, because it could spoil the measured data. (cite?)
+Elecetrodes are placed on subject's scalp and recording can begin. Subject is
+usually instructed to perform specific tasks such as imagining moving certain
+part of body, rotating an object in 3D or focusing on specific part of display.
+\cite{bcComm} For other purposes, subjects may be monitored while performing
+ordinary activities or during sleep.
 
 \subsection{Data analysis}
-Displaying and interpreting brainwave paterns at various frequencies -- alfa,
-beta.. Identifying user's activity and what can be considered noise.
+The recorded data are subject to further processing using numerical filters and
+transforms to improve signal-noise ration and extract desired features. 
+% Clasification by frequency band
+One such feature is brain activity at certain frequency. The frequency of brain
+waves range from \SIrange{1}{150}{\Hz}. This range can be further divided
+into six common categories\cite{dominantF}:
+\begin{itemize}
+  \item Delta waves -- below 4 Hz
+  \item Theta waves -- between 4 and 8 Hz
+  \item Alpha / Mu waves -- between 8 and 13 Hz
+  \item Beta waves -- between 13 and 30 Hz
+  \item Gamma waves -- between 30 and 80 Hz
+  \item High gamma waves -- above 80 Hz
+\end{itemize}
+A healthy person exhibits brain waves mostly in the first four categories. Delta
+waves are normally distributed over scalp and may be significant during deep
+sleep, in childhood or in serious organic brain disease.\cite{eegClass} Theta
+waves are related to cognitive tasks such as working memor and error monitoring.
+Alpha power is increased during inattention and lack of visual input, therefore
+related to perception. Mu power, on the other hand, is linked to movement and is
+decreased when person performs a motor action. The distinction between alpha and
+mu waves is made by considering location of electrode. While alpha waves form at
+the back of the scalp, mu waves can be observed in a strip of brain from ear to
+ear. Finally beta waves are low amplitude, high frequency waves that have power
+reduced at the onset of movement, rebound if the movement is sustained and are
+enhanced if the movement is suppressed. Each band is therefore related to
+certain group of activity in brain and can be used for diagnosis as abnormal
+resting powers in certain bands were linked to various mental and physiological
+diseases.\cite{dominantF}
+
+% Classifier reference
+Many researchers proposed implementation of classifiers capable of identifying
+these frequencies in signal using various approaches. One such method that will
+be used in this work is described in detail in section \ref{sec:sigProc}.
+
+% Classification by pattern
+Another set of features are patterns that represent certain activity more
+clearly than classification by frequency. For example, the imagined movement of
+finger can be distinguished from imagined movement of leg with this method. The
+classification accuracy is, however, highly individual and the classification
+system usually needs tuning or calibration process for each user.\cite{bcComm}
+Common approach to this problem is training a neural network that can classify
+patterns in brain waves with accuracy high enough for normal usage.
+
 \chapter{Computer assistance}
 \section{Brain-Computer interface} 
 \section{Signal processing}
+\label{sec:sigProc}
 \emph{2 pages}
 Introduction to sampling, fourier transform, various signal filters..
+\subsection{EEG waves classifier}
+In this work we will use classifier using Wavelet transform and Fourier
+transform as proposed by M.M. Shaker. \cite{eegWaveFt} 
 \section{Data visualization methods}
 \emph{4 pages}
 \subsection{2D representations}
@@ -216,5 +312,5 @@ perspectives and means for argumentation.
 Refering to introduction and checking with goals, if everything required was
 done, what couldn't be done and why. Placing the work into wider context of
 relevant areas of research -- medicine, bioinformatics, user interfaces..
-Part about possible plans for future, improvment, enhancements, folow up.. \cite{Knuth}
+Part about possible plans for future, improvment, enhancements, folow up..
 %=========================================================================

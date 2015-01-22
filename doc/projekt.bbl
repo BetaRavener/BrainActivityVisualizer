@@ -1,4 +1,23 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{biopotAmp}
+Biopotential amplifiers.
+
+\bibitem{bcComm}
+Brain-computer communication: Ulocking the locked in.
+
+\bibitem{dominantF}
+Dominant frequencies of resting human brain activity as measured by
+  electrocorticogram.
+
+\bibitem{eegClass}
+Eeg signal classification for brain computer interface applications.
+
+\bibitem{eegWaveFt}
+Eeg waves classifier using wavelet transform and fourier transform.
+
+\bibitem{neuralAmp}
+An energy-efficient micropower neural recording amplifier.
 
 \bibitem{elSys}
 The five percent electrode system for high-resolution eeg and erp measurements.
@@ -6,14 +25,15 @@ The five percent electrode system for high-resolution eeg and erp measurements.
 \bibitem{eegFund}
 Fundamentals of eeg measurement [online].
 
+\bibitem{guidDigEEG}
+Guidelines for digital eeg.
+
 \bibitem{rapidPos}
 A rapid method for determining standard 10/10 electrode positions for high
   resolution eeg studies.
 
-\bibitem{Knuth}
-Donald~E. Knuth.
-\newblock {\em The {\TeX}book}.
-\newblock Addison-Wesley Publishing Company, 1996.
-\newblock ISBN~0-201-13447-0.
+\bibitem{deltaCompNREM}
+Slow (0.7-2 hz) and fast(2-4 hz) delta components are differently correlated to
+  theta, alpha and beta frequency bands during nrem sleep.
 
 \end{thebibliography}
