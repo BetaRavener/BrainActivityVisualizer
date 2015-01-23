@@ -3,6 +3,7 @@
 abb:
 EEG
 PC
+CPU
 
 \chapter{Introduction}
 % Uvod do temy
@@ -42,8 +43,11 @@ present our own application in detail, starting with concept and moving on to
 implementation.
  
 \chapter{Human brain}
-The necessary information for biological background will be
-provided here. The human brain is central unit of his nervous system..
+Brain is a central unit of human nervous system and has important role in almost
+every aspect of life. It performs both conscious tasks and automatic operation
+of vital organs like breathing, maintaining blood preasure and releasing
+hormones. It also processes all sensory inputs such as odors, sounds and light,
+interprets them and make associations with representations preserved in memory.
 \section{Brain biology}
 \emph{2 pages}
 Presenting relevant imformation about brain, its parts and their functions..
@@ -52,32 +56,34 @@ Discusing in short various means to monitor brain and its activity -- EEG,
 CT scans, optical infrared spectroscopy. Showing images of brain.
 Mostly citations to medicine research.
 
+tissue is made of neurons tha communicate using electric signals .. dendrites
+axions 
+
 \section{Electroencephalography}
-\emph{4 pages}
 The nature of human nervous system is electrical. It has been proved that the
 variation of surface electrical potential reflects activities performed in
 underlying brain structures. EEG is a method for measuring these potential
 variantion using an array of electrodes placed on measured subject's scalp and
 recording them for later processing.\cite{eegClass}
 
-EEG is commonly used for measurements in medical and research areas. Its main
-advantage over other methods is speed as it can record respond to stimulus
-within fractions of a second.\cite{eegFund}
-% Applications
-Applications include:
+The main advantage of EEG over other methods is speed as it can record respond
+to stimulus within fractions of a second.\cite{eegFund} Its applications include:
 \begin{itemize}
   \item Research -- monitoring during cognitive and motoric tasks
   \item Medical -- diagnosis of brain diseases
   \item Human computer interaction -- performing commands using brain activity  
 \end{itemize}
+Recently the EEG based devices also penetrated consumer market and users can
+monitor brain activity at home, play simple games and control toys using
+their thoughts. (cite?quadcopter)
 
-\subsection{Measuring equipment}
-The setup used for encephalographic measurements usually consist of: 
+\subsection{Measurment equipment}
+The setup used for encephalographic measurments usually consist of: 
 \begin{itemize}
-  \item electrodes with conductive media
-  \item amplifiers with filters
+  \item Electrodes with conductive media
+  \item Amplifiers with filters
   \item A/D converter
-  \item recording device
+  \item Recording device
 \end{itemize}
 % Electrodes
 The electrodes exists in various forms but in this work we will focus on
@@ -142,47 +148,58 @@ frequency is \SIrange{256}{400}{\Hz}. \cite{guidDigEEG}
 
 % Recording device
 Converted samples from A/D converters are then stored in memory for further
-processing which will be presented later in this section. A recording device
-might be represented by a computer or a different kind of equipment.
-%TODO: mozno nieco viac?
+processing which will be discussed in another part of this section
+\ref{sub:dataAnalysis}. A recording device may be represented by a computer or
+a different kind of equipment. The computer can be additionaly equiped with
+digital signal processor unit so that CPU load is lower and can be used for
+other tasks.
 
 \subsection{Electrode placement systems}
-%TODO: Zmienka o vybere referencnej elektrody
 % Uvod
 The need for standardized electrode placement was evident as early as 1947 when
 the first Internation EEG congress held place in London. Various method of
 standardization were proposed and this effort finally resulted in the definition
-of 10-20 electrode system in 1958 by H.H. Jasper. \cite{elSys} 
+of 10--20 electrode system in 1958 by H.H. Jasper. \cite{placeSys} 
 % Popis 10-20
 This system consists of 21 electrodes placed evenly between certain landmarks.
-(dokoncit)
+The first baseline can be found by connecting inion and nassion. Inion is small
+pretuberance at the back of the head and nassion is location just above bridge
+of the nose. The length of this line is measured and electrodes are placed along
+it using following procedure. First electrode -- Fpz, is placed at 10\% of
+length from nassion The electrodes Fz, Cz and Pz are placed in this order from
+front to back with spacing of 20\% of length. Fz and Fpz are also spaced by
+20\%. Last electrode -- Oz, is placed at 10\% of length from inion which equals
+90\% of length from nassion. It should be clear now why the system is called
+10--20. The rest of electrodes is placed in simillar fashion and this can be
+seen at image.. %obrazok do prilohy
 
 % Popis 10-10
-The 10-20 system offers only limited resolution but it was sufficient at the
+The 10--20 system offers only limited resolution but it was sufficient at the
 time of its creation because the main limiting factor was technology. However,
 with technological advances in computers and signal processing, using more than
 21 channels became feasible and naturally many seeked to take advantage of
-higher resolution. With more electrodes than what is 10-20 model capable of
+higher resolution. With more electrodes than what is 10--20 model capable of
 accommodating, first extension to standard placement system was needed. The
 extension was proposed in 1985 and extended the number of electrodes to 74. It
 uses additional coronal contours lying halfway between original contours and
 combines the labels of these original contours to create new label.
 For example, the contour lying betweeen original countours F and C will be
-labelled FC. \cite{elSys}
+labelled FC. \cite{placeSys} The position of electrodes according to this system
+are shown.. %obrazok do prilohy
 
 % Popis 10-5
-The 10-5 electrode placement systems further extends the 10-10 system to allow
+The 10--5 electrode placement systems further extends the 10--10 system to allow
 even higher number of channels to be used, as systems with over 128 channels are
 not uncommon any more and have became commercially available. The idea in
-placement of new electrodes is simmiliar to how 10-10 system extends from
-10-20, creating coronal contours halfway between the original ones. The
+placement of new electrodes is simmiliar to how 10--10 system extends from
+10--20, creating coronal contours halfway between the original ones. The
 nomenclature uses naming in similiar fashion as geographical directions. For
 example, direction between North and North-West is labelled as North-North-West
 and so contour between C-contour and CP-contour will be labelled CCP-contour.
 This doubles the number of contours and also the number of electrodes in
 contour, increasing the number of electrodes approximately 4 times. The total
 number of possible locations is arround 345 and may vary depending on how many
-electrodes are included for the most inferior rows. \cite{elSys} This system is
+electrodes are included for the most inferior rows. \cite{placeSys} This system is
 in proposition stage and is yet to be recognized as standard but it is currently
 only work in this area, therefore can be considered as relevant and some
 equipment already adheres to it.
@@ -194,13 +211,14 @@ from dried parts. It is important to adhere to strict hygiene as this could
 cause irritation and inflamation and with repeated measurements may develop into
 an infection.\cite{eegFund} The subject is then seated comfortably to eliminate
 any unnecessary movement, because it could spoil the measured data. (cite?)
-Elecetrodes are placed on subject's scalp and recording can begin. Subject is
-usually instructed to perform specific tasks such as imagining moving certain
-part of body, rotating an object in 3D or focusing on specific part of display.
-\cite{bcComm} For other purposes, subjects may be monitored while performing
-ordinary activities or during sleep.
+Elecetrodes  or cap are placed on subject's scalp and recording can begin.
+Subject is usually instructed to perform specific tasks such as imagining moving
+certain part of body, rotating an object in 3D or focusing on specific part of
+display. \cite{bcComm} For other purposes, subjects may be monitored while
+performing ordinary activities or during sleep.
 
 \subsection{Data analysis}
+\label{sub:dataAnalysis}
 The recorded data are subject to further processing using numerical filters and
 transforms to improve signal-noise ration and extract desired features. 
 % Clasification by frequency band
