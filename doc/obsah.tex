@@ -290,20 +290,79 @@ Common approach to this problem is training a neural network that can classify
 patterns in brain waves with accuracy high enough for normal usage.
 
 \chapter{Computer assistance}
-\section{Brain-Computer interface} 
 \section{Signal processing}
 \label{sec:sigProc}
 \emph{2 pages}
 Introduction to sampling, fourier transform, various signal filters..
+\subsection{Low, high and band pass filters}
+
+\subsection{Discrete fourier transform}
+
+\subsection{Discrete wavelet transform}
+transform is defined as decomposition of mother wavelet $\psi(t)$ into child
+wavelets by choosing subsets of scales (a) and positions (b). 
+
+The decomposition may be repeated..
 \subsection{EEG waves classifier}
-In this work we will use classifier using Wavelet transform and Fourier
-transform as proposed by M.M. Shaker. \cite{eegWaveFt} 
+In this work we will use classifier using discrete wavelet transform and fourier
+transform as proposed by M.M. Shaker. \cite{eegWaveFt} The process of
+classification consists of three phases. First, the data from EEG are
+normalized, which means using band pass filter with desired frequency range,
+usually \SIrange{1}{30}{\Hz}. This signal is then passed to DWT for
+decomposition into multiple levels of detail and approximation
+coefficients using Daubechies wavelets. The suggested number of levels is four.
+% TODO: Spomenut aky je vyznam daubechies
+Each level is then processed by DFT and the result gives and indication to the
+frequencies that the band contained.
+
 \section{Data visualization methods}
-\emph{4 pages}
+In this work we have so far discussed methods of measuring and processing data
+from EEG, but our goal is to visualize them. Therefore, in this section we will
+discuss various methods of data visualization using computers and common display
+devices such as monitors and screens, and how these visualizations can be used
+to help humans analyze data more easily.
+
 \subsection{2D representations}
-graph, summary overview table, histogram, unfolded brain map..
+Display devices and other media used for presenting information have
+mostly two-dimensional nature. This has great implications for how the data are
+usually visualized and manipulated. The most natural representations are those
+that are already organized spatialy as two-dimensional without needing any
+projections and mappings. It is still possible to add next dimensions through
+usage of colors, different shapes and sizes, but the diagram was from from start
+intended to take two-dimensional form. The most commonly used diagrams are based
+on graphs and charts, although schematics and maps are also popular.
+
+The graph is type of a diagram made of interconnected objects usually called
+vertices. The connection, called edge, may be represented by a line or curve
+which may be directed, meaning that it goes only in one way. Graphs are usually
+used for visual representations of data where individual entities and
+their relations can be recognized such as systems and flows.
+
+The chart is visual representation of data useful for plotting, categorizing and
+showing trends. It may come in many forms, like bars or lines drawn in an
+area designated by axes with scales, or slices of a pie. Choosing the most
+suitable one is important step in data visualization.
+
 \subsection{3D models}
-mesh, volumetric/voxel graphics.. 
+The world and objects within it are perceived by humans as three-dimensional and
+therefore it is prefferable to use three-dimensional representations of objects
+called 3D models. However, there is lack of technology for displaying such
+representations truly three-dimensionaly, with holograms being the most advanced
+one. The models must be therefore projected into two dimensions so that they can
+be displayed using existing devices. This is done using projection matrices
+during process called rendering. While it is sometimes desirable to create
+representiations to be as realistic as possible, computers allow to display
+basically anything and so models of real world objects may be variously
+modified, enhanced and textured before rendering them. There are multiple ways
+to create the 3D model. It is possible to scan real world objects by various
+means such as tomography and optical surface imaging, or use special modelling
+software and reconstruct the model from basic primitives. The model may have
+defined volume using volumetric or voxel representations or it can be just a
+surface of an object which is usually represented by mesh. A mesh is collection
+of points in 3D space called vertices which are connected to form basic
+primitives like triangles or polygons.
+
+mesh, volumetric/voxel graphics..
 Means to obtain three-dimensional brain model - CT, modelling..
 \section{Existing solutions}
 \emph{2-3 solutions, 1 page each}
@@ -318,6 +377,10 @@ Theoretical concept for practical part.
 \section{User interface}
 \emph{2 pages}
 Drawings, mockups, layouts, command prompt parameters.
+
+It should be easy to experiment with different values and explore new options.
+The visualization settings should be accessible, not hidden behind several
+levels of menus and dialogs.
 \section{Code structure}
 \emph{3 pages}
 \subsection{Logical division}
