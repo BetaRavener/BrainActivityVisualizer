@@ -4,6 +4,9 @@ abb:
 EEG
 PC
 CPU
+GPU
+API
+SDK
 
 \chapter{Introduction}
 % Uvod do temy
@@ -292,8 +295,10 @@ patterns in brain waves with accuracy high enough for normal usage.
 \chapter{Computer assistance}
 \section{Signal processing}
 \label{sec:sigProc}
-\emph{2 pages}
-Introduction to sampling, fourier transform, various signal filters..
+As presented in section \ref{sub:dataAnalysis}, processing is important
+step to ease analysis of recorded data by filtering out noise and selecting
+features. This section will therefore provide information about methods of
+signal processing required by our work.
 \subsection{Low, high and band pass filters}
 
 \subsection{Discrete fourier transform}
@@ -313,7 +318,7 @@ decomposition into multiple levels of detail and approximation
 coefficients using Daubechies wavelets. The suggested number of levels is four.
 % TODO: Spomenut aky je vyznam daubechies
 Each level is then processed by DFT and the result gives and indication to the
-frequencies that the band contained.
+frequencies contained in the band.
 
 \section{Data visualization methods}
 In this work we have so far discussed methods of measuring and processing data
@@ -332,11 +337,11 @@ usage of colors, different shapes and sizes, but the diagram was from from start
 intended to take two-dimensional form. The most commonly used diagrams are based
 on graphs and charts, although schematics and maps are also popular.
 
-The graph is type of a diagram made of interconnected objects usually called
-vertices. The connection, called edge, may be represented by a line or curve
-which may be directed, meaning that it goes only in one way. Graphs are usually
-used for visual representations of data where individual entities and
-their relations can be recognized such as systems and flows.
+The graph is type of a diagram made of interconnected objects usually. The
+connection may be represented by a line or curve which may be directed, meaning
+that it goes only one way. Graphs are usually used for visual representations
+of data where individual entities and their relations can be recognized such as
+systems and %TODO..
 
 The chart is visual representation of data useful for plotting, categorizing and
 showing trends. It may come in many forms, like bars or lines drawn in an
@@ -353,23 +358,96 @@ be displayed using existing devices. This is done using projection matrices
 during process called rendering. While it is sometimes desirable to create
 representiations to be as realistic as possible, computers allow to display
 basically anything and so models of real world objects may be variously
-modified, enhanced and textured before rendering them. There are multiple ways
-to create the 3D model. It is possible to scan real world objects by various
-means such as tomography and optical surface imaging, or use special modelling
-software and reconstruct the model from basic primitives. The model may have
-defined volume using volumetric or voxel representations or it can be just a
-surface of an object which is usually represented by mesh. A mesh is collection
-of points in 3D space called vertices which are connected to form basic
-primitives like triangles or polygons.
+modified, enhanced and textured before rendering them. 
 
-mesh, volumetric/voxel graphics..
-Means to obtain three-dimensional brain model - CT, modelling..
+There are multiple ways to create the 3D model. It is possible to scan real
+world objects by various means such as tomography and optical surface imaging,
+or use special modelling software and reconstruct the model from basic
+primitives. The model may have defined volume using volumetric or voxel
+representations or it can be just a surface of an object which is usually
+represented by mesh. A mesh is collection of points in 3D space called vertices
+which are connected to form basic primitives like triangles or polygons.
+
+\section{Programmable graphics pipeline}
+A graphics pipeline represents the process of rendering and its stages. The
+input data in form of vertices, colors and other information are input to first stage
+which processes and passes them down the pipeline to another stage.
+The result of final stage is rendered image of scene. Before programmable
+pipeline, programmers could only use vendor defined operations and combine them
+to create their application which imposed certain constraints on what could be
+done. This was called a fixed pipeline, because the action performed by each
+stage was fixed and could be only modified through parameters or states. With
+instroduction of programmable pipeline, it was possible for programmers to step
+into rendering process in several places and define their own techniques. The
+custom programs that become part of pipeline are called shaders. In following
+text we will present the three most important types of shaders with respect to
+their position in pipeline. The terminology used here is according to OpenGL,
+but basic principles are simillar for most of the graphics card APIs.
+
+\subsection{Vertex shader}
+A vertex shader is at the very front of graphics pipepline, just after primitive
+processing. It allows to modify properties of vertices before they enter
+geometry shader or  primitive assembly stage. The input to vertex shader is
+single vertex with all related information. Typical usage of this stage consists
+of applying projection and transformation matrices, gouraud shading,
+displacements and controlling particle effects.
+
+\subsection{Geometry shader}
+A geometry shader, if present, is executed right after vertex shader but instead
+of working with isolated vertices, it works with whole primitives like points,
+lines and triangles. It may perform transformation of primitive from one type to
+another and also emit completely new geometry. For example, it is possible to
+have as input only one point and output may be circle with that point as a
+center made from varying number of triangles, depending on how far from camera
+the point was. This both saves time--expensive transport operation between CPU
+and GPU and optimizes performance by dynamically lowering details.
+
+\subsection{Fragment shader}
+A fragment shader works with individual pixels, produced by rasterizer after the
+primitives have been assembled. However, the three-dimensional information have
+not been discarded yet and is accessible during processing. This allows to apply
+three-dimensional effects on the finest level, such as phong shading. The output
+of this program is single color that will be displayed on that specific pixel.
+
 \section{Existing solutions}
+We are aware that our work is not first in this field and there is much to be
+learned from previous attempts. This section will analyze existing solutions
+focusing on their user interface, features, extensibility, intuitivness and
+overall usability.
+
 \emph{2-3 solutions, 1 page each}
 Analysis of existing solutions, what could serve as inspiration, what could be
 improved from all points of view (ease of installation, usability, features
 friendliness, signal processing, settings, extensibility..)
-\subsection{A}
+\subsection{Emotiv}
+Emotiv is a company specializing in area of EEG caps for consumer market.
+Currently they offer two options, 14 channel EPOC and 5 channel Insight
+headsets. These headsets come with built-in amplifiers, filters and A/D
+converters, and use communicate wirelessly with computer through bluetooth. As
+we lack necessary hardware, we will review this solution from videos posted on
+the internet by users who own the headset and from informations available on
+company's website.
+
+The headset is accompanied with software which, however, has to be bought
+through store separately. On one side, the store allows developers to create new
+applications independently but as a result there is lack of single unified user
+experience. This is caused not only by different styles the authors of each
+application use, but also because each application have its own set of settings,
+controls and displays, many of which are duplicated between applications. For
+example, a chart with signals from electrodes is included in both TestBench and
+3D brain activity map application. There is also another brain activity map that
+displays each frequency band in 2D and the settings such as gain factor and
+buffer size are not shared in any way between applications, resulting in
+different behaviour which can be quite confusing.
+
+Also, most applications seems to lack any elements of time control, meaning
+they are only able to display actual values. This is very limiting factor for
+data analysis, as one of basic performed tasks is comparing data and being
+able to do so between two or more moments in time is definitely desirable.
+
+Featurewise, the applications are ranging from visualization software and
+data importers to games. Furthermore, the SDK for creating new applications is
+publicly available, so anyone can start developing.
 \subsection{B}
 \subsection{C}
 \chapter{Concept and design}
