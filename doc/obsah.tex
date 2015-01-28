@@ -10,7 +10,7 @@ SDK
 
 \chapter{Introduction}
 % Uvod do temy
-The brain is central organ of human nervous system (cite?) and as such has very
+The brain is central organ of human nervous system and as such has very
 important role in almost every activity. However, its complexity makes it
 difficult to study and understand. Rapid development of computers in recent
 decades provided partial solution to this as it allowed for mapping and
@@ -23,85 +23,89 @@ that there is an evident need for user interfaces and applications capable of
 processing these signals for various purposes. One such purpose is visualization
 that allows researchers and users better comprehend measured data as these are
 usually just binary values that may be represented as integer or decimal
-numbers, therefore hard for humans to interpret. (cite?) Another issue is that
-generally users are not interested in raw values, but in some features that
+numbers, therefore hard for humans to interpret. Another issue is that,
+generally, users are not interested in raw values but in some features that
 signal carries such as intensity at certain frequency or specific patterns that
 represent certain activity performed by measured subject.
 
 % Ciele
-Our goal is therefore to create application implementing various means of signal
-processing and visualization, including classification by frequency, graphs
-showing waveform of measured signal in time domain and both two and
+Our goal is therefore to create application implementing a couple of methods for
+signal processing and visualization, including classification by frequency, graphs
+showing wavelet of measured signal in time domain, and both two and
 three-dimensional models displaying brain acitivity. Another important task will
 be to create intuitive and clean, yet highly customizable graphical user
-interface that will be responsive also for real-time signal inputs. The
+interface, which will be responsive also for real-time signal inputs. The
 application should, however, be able to process also large offline data measured
 earlier without noticeable performance decrease.
 
 % O com to tu je
-In this work we will first present background information about brain and
-methods for measuring its activity, particularly EEG, discuss the processing of
-signal on computer and methods for visual representation. Finally, we will
-present our own application in detail, starting with concept and moving on to
-implementation.
+In this work we will present background information about brain and methods for
+measuring its activity, particularly EEG, discuss the processing of signal on
+computer and techniques for visual representations. Finally, we will present our
+own application in detail, starting with concept and moving on to implementation.
  
 \chapter{Human brain}
 Brain is a central unit of human nervous system and has important role in almost
 every aspect of life. It performs both conscious tasks and automatic operation
-of vital organs like breathing, maintaining blood preasure and releasing
-hormones. It also processes all sensory inputs such as odors, sounds and light,
+of vital organs, like breathing, maintaining blood preasure and releasing
+hormones. It also processes all sensory inputs, such as odors, sounds and light,
 interprets them and make associations with representations preserved in memory.
 \section{Brain biology}
 The biology of brain is complex and many processes that are ongoing within it
-are still not well understood. In this section we will therefore provide just
+are still not well understood. In this section we will, therefore, provide only
 very brief introduction to its anatomy and communication mechanisms that are
 relevant for this work.
 \subsection{Anatomy}
 From anatomy point of view, we are interested in cerebrum, which is the
-outermost structure of brain. It is divded into two separate hemishpeheres which
-are bridged by bundle of fibers. The cerebrum is associated with higher
-order functioning and the control of voluntary behavior. This include thinking,
+outermost structure of brain. It is divded into two separate hemishpeheres
+bridged by bundle of fibers. The cerebrum is associated with higher order
+functioning and the control of voluntary behavior. This include thinking,
 perceiving, planning and understanding language. The cerebrum is covered with a
-sheet of tissue called cerebral cortex which is further divided into regions
+sheet of tissue called cerebral cortex, which is further divided into regions
 that are functionally differenciated and called lobes. There are four lobes,
-each with different role. The frontal lobe is where initation and coordination of
-motor movements take place, along with higher cognitive skills, such as
+each with different role. The frontal lobe is where initation and coordination
+of motor movements take place, along with higher cognitive skills, such as
 thinking, planning and organizing. It is also important for personality and
 emotional makeup. The parietal lobe is responsible for processing sensory
 inputs, attention, language and spatial orientation. The occipital lobe helps
 process visual information and assits with recognition of shapes and colors.
-Finally, the temporal lobe is region where auditory information is processed and the
-information from other senses is integrated. It also has a role in short-term
-memory and in learned emotional responses. \cite{brainFacts}
+Finally, the temporal lobe is region where auditory information is processed and
+the information from other senses is integrated. It also has a role in
+short-term memory and in learned emotional responses. \cite{brainFacts}
+
 \subsection{Neurons}
 The nervous tissue is made of cells called neurons that communicate with each
-other and represent basic working unit of brain. The neuron consists of cell
-body, dendrites and an axon. The cell body contains nucleus and cytoplasm and
+other and represent basic working units of brain. The neuron consists of cell
+body, dendrites and an axon. The cell body contains nucleus and cytoplasm, and
 produces peptides required for communication. Dendrites extend from cell and
 receive signals from other neurons through synapses -- contact points where
-axons of other neurons connects to dendrite. The axon is then used to transmit
+axons of other neurons connects to dendrite. The axon is used to transmit
 electrical impulses outward from neuron. These electrical impulses originate
 from sudden change of electrical potential caused by flow of ions through cell
 membrane. The change, called an action potential, then passes along axon's
-membrane and uppon hitting it's end releases neurotransmiters in nerve
-terminals. The neurotransmiters diffuse across synapse and bind to receptors on
-the surface of target cell, which causes response in target.\cite{brainFacts}
+membrane and uppon hitting its end releases neurotransmiters in nerve terminals.
+The neurotransmiters diffuse across synapse and bind to receptors on the surface
+of target cell's dendrite, which causes response in target.\cite{brainFacts}
+
+%\subsection{Measurement technology} - CT, EEG, optical.. maybe?
 
 \section{Electroencephalography}
 The nature of human nervous system, as has been presented, is electrical. It has
-been proved that the variation of surface electrical potential reflects
-activities performed in underlying brain structures. EEG is a method for
-measuring these potential variantion using an array of electrodes placed on
-measured subject's scalp and recording them for later processing.\cite{eegClass}
+been proved that the variation of surface electrical potential measured on the
+scalp reflects activities performed in underlying brain structures. EEG is a
+method for measuring these potential variantion using an array of electrodes
+placed on measured subject's scalp and recording them for later processing.
+\cite{eegClass}
 
 The main advantage of EEG over other methods is speed as it can record respond
-to stimulus within fractions of a second.\cite{eegFund} Its applications include:
+to stimulus within fractions of a second. \cite{eegFund} Applications of EEG
+include:
 \begin{itemize}
   \item Research -- monitoring during cognitive and motoric tasks
   \item Medical -- diagnosis of brain diseases
   \item Human computer interaction -- performing commands using brain activity  
 \end{itemize}
-Recently the EEG based devices also penetrated consumer market and users can
+Recently, the EEG based devices also penetrated consumer market and users can
 monitor brain activity at home, play simple games and control toys using
 their thoughts. (cite?quadcopter)
 
@@ -115,35 +119,35 @@ The setup used for encephalographic measurments usually consist of:
 \end{itemize}
 % Electrodes
 The electrodes exists in various forms but in this work we will focus on
-headbands and electrode caps as these are non-invasive and require the least
+headsets and electrode caps as these are non-invasive and require the least
 expertise. These caps usually consists of small discs serving as electrodes made
-of very conductive material such as gold, silver or stainless steel. Commonly
+of very conductive material, such as gold, silver or stainless steel. Commonly
 used electrodes are made of Ag-AgCl disks with diameter of \SIrange[range-units
 = single]{1}{3}{\mm} and have long leads that can be plugged into an
 amplifier. \cite{eegFund} The discs can be in direct contact with scalp and
 measure electric potential produced by brain, but conductive media in form of a
 gel or paste is often used to increase conductivity even more by lowering
-contact impedance and improve readings at the lowest level, while it also helps
-electrodes to stick to surface.
+contact impedance, and improve readings at the lowest level. It also helps
+electrodes to stick to surface so accidental shift from position is less likely.
 
 % Cap
 The electrodes are pre-mounted on a silicon cap in locations according to
-standardized placement systems that will be discussed later in this section.
+standardized placement system, which will be discussed later in this section.
 This both speeds up the setup stage and allows for unified mapping of electrodes
 to head surface, but fails to account for different shape and features of each
 individual's head. \cite{eegFund} This problem is usually solved by involving a
-method for locating 3D coordinates of electrode positions on the head. Such
-methods include using magnetic field digitizer or elaborate algorithms that can
+method for finding 3D coordinates of electrodes on the head. Such methods
+include using magnetic field digitizer or elaborate algorithms that can
 calculate position of each electrode from few distance and angle measurements by
 utilizing specific properties of standard placement system. \cite{rapidPos}
 
 % Amplifiers
 The strength of signal measured by electrodes is in order of microvolts and
-normally range from \SIrange{10}{500}{\uV}.\cite{neuralAmp} An amplifier is
-therefore needed to bring the amplitude to higher levels so it can be processed
-by electrical circuits and components. The requirements on amplifiers for use
-with EEG are high as they have to provide amplification only for physiological
-signal which should not be distorted in any way, reject superimposed noise and
+normally range from \SIrange{10}{500}{\uV}. \cite{neuralAmp} An amplifier is,
+therefore, needed to bring the amplitude to higher levels so it can be processed
+by other electrical circuits and components. The requirements on amplifiers for
+use with EEG are high as they have to provide amplification only for physiological
+signal, which should not be distorted in any way, reject superimposed noise and
 interference signals, and protect both the equipment and measured subject from
 current surges. Amplifiers conforming to these are known as biopotential
 amplifiers. \cite{biopotAmp}
@@ -151,105 +155,105 @@ amplifiers. \cite{biopotAmp}
 A bandpass filter is then used to limit frequencies into a ceratin range of
 interest. In some cases it may be already a part of an amplifier.
 Another common filter is notch filter which is used to filter out noise
-at frequency of power line. Depending on country it may be set to
+at frequency of power line. Depending on country, it may be set to
 \SIlist[list-units = single, list-pair-separator = { or }]{50;60}{\Hz}.
 \cite{deltaCompNREM} Such filter is only used if it is desirable to keep also
-high frequencies as the information of interest usually lies bellow this
-frequency.
+high frequencies as the interesting frequency bands usually lies bellow this
+threshold.
 % Trend in amplifier miniaturization
 The trend in development of neural recording devices is heading in direction of
-fully implanted systems, therefore energy efficient amplifiers are being
-designed lately that are very small in size, may run on battery for long period
-of time and disipate only little heat so they don't damage surrounding tissue.
-\cite{neuralAmp}
+fully implanted systems. Consequently, energy efficient amplifiers are being
+designed lately that are very small in size, may run on battery for long
+periods of time and disipate only little heat so they don't damage surrounding
+tissue. \cite{neuralAmp}
 
 % A/D converter
 An A/D converter unit is then used to convert analog values to digital
-representation. The converter should have resolution of at least 12 bits.
-With high number of electrodes, analog multiplexers are sometimes used to lower
-the number of necessary converter units at the expense of limited update
-frequency. The sampling frequency should be at least double of the highest
-recorded frequency, for example the upper frequency limit set for bandpass
-filter. This is known as Nyquist-Shannon sampling theorem and is fundamental for
-correct signal reconstruction without aliasing artifact. The preffered sampling
-frequency is \SIrange{256}{400}{\Hz}. \cite{guidDigEEG}
+representation. The converter should have resolution of at least 12 bits and
+ideally 16 bits or more. With high number of electrodes, analog multiplexers are
+sometimes used to lower the number of necessary converter units at the expense
+of limited update frequency. The sampling frequency should be at least double of
+the highest recorded frequency, for example the upper frequency limit set for
+bandpass filter. This is known as Nyquist-Shannon sampling theorem and is
+fundamental for correct signal reconstruction without aliasing artifact. The
+preffered sampling frequency is \SIrange{256}{400}{\Hz}. \cite{guidDigEEG}
 
 % Recording device
 Converted samples from A/D converters are then stored in memory for further
 processing which will be discussed in another part of this section
-\ref{sub:dataAnalysis}. A recording device may be represented by a computer or
-a different kind of equipment. The computer can be additionaly equiped with
-digital signal processor unit so that CPU load is lower and can be used for
-other tasks.
+\ref{sub:dataAnalysis}. A recording device may be represented by a computer or a
+different piece of specialized equipment. The computer can be additionaly
+equiped with digital signal processor unit so that CPU load is lower and can be
+used for other tasks.
 
 \subsection{Electrode placement systems}
 % Uvod
 The need for standardized electrode placement was evident as early as 1947 when
-the first Internation EEG congress held place in London. Various method of
+the first Internation EEG congress held place in London. Various methods of
 standardization were proposed and this effort finally resulted in the definition
-of 10--20 electrode system in 1958 by H.H. Jasper. \cite{placeSys} 
+of 10-20 electrode system in 1958 by H.H. Jasper. \cite{placeSys} 
 % Popis 10-20
 This system consists of 21 electrodes placed evenly between certain landmarks
 and the labels of electrodes are derived from cerebrum lobes above which they
-are located. The first baseline can be found by connecting inion and nassion.
-Inion is small pretuberance at the back of the head and nassion is location just
+are located. The first contour can be found by connecting inion and nassion.
+Inion is small pretuberance at the back of the head and nassion is located just
 above bridge of the nose. The length of this line is measured and electrodes are
 placed along it using following procedure. First electrode -- Fpz, is placed at
-10\% of length from nassion The electrodes Fz, Cz and Pz are placed in this
+10\% of length from nassion. The electrodes Fz, Cz and Pz are placed in this
 order from front to back with spacing of 20\% of length. Fz and Fpz are also
 spaced by 20\%. Last electrode -- Oz, is placed at 10\% of length from inion
 which equals 90\% of length from nassion. It should be clear now why the system
-is called 10--20. The rest of electrodes is placed in simillar fashion and this
+is called 10-20. The rest of electrodes are placed in simillar fashion and this
 can be seen at image.. %obrazok do prilohy
 
 % Popis 10-10
-The 10--20 system offers only limited resolution but it was sufficient at the
+The 10-20 system offers only limited resolution but it was sufficient at the
 time of its creation because the main limiting factor was technology. However,
 with technological advances in computers and signal processing, using more than
-21 channels became feasible and naturally many seeked to take advantage of
-higher resolution. With more electrodes than what is 10--20 model capable of
+21 channels became feasible and, naturally, many seeked to take advantage of
+higher resolution. With more electrodes than what is 10-20 model capable of
 accommodating, first extension to standard placement system was needed. The
 extension was proposed in 1985 and extended the number of electrodes to 74. It
 uses additional coronal contours lying halfway between original contours and
-combines the labels of these original contours to create new label.
-For example, the contour lying betweeen original countours F and C will be
-labelled FC. \cite{placeSys} The position of electrodes according to this system
-are shown.. %obrazok do prilohy
+combines the labels of these original contours to create new label. For example,
+the contour lying betweeen original countours F and C will be labelled FC.
+\cite{placeSys} The position of electrodes according to this system are shown..
+%obrazok do prilohy
 
 % Popis 10-5
-The 10--5 electrode placement systems further extends the 10--10 system to allow
-even higher number of channels to be used, as systems with over 128 channels are
+The 10-5 electrode placement systems further extends the 10-10 system to allow
+even higher number of channels to be used as systems with over 128 channels are
 not uncommon any more and have became commercially available. The idea in
-placement of new electrodes is simmiliar to how 10--10 system extends from
-10--20, creating coronal contours halfway between the original ones. The
-nomenclature uses naming in similiar fashion as geographical directions. For
-example, direction between North and North-West is labelled as North-North-West
-and so contour between C-contour and CP-contour will be labelled CCP-contour.
-This doubles the number of contours and also the number of electrodes in
-contour, increasing the number of electrodes approximately 4 times. The total
-number of possible locations is arround 345 and may vary depending on how many
-electrodes are included for the most inferior rows. \cite{placeSys} This system is
-in proposition stage and is yet to be recognized as standard but it is currently
-only work in this area, therefore can be considered as relevant and some
-equipment already adheres to it.
+placement of new electrodes is simmiliar to how 10-10 system extends from 10-20,
+creating coronal contours halfway between the original ones. The nomenclature
+uses naming in similiar fashion as geographical directions. For example,
+direction between North and North-West is labelled as North-North-West and so
+contour between C-contour and CP-contour will be labelled CCP-contour.
+This doubles the number of contours and also the number of electrodes in contour
+is doubled, increasing the number of electrodes by approximately 4 times.
+The total number of possible locations is arround 345 and may vary depending on
+how many electrodes are included for the most inferior rows. \cite{placeSys}
+This system is in proposition stage and is yet to be recognized as standard, but
+it is currently only work in this area, therefore can be considered as relevant
+and some equipment already adheres to it.
 
 \subsection{Measurment procedure}
-Before measurment, the electodes are cleaned thoroughly to remove any impurities
+Before measurment the electodes are cleaned thoroughly to remove any impurities
 that could have an impact on it. The skin is also cleaned from oils and brushed
-from dried parts. It is important to adhere to strict hygiene as this could
-cause irritation and inflamation and with repeated measurements may develop into
-an infection.\cite{eegFund} The subject is then seated comfortably to eliminate
-any unnecessary movement, because it could spoil the measured data. (cite?)
-Elecetrodes  or cap are placed on subject's scalp and recording can begin.
-Subject is usually instructed to perform specific tasks such as imagining moving
-certain part of body, rotating an object in 3D or focusing on specific part of
-display. \cite{bcComm} For other purposes, subjects may be monitored while
-performing ordinary activities or during sleep.
+from dried parts. It is important to adhere to strict hygiene as this might
+cause irritation and inflamation, and with repeated measurements may develop
+into an infection.\cite{eegFund} The subject is then seated comfortably to
+eliminate any unnecessary movement, because it could spoil the measured data.
+(cite?) Elecetrodes or cap are placed on subject's scalp and recording can
+begin. Subject is usually instructed to perform specific tasks such as imagining
+moving certain part of body, rotating an object in 3D or focusing on specific
+part of display. \cite{bcComm} For other purposes, subjects may be monitored
+while performing ordinary activities or during sleep.
 
 \subsection{Data analysis}
 \label{sub:dataAnalysis}
 The recorded data are subject to further processing using numerical filters and
-transforms to improve signal-noise ration and extract desired features. 
+transforms to improve signal-to-noise ration and extract desired features. 
 % Clasification by frequency band
 One such feature is brain activity at certain frequency. The frequency of brain
 waves range from \SIrange{1}{150}{\Hz}. This range can be further divided
@@ -262,21 +266,21 @@ into six common categories\cite{dominantF}:
   \item Gamma waves -- between 30 and 80 Hz
   \item High gamma waves -- above 80 Hz
 \end{itemize}
-A healthy person exhibits brain waves mostly in the first four categories. Delta
-waves are normally distributed over scalp and may be significant during deep
-sleep, in childhood or in serious organic brain disease.\cite{eegClass} Theta
-waves are related to cognitive tasks such as working memor and error monitoring.
-Alpha power is increased during inattention and lack of visual input, therefore
-related to perception. Mu power, on the other hand, is linked to movement and is
-decreased when person performs a motor action. The distinction between alpha and
-mu waves is made by considering location of electrode. While alpha waves form at
-the back of the scalp, mu waves can be observed in a strip of brain from ear to
-ear called motor cortex. Finally beta waves are low amplitude, high frequency
-waves that have power reduced at the onset of movement, rebound if the movement
-is sustained and are enhanced if the movement is suppressed. Each band is
-therefore related to certain group of activity in brain and can be used for
+A healthy person exhibits brain waves mostly in the first four categories. Each
+band is related to certain group of activity in brain and can be used for
 diagnosis as abnormal resting powers in certain bands were linked to various
-mental and physiological diseases.\cite{dominantF}
+mental and physiological diseases. \cite{dominantF} Delta waves are normally
+distributed over scalp and may be significant during deep sleep, in childhood or
+in serious organic brain disease. \cite{eegClass} Theta waves are related to
+cognitive tasks such as working memory and error monitoring tests. Alpha power
+is increased during inattention and lack of visual input, therefore related to
+perception. Mu power, on the other hand, is linked to movement and is decreased
+when person performs a motor action. The distinction between alpha and mu waves
+is made by considering the location of electrode. While alpha waves form at the
+back of the scalp, mu waves can be observed in a strip of brain from ear to ear
+called motor cortex. Finally beta waves are low amplitude, high frequency waves
+that have power reduced at the onset of movement, rebound if the movement is
+sustained and are enhanced if the movement is suppressed. \cite{dominantF}
 
 % Classifier reference
 Many researchers proposed implementation of classifiers capable of identifying
@@ -288,17 +292,23 @@ Another set of features are patterns that represent certain activity more
 clearly than classification by frequency. For example, the imagined movement of
 finger can be distinguished from imagined movement of leg with this method. The
 classification accuracy is, however, highly individual and the classification
-system usually needs tuning or calibration process for each user.\cite{bcComm}
+system usually needs tuning or calibration process for each user. \cite{bcComm}
 Common approach to this problem is training a neural network that can classify
 patterns in brain waves with accuracy high enough for normal usage.
 
 \chapter{Computer assistance}
+% computer based visualization,..
+% visualization utilizing computer.. computer utilized visualization
+% utilize theseaurus ..
 \section{Signal processing}
 \label{sec:sigProc}
 As presented in section \ref{sub:dataAnalysis}, processing is important
 step to ease analysis of recorded data by filtering out noise and selecting
 features. This section will therefore provide information about methods of
 signal processing required by our work.
+
+%\subsection{Nyquist-Shannon} maybe
+
 \subsection{Low, high and band pass filters}
 
 \subsection{Discrete fourier transform}
