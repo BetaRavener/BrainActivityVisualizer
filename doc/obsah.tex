@@ -47,7 +47,7 @@ own application in detail, starting with concept and moving on to implementation
 \chapter{Human brain}
 Brain is a central unit of human nervous system and has important role in almost
 every aspect of life. It performs both conscious tasks and automatic operation
-of vital organs, like breathing, maintaining blood preasure and releasing
+of vital organs, like breathing, maintaining blood pressure and releasing
 hormones. It also processes all sensory inputs, such as odors, sounds and light,
 interprets them and make associations with representations preserved in memory.
 \section{Brain biology}
@@ -57,18 +57,18 @@ very brief introduction to its anatomy and communication mechanisms that are
 relevant for this work.
 \subsection{Anatomy}
 From anatomy point of view, we are interested in cerebrum, which is the
-outermost structure of brain. It is divded into two separate hemishpeheres
+outermost structure of brain. It is divided into two separate hemispheres
 bridged by bundle of fibers. The cerebrum is associated with higher order
 functioning and the control of voluntary behavior. This include thinking,
 perceiving, planning and understanding language. The cerebrum is covered with a
 sheet of tissue called cerebral cortex, which is further divided into regions
-that are functionally differenciated and called lobes. There are four lobes,
-each with different role. The frontal lobe is where initation and coordination
+that are functionally differentiated and called lobes. There are four lobes,
+each with different role. The frontal lobe is where initiation and coordination
 of motor movements take place, along with higher cognitive skills, such as
 thinking, planning and organizing. It is also important for personality and
 emotional makeup. The parietal lobe is responsible for processing sensory
 inputs, attention, language and spatial orientation. The occipital lobe helps
-process visual information and assits with recognition of shapes and colors.
+process visual information and assists with recognition of shapes and colors.
 Finally, the temporal lobe is region where auditory information is processed and
 the information from other senses is integrated. It also has a role in
 short-term memory and in learned emotional responses. \cite{brainFacts}
@@ -83,7 +83,7 @@ axons of other neurons connects to dendrite. The axon is used to transmit
 electrical impulses outward from neuron. These electrical impulses originate
 from sudden change of electrical potential caused by flow of ions through cell
 membrane. The change, called an action potential, then passes along axon's
-membrane and uppon hitting its end releases neurotransmiters in nerve terminals.
+membrane and upon hitting its end releases neurotransmitters in nerve terminals.
 The neurotransmiters diffuse across synapse and bind to receptors on the surface
 of target cell's dendrite, which causes response in target.\cite{brainFacts}
 
@@ -93,7 +93,7 @@ of target cell's dendrite, which causes response in target.\cite{brainFacts}
 The nature of human nervous system, as has been presented, is electrical. It has
 been proved that the variation of surface electrical potential measured on the
 scalp reflects activities performed in underlying brain structures. EEG is a
-method for measuring these potential variantion using an array of electrodes
+method for measuring these potential variation using an array of electrodes
 placed on measured subject's scalp and recording them for later processing.
 \cite{eegClass}
 
@@ -109,8 +109,8 @@ Recently, the EEG based devices also penetrated consumer market and users can
 monitor brain activity at home, play simple games and control toys using
 their thoughts. (cite?quadcopter)
 
-\subsection{Measurment equipment}
-The setup used for encephalographic measurments usually consist of: 
+\subsection{Measurement equipment}
+The setup used for encephalographic measurements usually consist of: 
 \begin{itemize}
   \item Electrodes with conductive media
   \item Amplifiers with filters
@@ -152,7 +152,7 @@ interference signals, and protect both the equipment and measured subject from
 current surges. Amplifiers conforming to these are known as biopotential
 amplifiers. \cite{biopotAmp}
 % Filters
-A bandpass filter is then used to limit frequencies into a ceratin range of
+A bandpass filter is then used to limit frequencies into a certain range of
 interest. In some cases it may be already a part of an amplifier.
 Another common filter is notch filter which is used to filter out noise
 at frequency of power line. Depending on country, it may be set to
@@ -164,7 +164,7 @@ threshold.
 The trend in development of neural recording devices is heading in direction of
 fully implanted systems. Consequently, energy efficient amplifiers are being
 designed lately that are very small in size, may run on battery for long
-periods of time and disipate only little heat so they don't damage surrounding
+periods of time and dissipate only little heat so they don't damage surrounding
 tissue. \cite{neuralAmp}
 
 % A/D converter
@@ -176,20 +176,20 @@ of limited update frequency. The sampling frequency should be at least double of
 the highest recorded frequency, for example the upper frequency limit set for
 bandpass filter. This is known as Nyquist-Shannon sampling theorem and is
 fundamental for correct signal reconstruction without aliasing artifact. The
-preffered sampling frequency is \SIrange{256}{400}{\Hz}. \cite{guidDigEEG}
+preferred sampling frequency is \SIrange{256}{400}{\Hz}. \cite{guidDigEEG}
 
 % Recording device
 Converted samples from A/D converters are then stored in memory for further
 processing which will be discussed in another part of this section
 \ref{sub:dataAnalysis}. A recording device may be represented by a computer or a
-different piece of specialized equipment. The computer can be additionaly
-equiped with digital signal processor unit so that CPU load is lower and can be
+different piece of specialized equipment. The computer can be additionally
+equipped with digital signal processor unit so that CPU load is lower and can be
 used for other tasks.
 
 \subsection{Electrode placement systems}
 % Uvod
 The need for standardized electrode placement was evident as early as 1947 when
-the first Internation EEG congress held place in London. Various methods of
+the first International EEG congress held place in London. Various methods of
 standardization were proposed and this effort finally resulted in the definition
 of 10-20 electrode system in 1958 by H.H. Jasper. \cite{placeSys} 
 % Popis 10-20
@@ -203,48 +203,48 @@ placed along it using following procedure. First electrode -- Fpz, is placed at
 order from front to back with spacing of 20\% of length. Fz and Fpz are also
 spaced by 20\%. Last electrode -- Oz, is placed at 10\% of length from inion
 which equals 90\% of length from nassion. It should be clear now why the system
-is called 10-20. The rest of electrodes are placed in simillar fashion and this
+is called 10-20. The rest of electrodes are placed in similar fashion and this
 can be seen at image.. %obrazok do prilohy
 
 % Popis 10-10
 The 10-20 system offers only limited resolution but it was sufficient at the
 time of its creation because the main limiting factor was technology. However,
 with technological advances in computers and signal processing, using more than
-21 channels became feasible and, naturally, many seeked to take advantage of
+21 channels became feasible and, naturally, many sought to take advantage of
 higher resolution. With more electrodes than what is 10-20 model capable of
 accommodating, first extension to standard placement system was needed. The
 extension was proposed in 1985 and extended the number of electrodes to 74. It
 uses additional coronal contours lying halfway between original contours and
 combines the labels of these original contours to create new label. For example,
-the contour lying betweeen original countours F and C will be labelled FC.
+the contour lying between original contours F and C will be labelled FC.
 \cite{placeSys} The position of electrodes according to this system are shown..
 %obrazok do prilohy
 
 % Popis 10-5
 The 10-5 electrode placement systems further extends the 10-10 system to allow
 even higher number of channels to be used as systems with over 128 channels are
-not uncommon any more and have became commercially available. The idea in
-placement of new electrodes is simmiliar to how 10-10 system extends from 10-20,
+not uncommon any more and have become commercially available. The idea in
+placement of new electrodes is similar to how 10-10 system extends from 10-20,
 creating coronal contours halfway between the original ones. The nomenclature
-uses naming in similiar fashion as geographical directions. For example,
+uses naming in similar fashion as geographical directions. For example,
 direction between North and North-West is labelled as North-North-West and so
 contour between C-contour and CP-contour will be labelled CCP-contour.
 This doubles the number of contours and also the number of electrodes in contour
 is doubled, increasing the number of electrodes by approximately 4 times.
-The total number of possible locations is arround 345 and may vary depending on
+The total number of possible locations is around 345 and may vary depending on
 how many electrodes are included for the most inferior rows. \cite{placeSys}
 This system is in proposition stage and is yet to be recognized as standard, but
 it is currently only work in this area, therefore can be considered as relevant
 and some equipment already adheres to it.
 
-\subsection{Measurment procedure}
-Before measurment the electodes are cleaned thoroughly to remove any impurities
+\subsection{Measurement procedure}
+Before measurement the electodes are cleaned thoroughly to remove any impurities
 that could have an impact on it. The skin is also cleaned from oils and brushed
 from dried parts. It is important to adhere to strict hygiene as this might
-cause irritation and inflamation, and with repeated measurements may develop
+cause irritation and inflammation, and with repeated measurements may develop
 into an infection.\cite{eegFund} The subject is then seated comfortably to
 eliminate any unnecessary movement, because it could spoil the measured data.
-(cite?) Elecetrodes or cap are placed on subject's scalp and recording can
+(cite?) Electrodes or cap are placed on subject's scalp and recording can
 begin. Subject is usually instructed to perform specific tasks such as imagining
 moving certain part of body, rotating an object in 3D or focusing on specific
 part of display. \cite{bcComm} For other purposes, subjects may be monitored
@@ -296,10 +296,8 @@ system usually needs tuning or calibration process for each user. \cite{bcComm}
 Common approach to this problem is training a neural network that can classify
 patterns in brain waves with accuracy high enough for normal usage.
 
-\chapter{Computer assistance}
-% computer based visualization,..
-% visualization utilizing computer.. computer utilized visualization
-% utilize theseaurus ..
+\chapter{Computer as an analysis tool}
+
 \section{Signal processing}
 \label{sec:sigProc}
 As presented in section \ref{sub:dataAnalysis}, processing is important
@@ -307,11 +305,11 @@ step to ease analysis of recorded data by filtering out noise and selecting
 features. This section will therefore provide information about methods of
 signal processing required by our work.
 
-%\subsection{Nyquist-Shannon} maybe
+%\subsection{Nyquist-Shannon theorem} maybe
 
 \subsection{Low, high and band pass filters}
 
-\subsection{Discrete fourier transform}
+\subsection{Discrete Fourier transform}
 
 \subsection{Discrete wavelet transform}
 transform is defined as decomposition of mother wavelet $\psi(t)$ into child
@@ -319,7 +317,7 @@ wavelets by choosing subsets of scales (a) and positions (b).
 
 The decomposition may be repeated..
 \subsection{EEG waves classifier}
-In this work we will use classifier using discrete wavelet transform and fourier
+In this work we will use classifier using discrete wavelet transform and Fourier
 transform as proposed by M.M. Shaker. \cite{eegWaveFt} The process of
 classification consists of three phases. First, the data from EEG are
 normalized, which means using band pass filter with desired frequency range,
@@ -331,73 +329,76 @@ Each level is then processed by DFT and the result gives and indication to the
 frequencies contained in the band.
 
 \section{Data visualization methods}
-In this work we have so far discussed methods of measuring and processing data
-from EEG, but our goal is to visualize them. Therefore, in this section we will
-discuss various methods of data visualization using computers and common display
-devices such as monitors and screens, and how these visualizations can be used
-to help humans analyze data more easily.
+So far,  we have discussed methods of measuring and processing data from EEG,
+but our goal is to visualize them. Therefore, in this section we will discuss
+various methods of data visualization using computers and common display devices
+such as monitors and screens, and how these visualizations can be used to help
+humans analyze data more easily.
 
 \subsection{2D representations}
-Display devices and other media used for presenting information have
-mostly two-dimensional nature. This has great implications for how the data are
-usually visualized and manipulated. The most natural representations are those
-that are already organized spatialy as two-dimensional without needing any
-projections and mappings. It is still possible to add next dimensions through
-usage of colors, different shapes and sizes, but the diagram was from from start
-intended to take two-dimensional form. The most commonly used diagrams are based
-on graphs and charts, although schematics and maps are also popular.
+Display devices and other media used for presenting information have mostly
+two-dimensional nature. This has great implications for how the data are usually
+visualized and manipulated. The most natural representations are those that are
+already organized spatially as two-dimensional, without needing any projections
+and mappings. It is still possible to add the next dimensions through usage of
+colors, different shapes and sizes, but the diagram was from start intended to
+take on two-dimensional form. The most commonly used diagrams are based on
+graphs and charts, although schematics and maps are also popular.
 
-The graph is type of a diagram made of interconnected objects usually. The
-connection may be represented by a line or curve which may be directed, meaning
-that it goes only one way. Graphs are usually used for visual representations
-of data where individual entities and their relations can be recognized such as
-systems and %TODO..
+The graph is type of a diagram made of interconnected objects. The connection
+may be represented by a line or curve which may be directed, meaning that it
+goes only one way. Graphs are usually used for visual representations of data
+where individual entities and their relations can be recognized, for example a
+network of roads between cities or finite-state machine.
 
-The chart is visual representation of data useful for plotting, categorizing and
-showing trends. It may come in many forms, like bars or lines drawn in an
+The chart is a visual representation of data useful for plotting, categorizing
+and showing trends. It may come in many forms, like bars or lines drawn in an
 area designated by axes with scales, or slices of a pie. Choosing the most
-suitable one is important step in data visualization.
+suitable one, so that the most significant fact stands out, is important step in
+data visualization.
 
 \subsection{3D models}
-The world and objects within it are perceived by humans as three-dimensional and
-therefore it is prefferable to use three-dimensional representations of objects
-called 3D models. However, there is lack of technology for displaying such
-representations truly three-dimensionaly, with holograms being the most advanced
-one. The models must be therefore projected into two dimensions so that they can
-be displayed using existing devices. This is done using projection matrices
-during process called rendering. While it is sometimes desirable to create
-representiations to be as realistic as possible, computers allow to display
-basically anything and so models of real world objects may be variously
-modified, enhanced and textured before rendering them. 
+The world and objects within it are perceived by humans as three-dimensional
+and, therefore, it is preferable to use three-dimensional representations of
+objects called 3D models. However, there is lack of technology for displaying
+such representations truly three-dimensionally, with holograms being the most
+advanced one. Because of that, the models must be projected into two dimensions
+so that they can be displayed using existing devices. This is done using
+projection matrices during process called rendering. While it is sometimes
+desirable to create models to be as realistic as possible, computers allow to
+display basically anything and so models of real world objects can be variously
+modified, enhanced and textured before rendering them.
 
 There are multiple ways to create the 3D model. It is possible to scan real
-world objects by various means such as tomography and optical surface imaging,
+world objects by various means, such as tomography and optical surface imaging,
 or use special modelling software and reconstruct the model from basic
 primitives. The model may have defined volume using volumetric or voxel
 representations or it can be just a surface of an object which is usually
 represented by mesh. A mesh is collection of points in 3D space called vertices
-which are connected to form basic primitives like triangles or polygons.
+which are connected to form basic primitives, like triangles and polygons.
 
 \section{Programmable graphics pipeline}
 A graphics pipeline represents the process of rendering and its stages. The
-input data in form of vertices, colors and other information are input to first stage
-which processes and passes them down the pipeline to another stage.
+input data in form of vertices, colors and other information are input to the
+first stage which processes and passes them down the pipeline to another stage.
 The result of final stage is rendered image of scene. Before programmable
-pipeline, programmers could only use vendor defined operations and combine them
-to create their application which imposed certain constraints on what could be
-done. This was called a fixed pipeline, because the action performed by each
-stage was fixed and could be only modified through parameters or states. With
-instroduction of programmable pipeline, it was possible for programmers to step
-into rendering process in several places and define their own techniques. The
-custom programs that become part of pipeline are called shaders. In following
-text we will present the three most important types of shaders with respect to
-their position in pipeline. The terminology used here is according to OpenGL,
-but basic principles are simillar for most of the graphics card APIs.
+pipeline was developed, programmers could only use vendor defined operations and
+combine them to create their application which imposed certain constraints on
+what could be done. This was called a fixed pipeline, because the action
+performed by each stage was fixed and could be only modified through parameters
+or states. With introduction of programmable pipeline, it was possible for
+programmers to step into rendering process in several places and define their
+own techniques. The custom programs that have become part of pipeline are called
+shaders. In following text we will present the three most important types of
+shaders with respect to their position in pipeline. The terminology used here is
+according to OpenGL, but basic principles are similar for most of the graphics
+card APIs.
+%TODO obrazok pipeliny
 
 \subsection{Vertex shader}
-A vertex shader is at the very front of graphics pipepline, just after primitive
+A vertex shader is at the very front of graphics pipeline, just after primitive
 processing. It allows to modify properties of vertices before they enter
-geometry shader or  primitive assembly stage. The input to vertex shader is
+geometry shader or primitive assembly stage. The input to vertex shader is
 single vertex with all related information. Typical usage of this stage consists
 of applying projection and transformation matrices, gouraud shading,
 displacements and controlling particle effects.
@@ -405,12 +406,12 @@ displacements and controlling particle effects.
 \subsection{Geometry shader}
 A geometry shader, if present, is executed right after vertex shader but instead
 of working with isolated vertices, it works with whole primitives like points,
-lines and triangles. It may perform transformation of primitive from one type to
+lines and triangles. It may perform transformation from one type of primitive to
 another and also emit completely new geometry. For example, it is possible to
 have as input only one point and output may be circle with that point as a
-center made from varying number of triangles, depending on how far from camera
-the point was. This both saves time--expensive transport operation between CPU
-and GPU and optimizes performance by dynamically lowering details.
+center made of varying number of triangles, depending on how far from camera
+the point was. This not only saves time-expensive transport operation between
+CPU and GPU, but also optimizes performance by dynamically lowering details.
 
 \subsection{Fragment shader}
 A fragment shader works with individual pixels, produced by rasterizer after the
@@ -422,37 +423,33 @@ of this program is single color that will be displayed on that specific pixel.
 \section{Existing solutions}
 We are aware that our work is not first in this field and there is much to be
 learned from previous attempts. This section will analyze existing solutions
-focusing on their user interface, features, extensibility, intuitivness and
-overall usability.
+by focusing on their user interface, features, extensibility, intuitiveness 
+and overall usability.
 
-\emph{2-3 solutions, 1 page each}
-Analysis of existing solutions, what could serve as inspiration, what could be
-improved from all points of view (ease of installation, usability, features
-friendliness, signal processing, settings, extensibility..)
 \subsection{Emotiv}
-Emotiv is a company specializing in area of EEG caps for consumer market.
-Currently they offer two options, 14 channel EPOC and 5 channel Insight
+Emotiv is a company specializing in area of EEG devices for consumer market.
+Currently they offer two options -- 14 channel EPOC and 5 channel Insight
 headsets. These headsets come with built-in amplifiers, filters and A/D
-converters, and use communicate wirelessly with computer through bluetooth. As
+converters, and communicate wirelessly with computer through bluetooth. As
 we lack necessary hardware, we will review this solution from videos posted on
-the internet by users who own the headset and from informations available on
+the internet by users who own the headset and from information available on
 company's website.
 
-The headset is accompanied with software which, however, has to be bought
-through store separately. On one side, the store allows developers to create new
-applications independently but as a result there is lack of single unified user
-experience. This is caused not only by different styles the authors of each
-application use, but also because each application have its own set of settings,
-controls and displays, many of which are duplicated between applications. For
-example, a chart with signals from electrodes is included in both TestBench and
-3D brain activity map application. There is also another brain activity map that
-displays each frequency band in 2D and the settings such as gain factor and
-buffer size are not shared in any way between applications, resulting in
-different behaviour which can be quite confusing.
+The headset is accompanied with software, which has to be bought through store
+separately. On one side, the store allows developers to create new applications
+independently but as a result, there is lack of single, unified user experience.
+This is caused not only by different styles the authors of each application use,
+but also because each application have its own set of settings, controls and
+displays, many of which are duplicated between applications. For example, a
+chart with signals from electrodes is included in both TestBench and 3D brain
+activity map application. There is also another brain activity map that displays
+each frequency band in 2D and the settings such as gain factor and buffer size
+are not shared in any way between applications, resulting in different behavior
+which can be quite confusing.
 
 Also, most applications seems to lack any elements of time control, meaning
 they are only able to display actual values. This is very limiting factor for
-data analysis, as one of basic performed tasks is comparing data and being
+data analysis, as one of basic tasks performed is comparing data. Being
 able to do so between two or more moments in time is definitely desirable.
 
 Featurewise, the applications are ranging from visualization software and
