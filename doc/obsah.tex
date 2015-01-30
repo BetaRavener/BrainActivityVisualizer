@@ -421,6 +421,7 @@ three-dimensional effects on the finest level, such as phong shading. The output
 of this program is single color that will be displayed on that specific pixel.
 
 \section{Existing solutions}
+\label{existSol}
 We are aware that our work is not first in this field and there is much to be
 learned from previous attempts. This section will analyze existing solutions
 by focusing on their user interface, features, extensibility, intuitiveness 
@@ -436,29 +437,62 @@ the internet by users who own the headset and from information available on
 company's website.
 
 The headset is accompanied with software, which has to be bought through store
-separately. On one side, the store allows developers to create new applications
-independently but as a result, there is lack of single, unified user experience.
-This is caused not only by different styles the authors of each application use,
-but also because each application have its own set of settings, controls and
-displays, many of which are duplicated between applications. For example, a
-chart with signals from electrodes is included in both TestBench and 3D brain
-activity map application. There is also another brain activity map that displays
-each frequency band in 2D and the settings such as gain factor and buffer size
-are not shared in any way between applications, resulting in different behavior
-which can be quite confusing.
+separately. On one side, the store allows the developers to create new
+applications independently but as a result, there is lack of single, unified
+user experience. This is caused not only by different styles the authors of each
+application used, but also because each application have its own set of
+settings, controls and displays, many of which are duplicated between
+applications. For example, a chart with signals from electrodes is included in
+both TestBench and 3D brain activity map applications. There is also another
+brain activity map that displays each frequency band in 2D and the settings,
+such as gain factor and buffer size are not shared in any way between
+applications, resulting in different behavior, which can be quite confusing.
+However, the focus on ordinary computer users can be felt as the applications,
+when considered as standalone products, are visually nice, polished and
+user-friendly.
 
-Also, most applications seems to lack any elements of time control, meaning
-they are only able to display actual values. This is very limiting factor for
-data analysis, as one of basic tasks performed is comparing data. Being
-able to do so between two or more moments in time is definitely desirable.
+Featurewise, the applications are ranging from visualization software and data
+importers to games. One important feature that seems to be missing from most of
+the applications is lack of any control of time, meaning they are only able to
+display actual values. This is very limiting factor for data analysis, as one of
+basic tasks performed is comparing data. Being able to do so between two or more
+moments in time is definitely desirable. The SDK for creating new applications
+is freely available, so anyone can start developing.
 
-Featurewise, the applications are ranging from visualization software and
-data importers to games. Furthermore, the SDK for creating new applications is
-publicly available, so anyone can start developing.
-\subsection{B}
-\subsection{C}
+\subsection{Svarog}
+Svarog stands for Signal Viewer, Analyzer and Recorded on GPL and is
+implemented in Java. It is intended for use as an advanced analysis tool capable
+of both online and offline signal viewing and processing. The data may be in any
+data format as long as SignalML description is provided.
+
+The application offers only basic visualization methods. Main GUI element
+visible after starting the program is chart with EEG wavelets. It allows to
+modify amount of space between signals, the amplitude and time scale, select
+part of a signal on one or multiple electrodes, zoom in or out and an
+interesting tool is FFT viewer that can show FFT for segment of signal in
+superimposed window. Another interesting element is time-frequency map that is
+used for showing results of matching pursuit algorithm that is one of available
+processing tools. Time is on horizontal axis, frequency on vertical axis and
+amplitude is represented by color in range from blue to red. However, there is
+no brain map and other visually more appealing elements.
+
+The GUI is sometimes cluttered with too many options, which could have been
+hidden in some advanced view, but overall is clean, quite customizable and
+informs user about progress of operations. It also allows to create auxiliary
+signal plots, which are useful for signal comparison. With too many signals
+the responsiveness degrades, probably because the plots are rendered in software.
 \chapter{Concept and design}
 Theoretical concept for practical part.
+
+Important question to ask is who will be the targeted audience. The difference
+between targeting ordinary users and researchers could be seen in section
+\ref{existSol}. The original assignment predetermines this work to be used
+primarily for academic purposes. Nevertheless, we will also incorporate the
+ideas of visually appealing graphical elements and friendly user interface as
+they can dramatically change the experience, which should be important even when
+the targeted group is small and proficient in a given area as it may speed up
+learning process and help focus on the analysis, rather than the application
+itself.
 \section{User interface}
 \emph{2 pages}
 Drawings, mockups, layouts, command prompt parameters.
@@ -504,5 +538,6 @@ perspectives and means for argumentation.
 Refering to introduction and checking with goals, if everything required was
 done, what couldn't be done and why. Placing the work into wider context of
 relevant areas of research -- medicine, bioinformatics, user interfaces..
-Part about possible plans for future, improvment, enhancements, folow up..
+Part about possible plans for future, improvment, enhancements, folow
+up..
 %=========================================================================
