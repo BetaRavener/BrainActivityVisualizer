@@ -1,54 +1,70 @@
 %=========================================================================
 % (c) Ivan Ševčík, 2015
 abb:
-EEG
-PC
-CPU
-GPU
-API
-SDK
+EEG,
+PC,
+CPU,
+GPU,
+API,
+SDK,
+DWT,
+DFT,
+FFT,
 
+%TODO: articles and commas check, check, check..
+%TODO: http://www.grammarbook.com/punctuation/commas.asp
+%TODO: conjuctive adverb
 \chapter{Introduction}
+%TODO: citations in this chapter too
 % Uvod do temy
 The brain is central organ of human nervous system and as such has very
 important role in almost every activity. However, its complexity makes it
 difficult to study and understand. Rapid development of computers in recent
 decades provided partial solution to this as it allowed for mapping and
 monitoring both structure and activity of brain with high precision,
-undoubtely resulting in great increase in the rate of new discoveries.
+undoubtely resulting in great increase in the rate of new discoveries. For
+example, ..
+%TODO: priklady
 
 % Aktualny stav, problemy
 But raising interest in EEG technology and brain-computer interfaces also means
 that there is an evident need for user interfaces and applications capable of
 processing these signals for various purposes. One such purpose is visualization
-that allows researchers and users better comprehend measured data as these are
-usually just binary values that may be represented as integer or decimal
+that allows researchers and users to better comprehend measured data as these
+are usually just binary values that may be represented as integer or decimal
 numbers, therefore hard for humans to interpret. Another issue is that,
 generally, users are not interested in raw values but in some features that
 signal carries such as intensity at certain frequency or specific patterns that
 represent certain activity performed by measured subject.
 
 % Ciele
-Our goal is therefore to create application implementing a couple of methods for
-signal processing and visualization, including classification by frequency, graphs
-showing wavelet of measured signal in time domain, and both two and
-three-dimensional models displaying brain acitivity. Another important task will
-be to create intuitive and clean, yet highly customizable graphical user
-interface, which will be responsive also for real-time signal inputs. The
+The goal of this work is to create an application implementing several
+methods for signal processing and visualization, including classification by
+frequency, charts showing wavelet of measured signal in time domain, and both
+two and three-dimensional models displaying brain acitivity. Another important
+task will be to create intuitive and clean, yet highly customizable graphical
+user interface, which will be responsive also for real-time signal inputs. The
 application should, however, be able to process also large offline data measured
 earlier without noticeable performance decrease.
 
 % O com to tu je
-In this work we will present background information about brain and methods for
-measuring its activity, particularly EEG, discuss the processing of signal on
-computer and techniques for visual representations. Finally, we will present our
-own application in detail, starting with concept and moving on to implementation.
+The text is structured into chapters that start as a general theory and
+progresivelly get more specific, concluded by an application concept and
+implementation. In chapter \ref{humanBrain}, background information about brain
+and methods for measuring its activity, specificaly EEG, is presented. Moving
+on, chapter \ref{appProcVis} provides required foundations of signal processing
+and computer visualization. Chapter \ref{eegProcAndSol} puts these general
+methods into context of EEG analysis and also contains reviews of few existing
+solutions in field that serve as an inspiration for this work. The concept is
+introduced in chapter \ref{concept} and eventually transforms into
+implementation, which is described in chapter \ref{implementation}.
  
 \chapter{Human brain}
+\label{humanBrain}
 Brain is a central unit of human nervous system and has important role in almost
 every aspect of life. It performs both conscious tasks and automatic operation
 of vital organs, like breathing, maintaining blood pressure and releasing
-hormones. It also processes all sensory inputs, such as odors, sounds and light,
+hormones. It also processes all sensory inputs, such as odors, sounds or light,
 interprets them and make associations with representations preserved in memory.
 \section{Brain biology}
 The biology of brain is complex and many processes that are ongoing within it
@@ -58,7 +74,7 @@ relevant for this work.
 \subsection{Anatomy}
 From anatomy point of view, we are interested in cerebrum, which is the
 outermost structure of brain. It is divided into two separate hemispheres
-bridged by bundle of fibers. The cerebrum is associated with higher order
+bridged by bundle of fibers. The cerebrum is associated with higher-order
 functioning and the control of voluntary behavior. This include thinking,
 perceiving, planning and understanding language. The cerebrum is covered with a
 sheet of tissue called cerebral cortex, which is further divided into regions
@@ -71,7 +87,9 @@ inputs, attention, language and spatial orientation. The occipital lobe helps
 process visual information and assists with recognition of shapes and colors.
 Finally, the temporal lobe is region where auditory information is processed and
 the information from other senses is integrated. It also has a role in
-short-term memory and in learned emotional responses. \cite{brainFacts}
+short-term memory and in learned emotional responses. \cite{brainFacts} The
+image bellow shows all discussed structures on the model of brain.
+%TODO: obrazok, render, popisky
 
 \subsection{Neurons}
 The nervous tissue is made of cells called neurons that communicate with each
@@ -91,8 +109,8 @@ of target cell's dendrite, which causes response in target.\cite{brainFacts}
 
 \section{Electroencephalography}
 The nature of human nervous system, as has been presented, is electrical. It has
-been proved that the variation of surface electrical potential measured on the
-scalp reflects activities performed in underlying brain structures. EEG is a
+been observed that the variation of surface electrical potential measured on the
+scalp is related to amount of activity in underlying brain structures. EEG is a
 method for measuring these potential variation using an array of electrodes
 placed on measured subject's scalp and recording them for later processing.
 \cite{eegClass}
@@ -107,7 +125,10 @@ include:
 \end{itemize}
 Recently, the EEG based devices also penetrated consumer market and users can
 monitor brain activity at home, play simple games and control toys using
-their thoughts. (cite?quadcopter)
+their thoughts. (footnote-quadcopter)
+
+\subsection{Basic principles}
+%TODO
 
 \subsection{Measurement equipment}
 The setup used for encephalographic measurements usually consist of: 
@@ -149,8 +170,8 @@ by other electrical circuits and components. The requirements on amplifiers for
 use with EEG are high as they have to provide amplification only for physiological
 signal, which should not be distorted in any way, reject superimposed noise and
 interference signals, and protect both the equipment and measured subject from
-current surges. Amplifiers conforming to these are known as biopotential
-amplifiers. \cite{biopotAmp}
+current surges. Amplifiers conforming to these requirements are known as
+\emph{biopotential amplifiers}. \cite{biopotAmp}
 % Filters
 A bandpass filter is then used to limit frequencies into a certain range of
 interest. In some cases it may be already a part of an amplifier.
@@ -162,10 +183,10 @@ high frequencies as the interesting frequency bands usually lies bellow this
 threshold.
 % Trend in amplifier miniaturization
 The trend in development of neural recording devices is heading in direction of
-fully implanted systems. Consequently, energy efficient amplifiers are being
-designed lately that are very small in size, may run on battery for long
-periods of time and dissipate only little heat so they don't damage surrounding
-tissue. \cite{neuralAmp}
+fully implanted systems(konzultovat). Consequently, energy efficient amplifiers
+are being designed lately that are very small in size, may run on battery for
+long periods of time and dissipate only little heat so they don't damage
+surrounding tissue. \cite{neuralAmp}
 
 % A/D converter
 An A/D converter unit is then used to convert analog values to digital
@@ -213,12 +234,13 @@ with technological advances in computers and signal processing, using more than
 21 channels became feasible and, naturally, many sought to take advantage of
 higher resolution. With more electrodes than what is 10-20 model capable of
 accommodating, first extension to standard placement system was needed. The
-extension was proposed in 1985 and extended the number of electrodes to 74. It
-uses additional coronal contours lying halfway between original contours and
-combines the labels of these original contours to create new label. For example,
-the contour lying between original contours F and C will be labelled FC.
-\cite{placeSys} The position of electrodes according to this system are shown..
-%obrazok do prilohy
+extension, named 10-10 system, was proposed in 1985 and extended the number of
+electrodes to 74. It uses additional coronal contours lying halfway between
+original contours and combines the labels of these original contours to create
+new label. For example, the contour lying between original contours F and C will
+be labelled FC. \cite{placeSys} The position of electrodes according to this
+system are shown..
+% obrazok do prilohy
 
 % Popis 10-5
 The 10-5 electrode placement systems further extends the 10-10 system to allow
@@ -238,22 +260,23 @@ it is currently only work in this area, therefore can be considered as relevant
 and some equipment already adheres to it.
 
 \subsection{Measurement procedure}
-Before measurement the electodes are cleaned thoroughly to remove any impurities
-that could have an impact on it. The skin is also cleaned from oils and brushed
-from dried parts. It is important to adhere to strict hygiene as this might
-cause irritation and inflammation, and with repeated measurements may develop
-into an infection.\cite{eegFund} The subject is then seated comfortably to
-eliminate any unnecessary movement, because it could spoil the measured data.
-(cite?) Electrodes or cap are placed on subject's scalp and recording can
-begin. Subject is usually instructed to perform specific tasks such as imagining
-moving certain part of body, rotating an object in 3D or focusing on specific
-part of display. \cite{bcComm} For other purposes, subjects may be monitored
-while performing ordinary activities or during sleep.
+Before measurement the electrodes are cleaned thoroughly to remove any
+impurities that could have an impact on it. The skin is also cleaned from oils
+and brushed from dried parts. It is important to adhere to strict hygiene as
+this might cause irritation and inflammation, and with repeated measurements may
+develop into an infection.\cite{eegFund} The subject is then seated comfortably
+to eliminate any unnecessary movement, because it could spoil the measured data.
+(cite?) Electrodes or cap are placed on subject's scalp and recording can begin.
+In case of a research oriented session, the subject is usually instructed to
+perform specific tasks such as imagining moving certain part of body, rotating
+an object in 3D or focusing on specific part of display. \cite{bcComm} For other
+purposes, such as medical diagnosis, subjects may be monitored while laying on
+their back with closed eyes or during sleep.
 
 \subsection{Data analysis}
 \label{sub:dataAnalysis}
 The recorded data are subject to further processing using numerical filters and
-transforms to improve signal-to-noise ration and extract desired features. 
+transforms to improve signal-to-noise ratio and extract desired features. 
 % Clasification by frequency band
 One such feature is brain activity at certain frequency. The frequency of brain
 waves range from \SIrange{1}{150}{\Hz}. This range can be further divided
@@ -284,8 +307,8 @@ sustained and are enhanced if the movement is suppressed. \cite{dominantF}
 
 % Classifier reference
 Many researchers proposed implementation of classifiers capable of identifying
-these frequencies in signal using various approaches. One such method that will
-be used in this work is described in detail in section \ref{sec:sigProc}.
+these frequencies in signal using various approaches. One such method that is
+used in this work is described in detail in section \ref{eegClassifier}.
 
 % Classification by pattern
 Another set of features are patterns that represent certain activity more
@@ -296,14 +319,15 @@ system usually needs tuning or calibration process for each user. \cite{bcComm}
 Common approach to this problem is training a neural network that can classify
 patterns in brain waves with accuracy high enough for normal usage.
 
-\chapter{Computer as an analysis tool}
-
+\chapter{Approaches to signal processing and visualization}
+\label{appProcVis}
 \section{Signal processing}
 \label{sec:sigProc}
 As presented in section \ref{sub:dataAnalysis}, processing is important
 step to ease analysis of recorded data by filtering out noise and selecting
-features. This section will therefore provide information about methods of
-signal processing required by our work.
+features. This section will, therefore, provide general information about
+methods of signal processing and section \ref{signalExtraction} will put them
+specificaly into context of EEG signal processing.
 
 %\subsection{Nyquist-Shannon theorem} maybe
 
@@ -316,24 +340,14 @@ transform is defined as decomposition of mother wavelet $\psi(t)$ into child
 wavelets by choosing subsets of scales (a) and positions (b). 
 
 The decomposition may be repeated..
-\subsection{EEG waves classifier}
-In this work we will use classifier using discrete wavelet transform and Fourier
-transform as proposed by M.M. Shaker. \cite{eegWaveFt} The process of
-classification consists of three phases. First, the data from EEG are
-normalized, which means using band pass filter with desired frequency range,
-usually \SIrange{1}{30}{\Hz}. This signal is then passed to DWT for
-decomposition into multiple levels of detail and approximation
-coefficients using Daubechies wavelets. The suggested number of levels is four.
-% TODO: Spomenut aky je vyznam daubechies
-Each level is then processed by DFT and the result gives and indication to the
-frequencies contained in the band.
+
 
 \section{Data visualization methods}
-So far,  we have discussed methods of measuring and processing data from EEG,
-but our goal is to visualize them. Therefore, in this section we will discuss
-various methods of data visualization using computers and common display devices
-such as monitors and screens, and how these visualizations can be used to help
-humans analyze data more easily.
+So far, only methods of measuring and processing data from EEG have been
+discussed, but the primary goal is to visualize them. Therefore, this section
+will discuss various methods of data visualization using computers and common
+display devices such as monitors and screens, and how these visualizations can
+be used to help humans analyze data more easily.
 
 \subsection{2D representations}
 Display devices and other media used for presenting information have mostly
@@ -349,7 +363,8 @@ The graph is type of a diagram made of interconnected objects. The connection
 may be represented by a line or curve which may be directed, meaning that it
 goes only one way. Graphs are usually used for visual representations of data
 where individual entities and their relations can be recognized, for example a
-network of roads between cities or finite-state machine.
+network of roads between cities, but they are also usefull for displaying
+hierarchies.
 
 The chart is a visual representation of data useful for plotting, categorizing
 and showing trends. It may come in many forms, like bars or lines drawn in an
@@ -364,10 +379,8 @@ objects called 3D models. However, there is lack of technology for displaying
 such representations truly three-dimensionally, with holograms being the most
 advanced one. Because of that, the models must be projected into two dimensions
 so that they can be displayed using existing devices. This is done using
-projection matrices during process called rendering. While it is sometimes
-desirable to create models to be as realistic as possible, computers allow to
-display basically anything and so models of real world objects can be variously
-modified, enhanced and textured before rendering them.
+projection matrices during process called rendering. The two most common
+projections are orthogonal and perspective.
 
 There are multiple ways to create the 3D model. It is possible to scan real
 world objects by various means, such as tomography and optical surface imaging,
@@ -420,7 +433,24 @@ not been discarded yet and is accessible during processing. This allows to apply
 three-dimensional effects on the finest level, such as phong shading. The output
 of this program is single color that will be displayed on that specific pixel.
 
-\section{Existing solutions}
+\chapter{EEG specific procedures and solutions}
+\label{eegProcAndSol}
+\section{Extraction of features from EEG signal}
+\label{signalExtraction}
+\subsection{Frequency band classifier}
+\label{eegClassifier}
+In this work we will use classifier using discrete wavelet transform and Fourier
+transform as proposed by M.M. Shaker. \cite{eegWaveFt} The process of
+classification consists of three phases. First, the data from EEG are
+normalized, which means using band pass filter with desired frequency range,
+usually \SIrange{1}{30}{\Hz}. This signal is then passed to DWT for
+decomposition into multiple levels of detail and approximation
+coefficients using Daubechies wavelets. The suggested number of levels is four.
+% TODO: Spomenut aky je vyznam daubechies
+Each level is then processed by DFT and the result gives and indication to the
+frequencies contained in the band.
+
+\section{Overview of existing solutions}
 \label{existSol}
 We are aware that our work is not first in this field and there is much to be
 learned from previous attempts. This section will analyze existing solutions
@@ -482,6 +512,7 @@ informs user about progress of operations. It also allows to create auxiliary
 signal plots, which are useful for signal comparison. With too many signals
 the responsiveness degrades, probably because the plots are rendered in software.
 \chapter{Concept and design}
+\label{concept}
 Theoretical concept for practical part.
 
 Important question to ask is who will be the targeted audience. The difference
@@ -510,6 +541,7 @@ Structure of code defined by C++ classes, probably should be just global
 overview with references to doxygen documentation, maybe some graphical code
 maps.
 \chapter{Implementation}
+\label{implementation}
 \emph{? pages}
 Will cover implementation details, algorithms, significant mechanisms, shader
 programming.. The logical division defined earlier will be probably used to
