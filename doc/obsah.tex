@@ -59,8 +59,7 @@ solutions in field that serve as an inspiration for this work. The concept is
 introduced in chapter \ref{concept} and eventually transforms into
 implementation, which is described in chapter \ref{implementation}.
  
-\chapter{Human brain}
-\label{humanBrain}
+\chapter{Human brain} \label{humanBrain}
 Brain is a central unit of human nervous system and has important role in almost
 every aspect of life. It performs both conscious tasks and automatic operation
 of vital organs, like breathing, maintaining blood pressure and releasing
@@ -128,7 +127,16 @@ monitor brain activity at home, play simple games and control toys using
 their thoughts. (footnote-quadcopter)
 
 \subsection{Basic principles}
-%TODO
+It is impossible to measure or distinguish electrical activity of each neuron
+with EEG, because these are asynchronous and cancel each other out. 
+What EEG measures is summated potential of neuronal activity, which includes
+spontaneus electrical activity of the cerebral network and cortical responses to
+external and internal events. The responses to events, characterized by their
+onset latency and voltage amplitude, are reffered to as \emph{event-related
+potentials} and are either result of physical stimuli, or behavioral responses.
+\cite{bcComm} %TODO: The activity results in relatively long-duration
+% synchronous signals that appear as sinusoidal waves, hence the name brain waves.
+
 
 \subsection{Measurement equipment}
 The setup used for encephalographic measurements usually consist of: 
@@ -273,8 +281,7 @@ an object in 3D or focusing on specific part of display. \cite{bcComm} For other
 purposes, such as medical diagnosis, subjects may be monitored while laying on
 their back with closed eyes or during sleep.
 
-\subsection{Data analysis}
-\label{sub:dataAnalysis}
+\subsection{Data analysis} \label{sub:dataAnalysis}
 The recorded data are subject to further processing using numerical filters and
 transforms to improve signal-to-noise ratio and extract desired features. 
 % Clasification by frequency band
@@ -319,15 +326,13 @@ system usually needs tuning or calibration process for each user. \cite{bcComm}
 Common approach to this problem is training a neural network that can classify
 patterns in brain waves with accuracy high enough for normal usage.
 
-\chapter{Approaches to signal processing and visualization}
-\label{appProcVis}
-\section{Signal processing}
-\label{sec:sigProc}
+\chapter{Approaches to signal processing and visualization} \label{appProcVis}
+\section{Signal processing} \label{sec:sigProc}
 As presented in section \ref{sub:dataAnalysis}, processing is important
 step to ease analysis of recorded data by filtering out noise and selecting
 features. This section will, therefore, provide general information about
 methods of signal processing and section \ref{signalExtraction} will put them
-specificaly into context of EEG signal processing.
+specifically into context of EEG signal processing.
 
 %\subsection{Nyquist-Shannon theorem} maybe
 
@@ -340,6 +345,8 @@ transform is defined as decomposition of mother wavelet $\psi(t)$ into child
 wavelets by choosing subsets of scales (a) and positions (b). 
 
 The decomposition may be repeated..
+
+The daubechies wavelets..
 
 
 \section{Data visualization methods}
@@ -433,22 +440,19 @@ not been discarded yet and is accessible during processing. This allows to apply
 three-dimensional effects on the finest level, such as phong shading. The output
 of this program is single color that will be displayed on that specific pixel.
 
-\chapter{EEG specific procedures and solutions}
-\label{eegProcAndSol}
-\section{Extraction of features from EEG signal}
-\label{signalExtraction}
-\subsection{Frequency band classifier}
-\label{eegClassifier}
+\chapter{EEG specific procedures and solutions} \label{eegProcAndSol}
+\section{Extraction of features from EEG signal} \label{signalExtraction}
+\subsection{Frequency band classifier} \label{eegClassifier}
 In this work we will use classifier using discrete wavelet transform and Fourier
 transform as proposed by M.M. Shaker. \cite{eegWaveFt} The process of
 classification consists of three phases. First, the data from EEG are
 normalized, which means using band pass filter with desired frequency range,
 usually \SIrange{1}{30}{\Hz}. This signal is then passed to DWT for
-decomposition into multiple levels of detail and approximation
-coefficients using Daubechies wavelets. The suggested number of levels is four.
-% TODO: Spomenut aky je vyznam daubechies
-Each level is then processed by DFT and the result gives and indication to the
-frequencies contained in the band.
+decomposition into multiple levels of detail and approximation coefficients
+using Daubechies wavelets. The suggested number of levels is four. Each level is
+then processed by DFT and the result gives and indication to the frequencies
+contained in the band.
+%TODO: more detail
 
 \section{Overview of existing solutions}
 \label{existSol}
@@ -511,8 +515,7 @@ hidden in some advanced view, but overall is clean, quite customizable and
 informs user about progress of operations. It also allows to create auxiliary
 signal plots, which are useful for signal comparison. With too many signals
 the responsiveness degrades, probably because the plots are rendered in software.
-\chapter{Concept and design}
-\label{concept}
+\chapter{Concept and design} \label{concept}
 Theoretical concept for practical part.
 
 Important question to ask is who will be the targeted audience. The difference

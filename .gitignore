@@ -4,3 +4,10 @@
 /doc/*.toc
 /doc/*.blg
 /doc/*.aux
+CMakeFiles
+CMakeCache.txt
+Makefile
+*.cmake
+bin
+/*.h
+moc*
