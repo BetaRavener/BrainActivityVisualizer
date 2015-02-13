@@ -12,3 +12,4 @@ bin
 /*.h
 /*.cpp
 moc*
+/build

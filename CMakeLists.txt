@@ -7,9 +7,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
-#find_package(OpenGL REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wextra -fexceptions")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wextra")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 #INCLUDE(${QT_USE_FILE})
@@ -28,5 +27,35 @@ QT5_WRAP_UI(forms_headers ${forms})
 QT5_WRAP_CPP(gui_inc_moc ${gui_inc})
 QT5_ADD_RESOURCES(resources_rcc ${resources})
 
-ADD_EXECUTABLE(bac ${core_src} ${gui_src} ${gui_inc_moc} ${forms_headers} ${resources_rcc})
-TARGET_LINK_LIBRARIES(bac Qt5::Widgets Qt5::Core Qt5::Gui)
+add_executable(bac ${core_src} ${gui_src} ${gui_inc_moc} ${forms_headers} ${resources_rcc})
+target_link_libraries(bac Qt5::Widgets Qt5::Core Qt5::Gui)
+
+set(tinyobj_inc_dir CACHE PATH "")
+if(NOT DEFINED tinyobj_inc_dir)
+    message( FATAL_ERROR "Tinyobjloader include directory not set.")
+endif()
+if(NOT EXISTS ${tinyobj_inc_dir})
+    message( FATAL_ERROR "Tinyobjloader include directory does not exists: ${tinyobj_inc_dir}")
+endif()
+if(NOT EXISTS ${tinyobj_inc_dir}/tiny_obj_loader.h)
+    message( FATAL_ERROR "Tinyobjloader headers not found at specified path.")
+endif()
+    
+set(tinyobj_lib_dir CACHE PATH "")
+if(NOT DEFINED tinyobj_lib_dir)
+    message( FATAL_ERROR "Tinyobjloader library directory not set.")
+endif()
+if(NOT EXISTS ${tinyobj_lib_dir})
+    message( FATAL_ERROR "Tinyobjloader library directory does not exists: ${tinyobj_lib_dir}")
+endif()
+set(tinyobj_lib ${tinyobj_lib_dir}/tinyobjloader.lib)
+if(NOT EXISTS ${tinyobj_lib})
+    message( FATAL_ERROR "Tinyobjloader library not found at specified path.")
+endif()
+
+include_directories(${tinyobj_inc_dir})
+# add imported target
+add_library(imp_tinyobj STATIC IMPORTED)
+# point the imported target at the real file
+set_property(TARGET imp_tinyobj PROPERTY IMPORTED_LOCATION ${tinyobj_lib})
+target_link_libraries(bac imp_tinyobj)

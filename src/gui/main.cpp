@@ -47,6 +47,11 @@
 
 #include <QtCore/qmath.h>
 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <tiny_obj_loader.h>
+
 class TriangleWindow : public OpenGLWindow
 {
 public:
@@ -63,11 +68,13 @@ private:
     GLuint m_matrixUniform;
 
     QOpenGLShaderProgram *m_program;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
     int m_frame;
 };
 
 TriangleWindow::TriangleWindow()
-    : m_program(0)
+    : m_program(nullptr)
     , m_frame(0)
 {
 }
@@ -77,7 +84,8 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
 
     QSurfaceFormat format;
-    format.setSamples(16);
+    format.setSamples(2);
+    format.setRenderableType(QSurfaceFormat::OpenGL);
 
     TriangleWindow window;
     window.setFormat(format);
@@ -122,6 +130,14 @@ void TriangleWindow::initialize()
     m_posAttr = m_program->attributeLocation("posAttr");
     m_colAttr = m_program->attributeLocation("colAttr");
     m_matrixUniform = m_program->uniformLocation("matrix");
+    // Load the 3d model from the file
+    std::string inputfile("brain.obj");
+    std::string err = tinyobj::LoadObj(shapes, materials, inputfile.c_str());
+
+    if (!err.empty()) {
+      std::cerr << err << std::endl;
+      exit(1);
+    }
 }
 
 void TriangleWindow::render()
