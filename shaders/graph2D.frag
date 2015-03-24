@@ -1,0 +1,24 @@
+#version 330
+
+uniform vec3 lineColor;
+uniform vec2 bottomLeft;
+uniform vec2 size;
+
+out vec4 color;
+
+void main(){
+    vec2 topRight = bottomLeft + size;
+
+    if (gl_FragCoord.x > bottomLeft.x &&
+        gl_FragCoord.y > bottomLeft.y &&
+        gl_FragCoord.x < topRight.x &&
+        gl_FragCoord.y < topRight.y)
+    {
+        color = vec4(lineColor, 1.f);
+    }
+    else
+    {
+        // Discard this pixel by making it opaque
+        color = vec4(0.f, 0.f, 0.f, 0.f);
+    }
+}

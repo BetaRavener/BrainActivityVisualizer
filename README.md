@@ -5,6 +5,8 @@ Compiling on Windows:
 Prerequisites:
 - CMake
 - Qt5 with MinGW package
+- Tinyobjloader library compiled statically
+- UniShader library compiled dynamically
 
 Procedure:
 - The folder with this readme is root to project and will be further referred
