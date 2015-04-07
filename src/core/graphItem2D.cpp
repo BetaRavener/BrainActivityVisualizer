@@ -5,11 +5,11 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-GraphItem2D::GraphItem2D(SignalRecord *signalRecord) :
+GraphItem2D::GraphItem2D(SignalData::WeakPtrConst signalData) :
     _valueCount(0),
     _posAttrBuf(us::Buffer<float>::create()),
     _indicesBuf(us::Buffer<unsigned int>::create()),
-    _signalRecord(signalRecord),
+    _signalData(signalData),
     _verticalZoom(1.f)
 {
 
@@ -40,48 +40,46 @@ void GraphItem2D::verticalZoom(float zoom)
     _verticalZoom = zoom;
 }
 
-float GraphItem2D::minHorizontalZoom(unsigned int width)
+float GraphItem2D::sampleSpacing() const
 {
-    return 1.f / ((float)_signalRecord->data()->sampleCount() / width);
+    return _sampleSpacing;
 }
 
-int GraphItem2D::dataSampleCount()
+SignalData::WeakPtrConst GraphItem2D::signalData() const
 {
-    return _signalRecord->data()->sampleCount();
+    return _signalData;
 }
 
-const SignalRecord *GraphItem2D::signalRecord()
+void GraphItem2D::buildCache(unsigned int horizontalZoom, bool clearCache)
 {
-    return _signalRecord;
-}
-
-void GraphItem2D::buildCache(float horizontalZoom)
-{
-    if (_cacheZoom == horizontalZoom)
+    if (!clearCache && _cacheZoom == horizontalZoom)
         return;
 
     _cache.clear();
-    SignalData::PtrConst data = _signalRecord->data();
-    unsigned int dataSampleCount = data->sampleCount();
-    int binSize = 1 / horizontalZoom;
+    const auto& data = _signalData->data();
+    unsigned int dataSampleCount = _signalData->sampleCount();
+    unsigned int binSize = 1;
+    for (unsigned int i = 0; i < horizontalZoom; i++)
+        binSize *= 2;
 
-    for (int i = 0; i < dataSampleCount / binSize; i++)
+    //TODO condition?
+    for (unsigned int i = 0; i < dataSampleCount / binSize; i++)
     {
-        int binIdx = i * binSize;
+        unsigned int binIdx = i * binSize;
 
         if (binIdx >= dataSampleCount)
             break;
 
         float min, max;
-        min = max = data->data()[binIdx];
+        min = max = data[binIdx];
 
-        for (int j = 1; j < binSize; j++)
+        for (unsigned int j = 1; j < binSize; j++)
         {
-            int idx = binIdx + j;
-            if (idx >= dataSampleCount)
+            unsigned int sampleIdx = binIdx + j;
+            if (sampleIdx >= dataSampleCount)
                 break;
 
-            float val = data->data()[idx];
+            float val = data[sampleIdx];
             min = val < min ? val : min;
             max = val > max ? val : max;
         }
@@ -93,29 +91,90 @@ void GraphItem2D::buildCache(float horizontalZoom)
     _cacheZoom = horizontalZoom;
 }
 
-void GraphItem2D::setData(float horizontalZoom, unsigned int middleSample, unsigned int width)
+//void GraphItem2D::setData(float horizontalZoom, unsigned int middleSample, unsigned int width)
+//{
+//    // Add 1 sample because we need to form N lines, which are defined by N+1 points
+//    const auto& data = _signalData->data();
+//    unsigned int samplesInWindow = glm::ceil(width / horizontalZoom) + 1;
+//    unsigned int leftEdge = 0;
+//    if (middleSample > samplesInWindow / 2)
+//        leftEdge = middleSample - samplesInWindow / 2;
+
+//    if (leftEdge > _signalData->sampleCount() - samplesInWindow)
+//        leftEdge = _signalData->sampleCount() - samplesInWindow;
+
+//    int binSize = 1 / horizontalZoom;
+
+//    std::vector<float> reducedData;
+//    if (binSize > 1)
+//    {
+//        buildCache(horizontalZoom);
+//        _valueCount = 0;
+//        for (unsigned int i = 0; i < width; i++)
+//        {
+//            int bin = i + leftEdge / binSize;
+//            reducedData.push_back(_cache[bin*2]);
+//            reducedData.push_back(_cache[bin*2 + 1]);
+//            _valueCount += 2;
+//        }
+
+//        if (_valueCount > 0)
+//            _posAttrBuf->setData(reducedData);
+//    }
+//    else
+//    {
+//        _valueCount = samplesInWindow;
+//        _valueCount = glm::min(_valueCount, _signalData->sampleCount() - leftEdge);
+//        for (unsigned int i = 0; i < _valueCount; i++)
+//            reducedData.push_back(data[leftEdge + i]);
+
+//        if (_valueCount > 0)
+//            _posAttrBuf->setData(reducedData);
+//    }
+
+//    if (_valueCount > 0)
+//    {
+//        std::vector<unsigned int> indices;
+//        indices.push_back(0);
+//        for (unsigned int i = 0; i < _valueCount; i++)
+//            indices.push_back(i);
+//        indices.push_back(_valueCount - 1);
+//        _indicesBuf->setData(indices);
+//    }
+//}
+
+void GraphItem2D::setData(double startTime, double endTime, unsigned int width, bool clearCache)
 {
-    SignalData::PtrConst data = _signalRecord->data();
-
     // Add 1 sample because we need to form N lines, which are defined by N+1 points
-    unsigned int samplesInWindow = glm::ceil(width / horizontalZoom) + 1;
-    unsigned int leftEdge = 0;
-    if (middleSample > samplesInWindow / 2)
-        leftEdge = middleSample - samplesInWindow / 2;
+    const auto& data = _signalData->data();
 
-    if (leftEdge > data->sampleCount() - samplesInWindow)
-        leftEdge = data->sampleCount() - samplesInWindow;
+    unsigned int firstSample = _signalData->getIdxAtTime(startTime);
+    unsigned int lastSample = _signalData->getIdxAtTime(endTime);
+    unsigned int samplesCount = lastSample - firstSample;
+    double samplesPerPixel = (double)samplesCount / (double)width;
+    unsigned int zoom = 0;
+    while (samplesPerPixel >= 2.0)
+    {
+        firstSample /= 2.0;
+        lastSample /= 2.0;
+        samplesPerPixel /= 2.0;
+        zoom++;
+    }
 
-    int binSize = 1 / horizontalZoom;
+    _sampleSpacing = 1.0 / samplesPerPixel;
 
     std::vector<float> reducedData;
-    if (binSize > 1)
+    if (zoom > 0)
     {
-        buildCache(horizontalZoom);
+        buildCache(zoom, clearCache);
+        // Divide by 2 beacause cache contains 2 values - min and max
+        _sampleSpacing *= 0.5;
+
         _valueCount = 0;
-        for (int i = 0; i < width; i++)
+        // Because of half spacing, increase the window width by 2
+        for (unsigned int i = 0; i < width * 2; i++)
         {
-            int bin = i + leftEdge / binSize;
+            int bin = i + firstSample;
             reducedData.push_back(_cache[bin*2]);
             reducedData.push_back(_cache[bin*2 + 1]);
             _valueCount += 2;
@@ -126,10 +185,9 @@ void GraphItem2D::setData(float horizontalZoom, unsigned int middleSample, unsig
     }
     else
     {
-        _valueCount = samplesInWindow;
-        _valueCount = glm::min(_valueCount, data->sampleCount() - leftEdge);
-        for (int i = 0; i < _valueCount; i++)
-            reducedData.push_back(data->data()[leftEdge + i]);
+        _valueCount = samplesCount;
+        for (unsigned int i = 0; i < _valueCount; i++)
+            reducedData.push_back(data[firstSample + i]);
 
         if (_valueCount > 0)
             _posAttrBuf->setData(reducedData);
@@ -139,7 +197,7 @@ void GraphItem2D::setData(float horizontalZoom, unsigned int middleSample, unsig
     {
         std::vector<unsigned int> indices;
         indices.push_back(0);
-        for (int i = 0; i < _valueCount; i++)
+        for (unsigned int i = 0; i < _valueCount; i++)
             indices.push_back(i);
         indices.push_back(_valueCount - 1);
         _indicesBuf->setData(indices);

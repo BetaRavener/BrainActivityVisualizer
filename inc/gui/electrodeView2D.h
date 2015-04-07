@@ -19,10 +19,10 @@ public:
     virtual void render();
     bool eventFilter(QObject *obj, QEvent *event);
 
-    void electrodeMap(ElectrodeMap* electrodeMap);
+    void electrodes(std::vector<Electrode::WeakPtr> electrodes);
 
 private:
-    ElectrodeMap* _electrodeMap;
+    std::vector<Electrode::WeakPtr> _electrodes;
     ElectrodeRenderer2D* _electrodeRenderer;
 
     HybridCam _cam;

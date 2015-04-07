@@ -17,11 +17,11 @@ public:
     void close();
     bool isOpened();
 
-    const std::vector<SignalRecord*>& records();
+    std::vector<SignalRecord::Ptr> records();
 
 private:
     edf_hdr_struct _edfHeader;
-    std::vector<SignalRecord*> _records;
+    std::vector<SignalRecord::Ptr> _records;
 
     bool _opened;
 };

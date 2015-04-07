@@ -3,28 +3,31 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+#include <safePtr.h>
 #include <signalData.h>
 #include "edflib.h"
-
-class SignalReader;
 
 class SignalRecord
 {
 public:
-    SignalRecord(int _signalFileHandle, int signalIdx, edf_param_struct* signalRecord);
+    typedef std::shared_ptr<SignalRecord> Ptr;
+    typedef std::shared_ptr<const SignalRecord> PtrCost;
+    typedef SafePtr<SignalRecord> WeakPtr;
+    typedef SafePtr<const SignalRecord> WeakPtrConst;
 
-    void load();
+    static Ptr create(int _signalFileHandle, int signalIdx, edf_param_struct* signalRecord, long long duration);
 
+    SignalData::Ptr load();
     std::string label() const;
-    SignalData::PtrConst data();
+
 private:
-    // Disable copy constructor
-    SignalRecord(const SignalRecord& other);
+    SignalRecord();
 
     int _signalFileHandle;
     int _signalIdx;
     edf_param_struct* _signalRecord;
-    SignalData::Ptr _signalData;
+    double _frequency;
 };
 
 #endif

@@ -208,6 +208,54 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="clear">
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="clearAll">
+         <property name="text">
+          <string>Clear all</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="autoAssign">
+         <property name="text">
+          <string>Auto assign</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="importAssignment">
+         <property name="text">
+          <string>Import assignment</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="exportAssignment">
+         <property name="text">
+          <string>Export assignment</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

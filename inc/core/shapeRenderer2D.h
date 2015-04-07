@@ -6,21 +6,22 @@
 #include <UniShader/UniShader.h>
 #include <glm/common.hpp>
 
-class GraphGrid2D
+class ShapeRenderer2D
 {
 public:
-    GraphGrid2D();
-    ~GraphGrid2D();
+    ShapeRenderer2D();
+    ~ShapeRenderer2D();
 
     void init();
 
     void update(glm::mat4 mvpMatrix);
 
-    void render();
+    void render(us::PrimitiveType type, unsigned int count);
+
+    void setPositions(const std::vector<float>& positions);
+    void setColors(const std::vector<float>& colors);
 
     void reloadShaders();
-
-    void setGrid(std::vector<float> horizontal, std::vector<float> vertical, glm::vec2 winSize);
 
 private:
     void initializeShaders();
@@ -29,12 +30,13 @@ private:
 
     // Buffers
     us::Buffer<float>::Ptr _posAttrBuf;
+    us::Buffer<float>::Ptr _colorAttrBuf;
 
     // Attributes
     us::Attribute::Ptr _posAttr;
+    us::Attribute::Ptr _colorAttr;
 
     // Uniforms
-    us::Uniform::Ptr _shapeColorUnif;
     us::Uniform::Ptr _mvpMatrixUnif;
 
     us::UniShader* _renderEngine;

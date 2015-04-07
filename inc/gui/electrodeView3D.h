@@ -20,10 +20,10 @@ public:
     virtual void render();
     bool eventFilter(QObject *obj, QEvent *event);
 
-    void electrodeMap(ElectrodeMap* electrodeMap);
+    void electrodes(std::vector<Electrode::WeakPtr> electrodes);
 
 private:
-    ElectrodeMap* _electrodeMap;
+    std::vector<Electrode::WeakPtr> _electrodes;
     BrainRenderer* _brainRenderer;
     ElectrodeRenderer3D* _electrodeRenderer;
 

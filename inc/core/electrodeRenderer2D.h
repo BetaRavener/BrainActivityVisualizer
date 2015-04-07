@@ -10,12 +10,13 @@
 class ElectrodeRenderer2D : public ElectrodeRenderer
 {
 public:
-    ElectrodeRenderer2D(ElectrodeMap* electrodeMap);
+    ElectrodeRenderer2D(std::vector<Electrode::WeakPtr> electrodes);
 
     void update(glm::mat4 mvpMatrix);
 
 private:
     virtual void initializeShaders();
+    virtual void prepareColorBuffer();
 
     // Attributes
     us::Attribute::Ptr _electrodePosAttr;

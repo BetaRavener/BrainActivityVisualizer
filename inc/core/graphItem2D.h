@@ -10,7 +10,7 @@
 class GraphItem2D
 {
 public:
-    GraphItem2D(SignalRecord* signalRecord);
+    GraphItem2D(SignalData::WeakPtrConst _signalData);
 
     unsigned int valueCount() const;
     us::Buffer<float>::Ptr positions() const;
@@ -19,15 +19,14 @@ public:
     float verticalZoom() const;
     void verticalZoom(float zoom);
 
-    float minHorizontalZoom(unsigned int width);
+    float sampleSpacing() const;
 
-    void setData(float horizontalZoom, unsigned int middleSample, unsigned int width);
+    //void setData(float horizontalZoom, unsigned int middleSample, unsigned int width);
 
-    int dataSampleCount();
-
-    const SignalRecord* signalRecord();
+    SignalData::WeakPtrConst signalData() const;
+    void setData(double startTime, double endTime, unsigned int width, bool clearCache = false);
 private:
-    void buildCache(float horizontalZoom);
+    void buildCache(unsigned int horizontalZoom, bool clearCache = false);
 
     unsigned int _valueCount;
 
@@ -35,11 +34,13 @@ private:
     us::Buffer<float>::Ptr _posAttrBuf;
     us::Buffer<unsigned int>::Ptr _indicesBuf;
 
-    SignalRecord* _signalRecord;
+    SignalData::WeakPtrConst _signalData;
     float _verticalZoom;
 
     std::vector<float> _cache;
     float _cacheZoom;
+
+    float _sampleSpacing;
 };
 
 #endif

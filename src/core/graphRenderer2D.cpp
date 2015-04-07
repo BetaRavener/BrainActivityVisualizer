@@ -44,6 +44,7 @@ void GraphRenderer2D::update(glm::mat4 mvpMatrix)
 void GraphRenderer2D::renderItem(const GraphItem2D& item, glm::vec2 zoom, glm::vec2 position, glm::vec2 size)
 {
     _zoomUnif->setSource(glm::value_ptr(glm::vec2(zoom.x, zoom.y * item.verticalZoom())), 2);
+    _sampleSpacingUnif->setSource(item.sampleSpacing());
     _bottomLeftUnif->setSource(glm::value_ptr(position), 2);
     _sizeUnif->setSource(glm::value_ptr(size), 2);
     _posAttr->connectBuffer(item.positions());
@@ -70,6 +71,7 @@ void GraphRenderer2D::initializeShaders()
     auto input = program->getInput();
     _posAttr = input->addAttribute("position");
     _zoomUnif = input->addUniform("zoom");
+    _sampleSpacingUnif = input->addUniform("sampleSpacing");
     _widthUnif = input->addUniform("width");
     _lineColorUnif = input->addUniform("lineColor");
     _mvpMatrixUnif = input->addUniform("mvpMatrix");

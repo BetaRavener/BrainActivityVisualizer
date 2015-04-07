@@ -10,7 +10,6 @@
 
 ElectrodeView3D::ElectrodeView3D(QWidget *parrent) :
     OpenGLWidget(parrent),
-    _electrodeMap(nullptr),
     m_frame(0),
     _showFps(false),
     _showCrosshair(false)
@@ -27,7 +26,7 @@ void ElectrodeView3D::initialize()
 
     _brainRenderer = new BrainRenderer();
 
-    _electrodeRenderer = new ElectrodeRenderer3D(_electrodeMap);
+    _electrodeRenderer = new ElectrodeRenderer3D(_electrodes);
     _electrodeRenderer->init();
 
     _cam.Reset(true);
@@ -91,6 +90,7 @@ void ElectrodeView3D::render()
 bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj);
+    bool needsRepaint = false;
 
     if (event->type() == QEvent::KeyPress)
     {
@@ -100,6 +100,7 @@ bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
             _cam.Reset(true);
             _cam.InvertY();
             _cam.ZoomR(-200);
+            needsRepaint = true;
         }
         else if (keyEvent->key() == Qt::Key_F)
         {
@@ -124,6 +125,7 @@ bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
             _brainRenderer->reloadShaders();
             _electrodeRenderer->reloadShaders();
             deactivateGL();
+            needsRepaint = true;
         }
     }
     if (event->type() == QEvent::MouseButtonPress)
@@ -144,18 +146,21 @@ bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
         {
             movVector *= _rotateSensitivity;
             _cam.RotateR(glm::vec3(movVector.y, movVector.x, .0));
+            needsRepaint = true;
         }
 
         else if (mouseEvent->buttons().testFlag(Qt::MiddleButton))
         {
             movVector *= _moveSensitivity;
             _cam.MoveR(glm::vec3(.0, .0, -movVector.y));
+            needsRepaint = true;
         }
 
         else if (mouseEvent->buttons().testFlag(Qt::RightButton))
         {
             movVector *= _moveSensitivity;
             _cam.MoveR(movVector);
+            needsRepaint = true;
         }
 
         _prevMousePos = curMousePos;
@@ -169,12 +174,17 @@ bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
             QPoint numSteps = numDegrees / 15;
 
             _cam.ZoomR(numSteps.y() * _scrollSensitivity);
+            needsRepaint = true;
         }
     }
+
+    if (needsRepaint)
+        repaint();
+
     return false;
 }
 
-void ElectrodeView3D::electrodeMap(ElectrodeMap *electrodeMap)
+void ElectrodeView3D::electrodes(std::vector<Electrode::WeakPtr> electrodes)
 {
-    _electrodeMap = electrodeMap;
+    _electrodes = electrodes;
 }

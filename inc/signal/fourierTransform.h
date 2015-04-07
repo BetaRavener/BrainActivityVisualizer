@@ -14,10 +14,13 @@ public:
     ~FourierTransform();
 
     void init(int length);
-    Spectrum::Ptr process(SignalData::PtrConst signal, int startIdx = -1);
+    Spectrum::Ptr process(SignalData::WeakPtr signal, unsigned int startIdx);
 
+    // Runs FFT at the end of signal
+    Spectrum::Ptr process(SignalData::WeakPtr signal);
 private:
     float compAbs(kiss_fft_cpx x);
+    float normalize(float x);
 
     kiss_fftr_cfg _configuration;
     int _length;

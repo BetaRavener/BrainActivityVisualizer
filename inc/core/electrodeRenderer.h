@@ -10,7 +10,7 @@
 class ElectrodeRenderer
 {
 public:
-    ElectrodeRenderer(ElectrodeMap* electrodeMap);
+    ElectrodeRenderer(std::vector<Electrode::WeakPtr> electrodes);
     virtual ~ElectrodeRenderer();
 
     virtual void init();
@@ -21,13 +21,18 @@ public:
 
 protected:
     virtual void initializeShaders() = 0;
+    virtual void prepareColorBuffer() = 0;
 
-    ElectrodeMap* _electrodeMap;
+    std::vector<Electrode::WeakPtr> _electrodes;
 
     int _electrodeCount;
 
     // Buffers
     us::Buffer<float>::Ptr _electrodePosAttrBuf;
+    us::Buffer<float>::Ptr _electrodeColorAttrBuf;
+
+    // Attributes
+    us::Attribute::Ptr _electrodeColorAttr;
 
     us::UniShader* _renderEngine;
 };

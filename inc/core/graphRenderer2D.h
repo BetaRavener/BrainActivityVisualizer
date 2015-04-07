@@ -36,6 +36,7 @@ private:
 
     // Uniforms
     us::Uniform::Ptr _zoomUnif;
+    us::Uniform::Ptr _sampleSpacingUnif;
     us::Uniform::Ptr _horizontalShiftUnif;
     us::Uniform::Ptr _widthUnif;
     us::Uniform::Ptr _lineColorUnif;

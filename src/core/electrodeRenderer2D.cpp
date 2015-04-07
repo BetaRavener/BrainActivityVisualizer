@@ -5,8 +5,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-ElectrodeRenderer2D::ElectrodeRenderer2D(ElectrodeMap *electrodeMap) :
-    ElectrodeRenderer(electrodeMap)
+ElectrodeRenderer2D::ElectrodeRenderer2D(std::vector<Electrode::WeakPtr> electrodes) :
+    ElectrodeRenderer(electrodes)
 {
 }
 
@@ -21,20 +21,17 @@ void ElectrodeRenderer2D::initializeShaders()
     // Prepare positions for buffer
     std::vector<float> electrodePos;
     _electrodeCount = 0;
-    for (auto electrodePair : _electrodeMap->allElectrodes())
+    for (auto electrode : _electrodes)
     {
-        Electrode& electrode = electrodePair.second;
-
-        if (electrode.has2D())
+        if (electrode->has2D())
         {
-            glm::vec2 pos = electrode.position2D();
+            glm::vec2 pos = electrode->position2D();
             electrodePos.push_back(pos.x);
             electrodePos.push_back(pos.y);
             _electrodeCount++;
         }
     }
 
-    _electrodePosAttrBuf = us::Buffer<float>::create();
     _electrodePosAttrBuf->setData(electrodePos);
 
     auto vertexShader = us::ShaderObject::create();
@@ -54,11 +51,34 @@ void ElectrodeRenderer2D::initializeShaders()
 
     auto input = program->getInput();
     _electrodePosAttr = input->addAttribute("position");
+    _electrodeColorAttr = input->addAttribute("vColor");
     _radiusUnif = input->addUniform("radius");
     _mvpMatrixUnif = input->addUniform("mvpMatrix");
 
     _electrodePosAttr->connectBuffer(_electrodePosAttrBuf);
     _electrodePosAttr->setReadingMode(us::Attribute::ReadingMode::FLOAT);
 
+    _electrodeColorAttr->connectBuffer(_electrodeColorAttrBuf);
+    _electrodeColorAttr->setReadingMode(us::Attribute::ReadingMode::FLOAT);
+
     _renderEngine->connectProgram(program);
+}
+
+void ElectrodeRenderer2D::prepareColorBuffer()
+{
+    std::vector<float> colors;
+    colors.reserve(_electrodeCount * 3);
+
+    for (auto electrode : _electrodes)
+    {
+        if (electrode->has2D())
+        {
+            glm::vec3 color = electrode->color();
+            colors.push_back(color.r);
+            colors.push_back(color.g);
+            colors.push_back(color.b);
+        }
+    }
+
+    _electrodeColorAttrBuf->setData(colors);
 }

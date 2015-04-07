@@ -10,8 +10,11 @@ uniform vec3 eyePos;
 uniform float radius;
 uniform mat4 mvpMatrix;
 
+in vec3 gColor[];
+
 out vec3 middle;
 out vec3 direction;
+out vec3 fColor;
 
 const float PI = 3.14159265358979323846264;
 const float sqrDeg = 0.2; //def: 0.1
@@ -29,6 +32,7 @@ mat2 createRotMatrix(float angle){
 
 void main(){
 	int vertexCount = maxOut/3;
+    fColor = gColor[0];
 	middle = gl_in[0].gl_Position.xyz;
 	
 	//degradate ball quality as it is further from viewer

@@ -5,8 +5,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-ElectrodeRenderer::ElectrodeRenderer(ElectrodeMap *electrodeMap) :
-    _electrodeMap(electrodeMap),
+ElectrodeRenderer::ElectrodeRenderer(std::vector<Electrode::WeakPtr> electrodes) :
+    _electrodes(electrodes),
     _electrodeCount(0)
 {
 }
@@ -21,11 +21,14 @@ ElectrodeRenderer::~ElectrodeRenderer()
 void ElectrodeRenderer::init()
 {
     _renderEngine = new us::UniShader();
+    _electrodePosAttrBuf = us::Buffer<float>::create();
+    _electrodeColorAttrBuf = us::Buffer<float>::create();
     initializeShaders();
 }
 
 void ElectrodeRenderer::render()
 {
+    prepareColorBuffer();
     _renderEngine->render(us::PrimitiveType::POINTS, _electrodeCount);
 }
 

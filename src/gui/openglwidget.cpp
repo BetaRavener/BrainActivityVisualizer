@@ -78,6 +78,13 @@ void OpenGLWidget::initializeGL()
     deactivateGlewContext();
 }
 
+void OpenGLWidget::updateElectrodes()
+{
+    makeCurrent();
+    paintGL();
+    doneCurrent();
+}
+
 void OpenGLWidget::activateGL()
 {
     makeCurrent();

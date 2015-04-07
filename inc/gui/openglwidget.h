@@ -20,6 +20,9 @@ public:
     virtual void initialize();
     virtual void initializeGL();
 
+public slots:
+    void updateElectrodes();
+
 protected:
 
     void activateGL();

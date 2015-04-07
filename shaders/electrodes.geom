@@ -1,17 +1,20 @@
 #version 330
 
-#define maxOut 93
+#define maxOut 60
 #define minOut 6
 
 layout(points) in;
-layout(triangle_strip, max_vertices=93) out;
+layout(triangle_strip, max_vertices=60) out;
 
 uniform vec3 eyePos;
 uniform float radius;
 uniform mat4 mvpMatrix;
 
+in vec3 gColor[];
+
 out vec3 middle;
 out vec3 direction;
+out vec3 fColor;
 
 const float PI = 3.14159265358979323846264;
 const float sqrDeg = 0.2; //def: 0.1
@@ -31,6 +34,7 @@ mat3 createRotMatrix(vec3 n, float angle){
 
 void main(){
 	int vertexCount = maxOut/3;
+    fColor = gColor[0];
 	middle = gl_in[0].gl_Position.xyz;
 	vec3 ballToeyePos = eyePos-gl_in[0].gl_Position.xyz;
 	vec3 normal = normalize(ballToeyePos);

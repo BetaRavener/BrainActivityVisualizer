@@ -10,7 +10,6 @@
 
 ElectrodeView2D::ElectrodeView2D(QWidget *parrent) :
     OpenGLWidget(parrent),
-    _electrodeMap(nullptr),
     m_frame(0),
     _showFps(false)
 {
@@ -24,7 +23,7 @@ void ElectrodeView2D::initialize()
 {
     installEventFilter(this);
 
-    _electrodeRenderer = new ElectrodeRenderer2D(_electrodeMap);
+    _electrodeRenderer = new ElectrodeRenderer2D(_electrodes);
     _electrodeRenderer->init();
 
     _cam.Reset(true);
@@ -74,6 +73,7 @@ void ElectrodeView2D::render()
 bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj);
+    bool needsRepaint = false;
 
     if (event->type() == QEvent::KeyPress)
     {
@@ -83,6 +83,7 @@ bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
             _cam.Reset(true);
             _cam.InvertY();
             _cam.ZoomR(-200);
+            needsRepaint = true;
         }
         else if (keyEvent->key() == Qt::Key_F)
         {
@@ -102,6 +103,7 @@ bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
             activateGL();
             _electrodeRenderer->reloadShaders();
             deactivateGL();
+            needsRepaint = true;
         }
     }
     if (event->type() == QEvent::MouseButtonPress)
@@ -122,6 +124,7 @@ bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
         {
             movVector *= _moveSensitivity;
             _cam.MoveR(movVector);
+            needsRepaint = true;
         }
 
         _prevMousePos = curMousePos;
@@ -135,12 +138,17 @@ bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
             QPoint numSteps = numDegrees / 15;
 
             _cam.ZoomR(numSteps.y() * _scrollSensitivity);
+            needsRepaint = true;
         }
     }
+
+    if (needsRepaint)
+        repaint();
+
     return false;
 }
 
-void ElectrodeView2D::electrodeMap(ElectrodeMap *electrodeMap)
+void ElectrodeView2D::electrodes(std::vector<Electrode::WeakPtr> electrodes)
 {
-    _electrodeMap = electrodeMap;
+    _electrodes = electrodes;
 }

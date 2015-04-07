@@ -5,26 +5,32 @@
 #include <QLayoutItem>
 #include <QLabel>
 
+#include <utility>
 #include <iostream>
 #include <string>
 #include <random>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glmHelpers.h>
 
 GraphView2D::GraphView2D(QWidget *parrent) :
     OpenGLWidget(parrent),
-    _electrodeMap(nullptr),
-    _zoom(1.f, 1.f),
-    _middleSample(0),
-    _verticalScroll(0),
-    m_frame(0),
-    _showFps(false),
-    _graphGrid(nullptr),
+    _horizontalScrollMultiplier(1000.0),
+    _shapeRenderer(nullptr),
     _graphRenderer(nullptr),
     _horizontalScrollBar(nullptr),
     _verticalScrollBar(nullptr),
     _horizontalLabels(nullptr),
-    _verticalLabels(nullptr)
+    _verticalLabels(nullptr),
+    _zoom(1.f, 1.f),
+    _middleSample(0),
+    _verticalScroll(0),
+    _updatingScroll(false),
+    _viewStartTime(0.0),
+    _viewDuration(10.0),
+    _playbackTime(0.0),
+    m_frame(0),
+    _showFps(false)
 {
 }
 
@@ -32,6 +38,13 @@ GraphView2D::~GraphView2D()
 {
     activateGL();
     _items.clear();
+
+    delete _shapeRenderer;
+    _shapeRenderer = nullptr;
+
+    delete _graphRenderer;
+    _graphRenderer = nullptr;
+
     deactivateGL();
 }
 
@@ -39,8 +52,8 @@ void GraphView2D::initialize()
 {
     installEventFilter(this);
 
-    _graphGrid = new GraphGrid2D();
-    _graphGrid->init();
+    _shapeRenderer = new ShapeRenderer2D();
+    _shapeRenderer->init();
 
     _graphRenderer = new GraphRenderer2D();
     _graphRenderer->init();
@@ -48,12 +61,9 @@ void GraphView2D::initialize()
     _middleSample = width() / 2;
 
     QAction* openAct = new QAction("Open...", this);
-    connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
+    //connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
     _menu.addAction(openAct);
     _menu.addSeparator();
-
-    _dialog.setModal(true);
-    connect(&_dialog, SIGNAL(accepted()), this, SLOT(dialogOk()));
 }
 
 void GraphView2D::render()
@@ -72,32 +82,29 @@ void GraphView2D::render()
     glm::mat4 modelViewMatrix = viewMatrix * modelMatrix;
     glm::mat4 matrix = projMatrix * modelViewMatrix;
 
-    _graphGrid->update(matrix);
+    _shapeRenderer->update(matrix);
     _graphRenderer->update(matrix);
 
-    glm::vec2 size(width(), glm::ceil((float)height() * _zoom.y));
-    glm::vec2 position(0.f, height() + _verticalScroll);
+    prepareGrid();
+    prepareBackground();
 
-    std::vector<float> horizontalLines, verticalLines;
-
-    for (unsigned int i = 0; i < _items.size(); i++)
+    if (_graphBackgroundCount > 0)
     {
-        position.y -= size.y;
-        if (position.y > height() + size.y)
-            continue;
-
-        if (position.y < -size.y)
-            break;
-
-        horizontalLines.push_back(position.y);
+        _shapeRenderer->setPositions(_graphBackground);
+        _shapeRenderer->setColors(_graphBackgroundColor);
+        _shapeRenderer->render(us::PrimitiveType::TRIANGLES, _graphBackgroundCount);
     }
 
-    for (int i = 0; i < width(); i += width() / 10)
-        verticalLines.push_back(i);
+    if (_graphGridCount > 0)
+    {
+        _shapeRenderer->setPositions(_graphGrid);
+        _shapeRenderer->setColors(_graphGridColor);
+        _shapeRenderer->render(us::PrimitiveType::LINES, _graphGridCount);
+    }
 
-    _graphGrid->setGrid(horizontalLines, verticalLines, glm::vec2(width(), height()));
-    _graphGrid->render();
-
+    //TODO: Use horizontalSeparators (must return firstItemIdx)
+    glm::vec2 size = itemSize();
+    glm::vec2 position(0.f, height() + _verticalScroll);
     position = glm::vec2(0.f, height() + _verticalScroll);
     for (unsigned int i = 0; i < _items.size(); i++)
     {
@@ -157,12 +164,13 @@ bool GraphView2D::eventFilter(QObject *obj, QEvent *event)
             updateData();
         }
     }
-    if (event->type() == QEvent::MouseButtonPress)
+    if (event->type() == QEvent::MouseMove || event->type() == QEvent::MouseButtonPress)
     {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
         if (mouseEvent->buttons().testFlag(Qt::RightButton))
         {
-            _menu.exec(mapToGlobal(mouseEvent->pos()));
+            double time = _viewStartTime + (double)mouseEvent->pos().x() / width() * _viewDuration;
+            emit requestTime(time);
         }
     }
     if (event->type() == QEvent::Wheel)
@@ -176,7 +184,7 @@ bool GraphView2D::eventFilter(QObject *obj, QEvent *event)
             bool needDataReset = false;
             if (wheelEvent->modifiers().testFlag(Qt::ControlModifier))
             {
-                _zoom.x *= numSteps.y() > 0 ? 2.f : 0.5f;
+                _viewDuration *= numSteps.y() > 0 ? 2.f : 0.5f;
                 needDataReset = true;
             }
             else if (wheelEvent->modifiers().testFlag(Qt::ShiftModifier))
@@ -189,10 +197,10 @@ bool GraphView2D::eventFilter(QObject *obj, QEvent *event)
                     item.verticalZoom(item.verticalZoom() * (numSteps.x() > 0 ? 2.f : 0.5f));
             }
 
+            checkZoom();
+            checkView();
             if (needDataReset)
                 updateData();
-
-            checkZoom();
             updateScrollBars();
             updateLabels();
             update();
@@ -201,6 +209,7 @@ bool GraphView2D::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::Resize)
     {
         checkZoom();
+        checkView();
         updateData();
         updateLabels();
         updateScrollBars();
@@ -217,10 +226,11 @@ void GraphView2D::addScrollBars(QScrollBar *horizontal, QScrollBar *vertical)
     _horizontalScrollBar->setTracking(true);
     _verticalScrollBar->setTracking(true);
 
-    connect(_horizontalScrollBar, SIGNAL(sliderMoved(int)), this, SLOT(horizontallyScrolled(int)));
-    connect(_verticalScrollBar, SIGNAL(sliderMoved(int)), this, SLOT(verticallyScrolled(int)));
-
     updateScrollBars();
+
+    connect(_horizontalScrollBar, SIGNAL(valueChanged(int)), this, SLOT(horizontallyScrolled(int)));
+    connect(_verticalScrollBar, SIGNAL(valueChanged(int)), this, SLOT(verticallyScrolled(int)));
+
 }
 
 void GraphView2D::addLabels(QLayout *horizontal, QLayout *vertical)
@@ -231,36 +241,42 @@ void GraphView2D::addLabels(QLayout *horizontal, QLayout *vertical)
     updateLabels();
 }
 
-void GraphView2D::open()
-{
-    _dialog.show();
-}
-
-void GraphView2D::dialogOk()
+void GraphView2D::signalBatch(SignalBatch::WeakPtr signalBatch)
 {
     activateGL();
     _items.clear();
     deactivateGL();
 
+    _signalBatch = signalBatch;
     _minZoom = glm::vec2(0.f, 0.f);
-    const auto& dialogResult = _dialog.getResult();
-    for (auto& pair : dialogResult)
+    std::vector<SignalData::Ptr> dataSignals;
+    for (SignalData::Ptr signalData : signalBatch->dataSignals())
     {
-        SignalRecord* record = pair.second;
-        record->load();
-
-        if (pair.first != "")
-        {
-            _electrodeMap->electrode(pair.first).signal(record);
-        }
-
         activateGL();
-        _items.push_back(GraphItem2D(record));
+        _items.push_back(GraphItem2D(SignalData::WeakPtrConst(signalData)));
+        dataSignals.push_back(signalData);
         deactivateGL();
     }
 
     checkZoom();
+    checkView();
     updateData();
+    updateLabels();
+    updateScrollBars();
+    update();
+}
+
+void GraphView2D::timeChanged(double time)
+{
+    _playbackTime = time;
+    repaint();
+}
+
+void GraphView2D::dataChanged()
+{
+    checkZoom();
+    checkView();
+    updateData(true);
     updateLabels();
     updateScrollBars();
     update();
@@ -268,10 +284,10 @@ void GraphView2D::dialogOk()
 
 void GraphView2D::horizontallyScrolled(int value)
 {
-    if (_zoom.x > 0.5f)
-        _middleSample = value;
-    else
-        _middleSample = value / _zoom.x;
+    if (_updatingScroll)
+        return;
+
+    _viewStartTime = (double)value / _horizontalScrollMultiplier;
 
     updateData();
     update();
@@ -279,20 +295,27 @@ void GraphView2D::horizontallyScrolled(int value)
 
 void GraphView2D::verticallyScrolled(int value)
 {
+    if (_updatingScroll)
+        return;
+
     _verticalScroll = value;
     update();
 }
 
-void GraphView2D::updateData()
+void GraphView2D::updateData(bool clearCache)
 {
     activateGL();
     for (GraphItem2D& item : _items)
-        item.setData(_zoom.x, _middleSample, width());
+        item.setData(_viewStartTime, _viewStartTime + _viewDuration, width(), clearCache);
     deactivateGL();
 }
 
 void GraphView2D::updateScrollBars()
 {
+    // Set this to prevent double update caused
+    // by signal emited by setValue
+    _updatingScroll = true;
+
     if (_horizontalScrollBar)
     {
         if (_items.size() == 0)
@@ -303,25 +326,11 @@ void GraphView2D::updateScrollBars()
         }
         else
         {
-            _horizontalScrollBar->setMinimum(0);
-            if (_zoom.x > 0.5f)
-            {
-                _horizontalScrollBar->setMaximum(_items[0].dataSampleCount() - width() / _zoom.x);
-                _horizontalScrollBar->setValue(_middleSample);
-                _horizontalScrollBar->setPageStep(width() / _zoom.x);
-            }
-            else
-            {
-                _horizontalScrollBar->setMaximum(_items[0].dataSampleCount() * _zoom.x);
-                _horizontalScrollBar->setValue(_middleSample * _zoom.x);
-                _horizontalScrollBar->setPageStep(width());
-            }
+            _horizontalScrollBar->setMaximum((_signalBatch->duration() - _viewDuration) * _horizontalScrollMultiplier);
+            _horizontalScrollBar->setValue(_viewStartTime * _horizontalScrollMultiplier);
+            _horizontalScrollBar->setPageStep(_viewDuration * _horizontalScrollMultiplier);
         }
     }
-
-    // Check that scroll is in limit
-    int maxVertical = (int)(glm::ceil((float)height() * _zoom.y) * _items.size() - height());
-    _verticalScroll = glm::min(_verticalScroll, maxVertical);
 
     if (_verticalScrollBar)
     {
@@ -334,11 +343,13 @@ void GraphView2D::updateScrollBars()
         else
         {
             _verticalScrollBar->setMinimum(0);
-            _verticalScrollBar->setMaximum(maxVertical);
+            _verticalScrollBar->setMaximum(maxVericallScroll());
             _verticalScrollBar->setValue(_verticalScroll);
             _verticalScrollBar->setPageStep(height());
         }
     }
+
+    _updatingScroll = false;
 }
 
 void GraphView2D::updateLabels()
@@ -363,8 +374,8 @@ void GraphView2D::updateLabels()
 
         for (GraphItem2D item : _items)
         {
-            QLabel* label = new QLabel(QString::fromStdString(item.signalRecord()->label()));
-            label->setFixedSize(QSize(100, glm::ceil((float)height() * _zoom.y)));
+            QLabel* label = new QLabel(QString::fromStdString(item.signalData()->label()));
+            label->setFixedSize(QSize(100, itemSize().y));
             label->setStyleSheet("border: 1px solid grey");
             _verticalLabels->addWidget(label);
             label->show();
@@ -374,16 +385,146 @@ void GraphView2D::updateLabels()
 
 void GraphView2D::checkZoom()
 {
-    _minZoom.x = _items.size() > 0 ? _items[0].minHorizontalZoom(width()) : 0.f;
+    if(!_signalBatch)
+        return;
+
+    _minZoom.x = _signalBatch->maxResolution() * width();
     _minZoom.y = _items.size() > 0 ? 1.f / _items.size() : 0.f;
-    _maxZoom.x = width();
-    _maxZoom.y = glm::max(1.f, glm::ceil((float)height() * _zoom.y) * _items.size() / (float)height());
+    _maxZoom.x = _signalBatch->duration();
+    //_maxZoom.y = glm::max(1.f, glm::ceil((float)height() * _zoom.y) * _items.size() / (float)height());
+    _maxZoom.y = 1.f;
     // Min zoom is all samples on screen
-    _zoom.x = glm::max(_zoom.x, _minZoom.x);
+    _viewDuration = glm::max(_viewDuration, (double)_minZoom.x);
     // Max zoom is one sample on screen
-    _zoom.x = glm::min(_zoom.x, _maxZoom.x);
+    _viewDuration = glm::min(_viewDuration, (double)_maxZoom.x);
     // Min zoom is all items on screen
     _zoom.y = glm::max(_zoom.y, _minZoom.y);
     // Max zoom is one item on screen
     _zoom.y = glm::min(_zoom.y, _maxZoom.y);
+}
+
+void GraphView2D::checkView()
+{
+    if (_signalBatch)
+        _viewStartTime = glm::min(_viewStartTime, _signalBatch->duration() - _viewDuration);
+    _verticalScroll = glm::min(_verticalScroll, maxVericallScroll());
+    _verticalScroll = glm::max(_verticalScroll, 0);
+}
+
+int GraphView2D::maxVericallScroll()
+{
+    return (int)(itemSize().y * _items.size() - height());
+}
+
+std::vector<float> GraphView2D::horizontalSeparators()
+{
+    glm::vec2 size = itemSize();
+    glm::vec2 position(0.f, height() + _verticalScroll);
+
+    std::vector<float> horizontal;
+    for (unsigned int i = 0; i < _items.size(); i++)
+    {
+        position.y -= size.y;
+        if (position.y > height() + size.y)
+            continue;
+
+        if (position.y < -size.y)
+            break;
+
+        horizontal.push_back(position.y);
+    }
+
+    return std::move(horizontal);
+}
+
+void GraphView2D::prepareBackground(glm::vec3 firstColor, glm::vec3 secondColor)
+{
+    std::vector<float> horizontal = std::move(horizontalSeparators());
+
+    _graphBackground.clear();
+    _graphBackgroundColor.clear();
+    _graphBackgroundCount = 0;
+
+    glm::vec2 topLeft = glm::vec2(0.f, 0.f), bottomRight = glm::vec2(width(), 0.0f);
+    for (unsigned int i = 0; i < horizontal.size(); i++)
+    {
+        if (i == 0)
+        {
+            topLeft.y = height();
+            bottomRight.y = horizontal[0];
+        }
+        else if (i < horizontal.size())
+        {
+            topLeft.y = horizontal[i-1];
+            bottomRight.y = horizontal[i];
+        }
+//        else
+//        {
+//            topLeft.y = horizontal[i-1];
+//            bottomRight.y = 0.f;
+//        }
+
+        topLeft.y = horizontal[i-1];
+        bottomRight.y = horizontal[i];
+
+        glm::Helpers::pushBack(_graphBackground, topLeft);
+        glm::Helpers::pushBack(_graphBackground, glm::vec2(bottomRight.x, topLeft.y));
+        glm::Helpers::pushBack(_graphBackground, glm::vec2(bottomRight));
+        glm::Helpers::pushBack(_graphBackground, topLeft);
+        glm::Helpers::pushBack(_graphBackground, glm::vec2(topLeft.x, bottomRight.y));
+        glm::Helpers::pushBack(_graphBackground, glm::vec2(bottomRight));
+
+        // Alternate two colors
+        for (int j = 0; j < 6; j++)
+            glm::Helpers::pushBack(_graphBackgroundColor, (i % 2 == 0 ? firstColor : secondColor));
+
+        _graphBackgroundCount += 6;
+    }
+}
+
+void GraphView2D::prepareGrid(glm::vec3 color, glm::vec3 timeColor)
+{
+    std::vector<float> horizontal, vertical;
+
+    horizontal = std::move(horizontalSeparators());
+    for (int i = 0; i < width(); i += width() / 10)
+        vertical.push_back(i);
+
+    _graphGrid.clear();
+    _graphGridColor.clear();
+    _graphGridCount = 0;
+
+    for (auto y : horizontal)
+    {
+        glm::Helpers::pushBack(_graphGrid, glm::vec2(0, y));
+        glm::Helpers::pushBack(_graphGridColor, color);
+        glm::Helpers::pushBack(_graphGrid, glm::vec2(width(), y));
+        glm::Helpers::pushBack(_graphGridColor, color);
+        _graphGridCount += 2;
+    }
+
+    for (auto x : vertical)
+    {
+        glm::Helpers::pushBack(_graphGrid, glm::vec2(x, 0));
+        glm::Helpers::pushBack(_graphGridColor, color);
+        glm::Helpers::pushBack(_graphGrid, glm::vec2(x, height()));
+        glm::Helpers::pushBack(_graphGridColor, color);
+        _graphGridCount += 2;
+    }
+
+    double timeX = (_playbackTime - _viewStartTime) / _viewDuration;
+    if (timeX > 0.0 && timeX < 1.0)
+    {
+        timeX *= width();
+        glm::Helpers::pushBack(_graphGrid, glm::vec2(timeX, 0));
+        glm::Helpers::pushBack(_graphGridColor, timeColor);
+        glm::Helpers::pushBack(_graphGrid, glm::vec2(timeX, height()));
+        glm::Helpers::pushBack(_graphGridColor, timeColor);
+        _graphGridCount += 2;
+    }
+}
+
+glm::vec2 GraphView2D::itemSize()
+{
+    return glm::vec2(width(), glm::ceil((float)height() * _zoom.y));
 }

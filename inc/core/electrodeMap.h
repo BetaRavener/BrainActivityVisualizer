@@ -14,12 +14,18 @@ class ElectrodeMap
 public:
     ElectrodeMap();
 
-    Electrode& electrode(std::string name);
-    const std::map<std::string, Electrode>& allElectrodes();
-    static std::vector<std::string> allNames();
-private:
+    Electrode::WeakPtr electrode(std::string name);
+    std::vector<Electrode::WeakPtr> allElectrodes();
+    std::vector<std::string> allNames();
 
-    std::map<std::string, Electrode> _electrodeMap;
+    void save(std::string path);
+    void load(std::string path);
+
+private:
+    std::map<std::string, Electrode::Ptr> _electrodeMap;
+
+    std::string _header;
+    unsigned int _version;
 };
 
 #endif

@@ -7,6 +7,7 @@ const float ambientContr = 0.7f;
 
 in vec3 middle;
 in vec3 direction;
+in vec3 fColor;
 out vec4 color;
 
 const float PI = 3.14159265358979323846264;
@@ -20,5 +21,5 @@ float CalcIntensity(){
 }
 
 void main(){
-	color = vec4(vec3(0.f,0.6f,1.f)*CalcIntensity(), 1.f);
+	color = vec4(fColor * CalcIntensity(), 1.f);
 }

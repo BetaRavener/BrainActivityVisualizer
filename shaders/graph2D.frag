@@ -18,7 +18,7 @@ void main(){
     }
     else
     {
-        // Discard this pixel by making it opaque
-        color = vec4(0.f, 0.f, 0.f, 0.f);
+        // Discard this pixel
+       discard;
     }
 }

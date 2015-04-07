@@ -28,7 +28,7 @@ void SignalFileReader::open(std::string path)
         // Ignore unlabeled signals
         if ((std::string(_edfHeader.signalparam[i].label)).compare(""))
         {
-            _records.push_back(new SignalRecord(_edfHeader.handle, i, &(_edfHeader.signalparam[i])));
+            _records.push_back(SignalRecord::create(_edfHeader.handle, i, &(_edfHeader.signalparam[i]), _edfHeader.file_duration));
         }
     }
 
@@ -37,11 +37,6 @@ void SignalFileReader::open(std::string path)
 
 void SignalFileReader::close()
 {
-    for (SignalRecord* record : _records)
-    {
-        delete record;
-    }
-
     _records.clear();
     edfclose_file(_edfHeader.handle);
 
@@ -53,7 +48,7 @@ bool SignalFileReader::isOpened()
     return _opened;
 }
 
-const std::vector<SignalRecord*>& SignalFileReader::records()
+std::vector<SignalRecord::Ptr> SignalFileReader::records()
 {
     return _records;
 }

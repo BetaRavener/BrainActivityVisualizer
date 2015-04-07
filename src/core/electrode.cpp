@@ -1,13 +1,21 @@
 #include "electrode.h"
 
-Electrode::Electrode(std::string name) :
-    _name(name),
-    _has2D(false),
-    _has3D(false),
-    _position2D(glm::vec2(0,0)),
-    _position3D(glm::vec3(0,0,0)),
-    _signal(nullptr)
+#define INACTIVE_COLOR glm::vec3(0.3, 0.3, 0.3)
+#define UNAVAILBABLE_COLOR glm::vec3(0.5,0.0,0.5)
+#define BASELINE_COLOR glm::vec3(0.0, 0.7, 0.0)
+#define MAX_COLOR glm::vec3(1.0, 0.0, 0.0)
+#define MIN_COLOR glm::vec3(0.0, 0.0, 1.0)
+
+Electrode::Ptr Electrode::create(std::string name)
 {
+    Ptr ptr(new Electrode);
+    ptr->_name = name;
+    ptr->_has2D = false;
+    ptr->_has3D = false;
+    ptr->_position2D = glm::vec2(0,0);
+    ptr->_position3D = glm::vec3(0,0,0);
+    ptr->setInactive();
+    return ptr;
 }
 
 const std::string& Electrode::name()
@@ -47,18 +55,42 @@ void Electrode::position3D(glm::vec3 pos)
     _has3D = true;
 }
 
-SignalRecord *Electrode::signal()
+glm::vec3 Electrode::color()
 {
-    return _signal;
+    return _color;
 }
 
-bool Electrode::hasSignal()
+void Electrode::intensity(double intensity)
 {
-    return _signal != nullptr;
+    _active = true;
+
+    // Clamp to <-1, 1> interval
+    intensity = glm::min(glm::max(intensity, -1.0), 1.0);
+
+    // Convert intensity into color
+    if (intensity >= 0.0)
+    {
+        _color = glm::mix(BASELINE_COLOR, MAX_COLOR, intensity);
+    }
+    else
+    {
+        _color = glm::mix(BASELINE_COLOR, MIN_COLOR, -intensity);
+    }
 }
 
-void Electrode::signal(SignalRecord *signal)
+void Electrode::setInactive()
 {
-    _signal = signal;
+    _active = false;
+    _color = INACTIVE_COLOR;
+}
+
+void Electrode::setUnavailable()
+{
+    _color = UNAVAILBABLE_COLOR;
+}
+
+Electrode::Electrode()
+{
+
 }
 

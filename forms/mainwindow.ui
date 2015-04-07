@@ -350,8 +350,68 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpenSignalFile"/>
+    <addaction name="actionElectrode_map"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionPlayer"/>
+   </widget>
+   <widget class="QMenu" name="menuWindows">
+    <property name="title">
+     <string>Windows</string>
+    </property>
+    <addaction name="actionShow_2D"/>
+    <addaction name="actionShow_3D"/>
+   </widget>
+   <widget class="QMenu" name="menuFilter">
+    <property name="title">
+     <string>Filter</string>
+    </property>
+    <addaction name="actionBasic"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuFilter"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuWindows"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpenSignalFile">
+   <property name="text">
+    <string>Open signal file</string>
+   </property>
+  </action>
+  <action name="actionPlayer">
+   <property name="text">
+    <string>Player</string>
+   </property>
+  </action>
+  <action name="actionShow_2D">
+   <property name="text">
+    <string>Show 2D</string>
+   </property>
+  </action>
+  <action name="actionShow_3D">
+   <property name="text">
+    <string>Show 3D</string>
+   </property>
+  </action>
+  <action name="actionElectrode_map">
+   <property name="text">
+    <string>Electrode map</string>
+   </property>
+  </action>
+  <action name="actionBasic">
+   <property name="text">
+    <string>Basic</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
