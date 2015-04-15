@@ -9,11 +9,20 @@ BlackmanWindow::BlackmanWindow(unsigned int halfLength, double alfa) :
     double a1 = 0.5;
     double a2 = alfa * 0.5;
     double angularCoefficient = 2 * glm::pi<double>() / (_length - 1);
+    double sum = 0.0;
     for (unsigned int i = 0; i < _length; i++)
     {
         _coefficients[i] = a0 -
                            a1 * glm::cos(angularCoefficient * i) +
                            a2 * glm::cos(2.0 * angularCoefficient * i);
+
+        sum += _coefficients[i];
+    }
+
+    // Normalize the coefficients to maintain the average of signal
+    for (unsigned int i = 0; i < _length; i++)
+    {
+        _coefficients[i] *= (_length / sum);
     }
 }
 

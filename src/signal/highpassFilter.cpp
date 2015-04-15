@@ -16,11 +16,10 @@ HighpassFilter::HighpassFilter(unsigned int halfLength, double cutoffFreq, doubl
         else
         {
             double causalIdx = (((double)i) - halfLength);
-            _impulseResponse[i] = (glm::sin(glm::pi<double>() * causalIdx) -
-                                   glm::sin(angularCutoff * causalIdx)) /
+            _impulseResponse[i] = -glm::sin(angularCutoff * causalIdx) /
                                   (glm::pi<double>() * causalIdx);
         }
-        sum += _impulseResponse[i];
+        sum += glm::abs(_impulseResponse[i]);
     }
 
     // Normalize the coefficients to maintain the average of signal
