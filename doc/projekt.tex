@@ -28,6 +28,7 @@
 \usepackage{siunitx}
 \usepackage{amsmath}
 \usepackage{listings}
+\usepackage[acronym,nonumberlist,nomain]{glossaries}
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 
 %zde muzeme vlozit vlastni balicky
@@ -103,12 +104,15 @@
 %\acknowledgment{V této sekci je možno uvést poděkování vedoucímu práce a těm, kteří poskytli odbornou pomoc
 %(externí zadavatel, konzultant, apod.).}
 
+\makeglossaries
+
 \begin{document}
   % Vysazeni titulnich stran
   % ----------------------------------------------
   \pagenumbering{Alph}
   \maketitle
   \pagenumbering{arabic}
+  \setcounter{tocdepth}{1}
   % Obsah
   % ----------------------------------------------
   \tableofcontents
