@@ -1,9 +1,5 @@
 \begin{thebibliography}{10}
 
-\bibitem{guidDigEEG}
-Guidelines for digital eeg.
-\newblock {\em American Journal of Electroneurodiagnostic Technology}, 1999.
-
 \bibitem{brainFacts}
 {\em Brain Facts: A Primer On the Brain and Nervous System}.
 \newblock Society for Neuroscience, Washington, D.C., 4th edition, 2002.
@@ -14,12 +10,30 @@ Odile Benoit, Agn{\`e}s Daurat, and Jacques Prado.
   correlated to theta, alpha and beta frequency bands during nrem sleep.
 \newblock {\em Clinical Neurophysiology}, 111(12):2103--2106, 2000.
 
+\bibitem{eegHistory}
+Thomas~F Collura.
+\newblock History and evolution of electroencephalographic instruments and
+  techniques.
+\newblock {\em Journal of clinical neurophysiology}, 10(4):476--504, 1993.
+
+\bibitem{goraud}
+Henri Gouraud.
+\newblock Continuous shading of curved surfaces.
+\newblock {\em IEEE Transactions on Computers}, 100(6):623--629, 1971.
+
 \bibitem{dominantF}
 David~M Groppe, Stephan Bickel, Corey~J Keller, Sanjay~K Jain, Sean~T Hwang,
   Cynthia Harden, and Ashesh~D Mehta.
 \newblock Dominant frequencies of resting human brain activity as measured by
   the electrocorticogram.
 \newblock {\em Neuroimage}, 79:223--233, 2013.
+
+\bibitem{edfFormat}
+Bob Kemp and Jesus Olivan.
+\newblock European data format 'plus'(edf+), an edf alike standard format for
+  the exchange of physiological data.
+\newblock {\em Clinical Neurophysiology}, 114(9):1755--1761, 2003.
+\newblock \url{http://edfplus.info/specs/edfplus.html}.
 
 \bibitem{bcComm}
 Andrea K{\"u}bler, Boris Kotchoubey, Jochen Kaiser, Jonathan~R Wolpaw, and
@@ -44,6 +58,12 @@ Jorge~Baztarrica Ochoa.
 \newblock Eeg signal classification for brain computer interface applications.
 \newblock {\em Ecole Polytechnique Federale De Lausanne}, 7:1--72, 2002.
 
+\bibitem{guidDigEEG}
+International~Organisation of~Societies~for Electrophysiological~Technology.
+\newblock Guidelines for digital eeg.
+\newblock {\em American Journal of Electroneurodiagnostic Technology},
+  39(4):278--288, 1999.
+
 \bibitem{placeSys}
 Robert Oostenveld and Peter Praamstra.
 \newblock The five percent electrode system for high-resolution eeg and erp
@@ -55,11 +75,32 @@ Alan~V. Oppenheim, Ronald~W. Schafer, and John~R. Buck.
 \newblock {\em Discrete-time signal processing}.
 \newblock Prentice Hall, Upper Saddle River, NJ, 1999.
 
+\bibitem{phong}
+Bui~Tuong Phong.
+\newblock Illumination for computer generated pictures.
+\newblock {\em Communications of the ACM}, 18(6):311--317, 1975.
+
 \bibitem{DSP3}
 John~G. Proakis and Dimitris~G. Manolakis.
 \newblock {\em Digital signal processing: principles, algorithms, and
   applications}.
 \newblock Prentice Hall, Upper Saddle River, NJ, 1996.
+
+\bibitem{eegWaveFt}
+Maan~M Shaker.
+\newblock Eeg waves classifier using wavelet transform and fourier transform.
+\newblock {\em brain}, 2(3), 2006.
+
+\bibitem{dryElectrodes}
+Babak~A Taheri, Robert~T Knight, and Rosemary~L Smith.
+\newblock A dry electrode for eeg recording.
+\newblock {\em Electroencephalography and clinical neurophysiology},
+  90(5):376--383, 1994.
+
+\bibitem{compForBrainStudy}
+Desney Tan and Anton Nijholt.
+\newblock Brain-computer interfaces and human-computer interaction.
+\newblock In {\em Brain-Computer Interfaces}, pages 3--19. Springer, 2010.
 
 \bibitem{eegFund}
 Michal Teplan.
@@ -72,7 +113,7 @@ Woradorn Wattanapanitch, Michale Fee, and Rahul Sarpeshkar.
 \newblock {\em IEEE Transactions on Biomedical Circuits and Systems},
   1(2):136--147, June 2007.
 
-\bibitem{OpenGl}
+\bibitem{OpenGL}
 Richard~S. Wright.
 \newblock {\em OpenGL Superbible: Comprehensive Tutorial and Reference}.
 \newblock Addison-Wesley, Upper Saddle River, NJ, 5th edition, 2011.
