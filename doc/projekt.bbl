@@ -86,11 +86,6 @@ John~G. Proakis and Dimitris~G. Manolakis.
   applications}.
 \newblock Prentice Hall, Upper Saddle River, NJ, 1996.
 
-\bibitem{eegWaveFt}
-Maan~M Shaker.
-\newblock Eeg waves classifier using wavelet transform and fourier transform.
-\newblock {\em brain}, 2(3), 2006.
-
 \bibitem{dryElectrodes}
 Babak~A Taheri, Robert~T Knight, and Rosemary~L Smith.
 \newblock A dry electrode for eeg recording.

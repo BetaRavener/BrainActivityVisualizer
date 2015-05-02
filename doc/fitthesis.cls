@@ -247,6 +247,8 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
 
 \vfill
+\newpage
+\vfill
 
 \mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
 
