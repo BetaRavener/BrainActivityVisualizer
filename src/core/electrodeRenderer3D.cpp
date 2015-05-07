@@ -4,14 +4,15 @@
 #include <string>
 
 #include <glm/gtc/type_ptr.hpp>
+#include "glmHelpers.h"
 
-ElectrodeRenderer3D::ElectrodeRenderer3D(std::vector<Electrode::WeakPtr> electrodes) :
-    ElectrodeRenderer(electrodes)
+ElectrodeRenderer3D::ElectrodeRenderer3D()
 {
 }
 
-void ElectrodeRenderer3D::update(glm::vec3 eyePos, glm::mat4 mvpMatrix)
+void ElectrodeRenderer3D::update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 rightDir, glm::mat4 mvpMatrix)
 {
+    ElectrodeRenderer::update(eyePos, upDir, rightDir, mvpMatrix);
     _radiusUnif->setSource(3.0f);
     _eyePosUnif->setSource(glm::value_ptr(eyePos), 3);
     _mvpMatrixUnif->setSource(glm::value_ptr(mvpMatrix), 16);
@@ -19,22 +20,7 @@ void ElectrodeRenderer3D::update(glm::vec3 eyePos, glm::mat4 mvpMatrix)
 
 void ElectrodeRenderer3D::initializeShaders()
 {
-    // Prepare positions for buffer
-    std::vector<float> electrodePos;
-    _electrodeCount = 0;
-    for (auto electrode : _electrodes)
-    {
-        if (electrode->has3D())
-        {
-            glm::vec3 pos = electrode->position3D();
-            electrodePos.push_back(pos.x);
-            electrodePos.push_back(pos.y);
-            electrodePos.push_back(pos.z);
-            _electrodeCount++;
-        }
-    }
-
-    _electrodePosAttrBuf->setData(electrodePos);
+    ElectrodeRenderer::initializeShaders();
 
     auto vertexShader = us::ShaderObject::create();
     vertexShader->loadFile("shaders/electrodes.vert");
@@ -77,11 +63,32 @@ void ElectrodeRenderer3D::prepareColorBuffer()
         if (electrode->has3D())
         {
             glm::vec3 color = electrode->color();
-            colors.push_back(color.r);
-            colors.push_back(color.g);
-            colors.push_back(color.b);
+            glm::Helpers::pushBack(colors, color);
         }
     }
 
     _electrodeColorAttrBuf->setData(colors);
+}
+
+void ElectrodeRenderer3D::updateElectrodes()
+{
+    // Prepare positions for buffer
+    std::vector<float> electrodePos;
+    _electrodeCount = 0;
+    for (auto electrode : _electrodes)
+    {
+        if (electrode->has3D())
+        {
+            glm::vec3 pos = electrode->position3D();
+            glm::Helpers::pushBack(electrodePos, pos);
+            _electrodeCount++;
+        }
+    }
+
+    _electrodePosAttrBuf->setData(electrodePos);
+}
+
+bool ElectrodeRenderer3D::electrodePresent(Electrode::WeakPtr electrode)
+{
+    return electrode->has3D();
 }

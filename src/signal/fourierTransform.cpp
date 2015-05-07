@@ -4,9 +4,12 @@
 #include <stdexcept>
 #include <math.h>
 
+#include "hammingWindow.h"
+
 FourierTransform::FourierTransform() :
     _configuration(nullptr),
-    _length(0)
+    _length(0),
+    _window(0)
 {
 }
 
@@ -19,14 +22,15 @@ FourierTransform::~FourierTransform()
 void FourierTransform::init(int length)
 {
     _length = length;
+    _window = HammingWindow(_length);
     _configuration = kiss_fftr_alloc(length, 0, NULL, NULL);
 }
 
-Spectrum::Ptr FourierTransform::process(SignalData::WeakPtr signal, unsigned int startIdx)
+Spectrum::Ptr FourierTransform::process(SignalData::WeakPtr signal, unsigned int centerIdx)
 {
     const auto& data = signal->data();
 
-    if (startIdx + _length > data.size())
+    if (centerIdx + _length > data.size())
         throw std::runtime_error("Not enough samples for FFT");
 
     std::vector<kiss_fft_cpx> result;
@@ -39,7 +43,9 @@ Spectrum::Ptr FourierTransform::process(SignalData::WeakPtr signal, unsigned int
     output.resize(result.size());
 
     for (unsigned int i = 0; i < input.size(); i++)
-        input[i] = signal->data()[startIdx + i];
+        input[i] = signal->data()[centerIdx + i];
+
+    _window.applyTo(input);
 
     kiss_fftr(_configuration, &input[0], &result[0]);
 

@@ -6,21 +6,33 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-BrainRenderer::BrainRenderer()
+BrainRenderer::BrainRenderer() :
+    _brainLoaded(false),
+    _initialized(false)
+{
+
+}
+
+void BrainRenderer::init()
 {
     // Load the 3d model from the file
     std::string err = tinyobj::LoadObj(_shapes, _materials, "models/brain-hi-res.obj");
 
     if (!err.empty()) {
-      std::cerr << err << std::endl;
-      exit(1);
+        throw std::runtime_error("Failed to open brain model");
     }
+
+    _brainLoaded = true;
 
     initializeShaders();
 }
 
+
 void BrainRenderer::update(glm::vec3 eyePos, glm::mat4 mvpMatrix, glm::mat4 modelMatrix)
 {
+    if (!_initialized)
+        return;
+
     float brainColor[3] = {1, 1, 1};
     glm::mat4 normalMatrix = glm::transpose(glm::inverse(modelMatrix));
 
@@ -33,6 +45,9 @@ void BrainRenderer::update(glm::vec3 eyePos, glm::mat4 mvpMatrix, glm::mat4 mode
 
 void BrainRenderer::render()
 {
+    if (!_initialized)
+        return;
+
     for (unsigned int i = 0; i < _posAttrBufs.size(); i++)
     {
         _posAttr->connectBuffer(_posAttrBufs[i]);
@@ -43,6 +58,9 @@ void BrainRenderer::render()
 
 void BrainRenderer::reloadShaders()
 {
+    if (!_brainLoaded)
+        return;
+
     if (_renderEngine != nullptr)
     {
         delete _renderEngine;
@@ -100,4 +118,6 @@ void BrainRenderer::initializeShaders()
         _indicesBufs.push_back(indicesBuf);
         _indicesCounts.push_back(_shapes[i].mesh.indices.size());
     }
+
+    _initialized = true;
 }

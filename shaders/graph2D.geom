@@ -48,13 +48,13 @@ void main(){
     
     // Render line join
     gl_Position = mvpMatrix * vec4(begin, 0.f, 1.f);
-	EmitVertex();
+	//EmitVertex();
     
 	gl_Position = mvpMatrix * vec4(begin + prevNorm, 0.f, 1.f);
-	EmitVertex();
+	//EmitVertex();
 	
 	gl_Position = mvpMatrix * vec4(begin + norm, 0.f, 1.f);
-	EmitVertex();
+	//EmitVertex();
     
-	EndPrimitive();
+	//EndPrimitive();
 }

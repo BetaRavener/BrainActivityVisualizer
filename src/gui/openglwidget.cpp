@@ -49,8 +49,11 @@
 
 #include <GL/glew.h>
 
+#include <stdexcept>
+
 OpenGLWidget::OpenGLWidget(QWidget *parent)
-    : QOpenGLWidget(parent)
+    : QOpenGLWidget(parent),
+      _initialized(false)
 {
 }
 
@@ -61,6 +64,9 @@ void OpenGLWidget::render()
 
 void OpenGLWidget::paintGL()
 {
+    if (!_initialized)
+        throw std::runtime_error("Uninitialized");
+
     activateGlewContext();
     render();
     deactivateGlewContext();
@@ -76,10 +82,14 @@ void OpenGLWidget::initializeGL()
     activateGlewContext();
     initialize();
     deactivateGlewContext();
+    _initialized = true;
 }
 
 void OpenGLWidget::updateElectrodes()
 {
+    if (!_initialized)
+        throw std::runtime_error("Uninitialized");
+
     makeCurrent();
     paintGL();
     doneCurrent();

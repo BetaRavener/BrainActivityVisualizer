@@ -25,6 +25,16 @@ public:
 
     SignalData::WeakPtrConst signalData() const;
     void setData(double startTime, double endTime, unsigned int width, bool clearCache = false);
+
+    glm::vec2 positionInGraph() const;
+    void setPositionInGraph(const glm::vec2 &positionInGraph);
+
+    glm::vec2 sizeInGraph() const;
+    void setSizeInGraph(const glm::vec2 &sizeInGraph);
+
+    glm::vec3 backgroundColor() const;
+    void setBackgroundColor(const glm::vec3 &backgroundColor);
+
 private:
     void buildCache(unsigned int horizontalZoom, bool clearCache = false);
 
@@ -41,6 +51,10 @@ private:
     float _cacheZoom;
 
     float _sampleSpacing;
+
+    glm::vec2 _positionInGraph;
+    glm::vec2 _sizeInGraph;
+    glm::vec3 _backgroundColor;
 };
 
 #endif

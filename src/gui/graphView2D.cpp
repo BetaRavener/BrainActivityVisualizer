@@ -53,9 +53,9 @@ void GraphView2D::initialize()
     installEventFilter(this);
 
     _shapeRenderer = new ShapeRenderer2D();
-    _shapeRenderer->init();
-
     _graphRenderer = new GraphRenderer2D();
+
+    _shapeRenderer->init();
     _graphRenderer->init();
 
     _middleSample = width() / 2;
@@ -439,33 +439,21 @@ std::vector<float> GraphView2D::horizontalSeparators()
 
 void GraphView2D::prepareBackground(glm::vec3 firstColor, glm::vec3 secondColor)
 {
-    std::vector<float> horizontal = std::move(horizontalSeparators());
-
     _graphBackground.clear();
     _graphBackgroundColor.clear();
     _graphBackgroundCount = 0;
 
-    glm::vec2 topLeft = glm::vec2(0.f, 0.f), bottomRight = glm::vec2(width(), 0.0f);
-    for (unsigned int i = 0; i < horizontal.size(); i++)
+    glm::vec2 size = itemSize();
+    glm::vec2 topLeft = glm::vec2(0.f, height() + _verticalScroll), bottomRight;
+    for (unsigned int i = 0; i < _items.size(); i++, topLeft.y -= size.y)
     {
-        if (i == 0)
-        {
-            topLeft.y = height();
-            bottomRight.y = horizontal[0];
-        }
-        else if (i < horizontal.size())
-        {
-            topLeft.y = horizontal[i-1];
-            bottomRight.y = horizontal[i];
-        }
-//        else
-//        {
-//            topLeft.y = horizontal[i-1];
-//            bottomRight.y = 0.f;
-//        }
+        if (topLeft.y > height() + size.y)
+            continue;
 
-        topLeft.y = horizontal[i-1];
-        bottomRight.y = horizontal[i];
+        if (topLeft.y < -size.y)
+            break;
+
+        bottomRight = glm::vec2(width(), topLeft.y - size.y);
 
         glm::Helpers::pushBack(_graphBackground, topLeft);
         glm::Helpers::pushBack(_graphBackground, glm::vec2(bottomRight.x, topLeft.y));

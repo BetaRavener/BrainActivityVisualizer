@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Signal filtering</string>
+   <string>Signal Filtering</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -62,9 +62,6 @@
        </layout>
       </item>
      </layout>
-     <zorder>label_2</zorder>
-     <zorder>horizontalLayoutWidget_3</zorder>
-     <zorder>horizontalLayoutWidget</zorder>
     </widget>
    </item>
    <item>

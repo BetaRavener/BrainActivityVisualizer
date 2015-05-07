@@ -90,58 +90,36 @@ void GraphItem2D::buildCache(unsigned int horizontalZoom, bool clearCache)
 
     _cacheZoom = horizontalZoom;
 }
+glm::vec3 GraphItem2D::backgroundColor() const
+{
+    return _backgroundColor;
+}
 
-//void GraphItem2D::setData(float horizontalZoom, unsigned int middleSample, unsigned int width)
-//{
-//    // Add 1 sample because we need to form N lines, which are defined by N+1 points
-//    const auto& data = _signalData->data();
-//    unsigned int samplesInWindow = glm::ceil(width / horizontalZoom) + 1;
-//    unsigned int leftEdge = 0;
-//    if (middleSample > samplesInWindow / 2)
-//        leftEdge = middleSample - samplesInWindow / 2;
+void GraphItem2D::setBackgroundColor(const glm::vec3 &backgroundColor)
+{
+    _backgroundColor = backgroundColor;
+}
 
-//    if (leftEdge > _signalData->sampleCount() - samplesInWindow)
-//        leftEdge = _signalData->sampleCount() - samplesInWindow;
+glm::vec2 GraphItem2D::sizeInGraph() const
+{
+    return _sizeInGraph;
+}
 
-//    int binSize = 1 / horizontalZoom;
+void GraphItem2D::setSizeInGraph(const glm::vec2 &sizeInGraph)
+{
+    _sizeInGraph = sizeInGraph;
+}
 
-//    std::vector<float> reducedData;
-//    if (binSize > 1)
-//    {
-//        buildCache(horizontalZoom);
-//        _valueCount = 0;
-//        for (unsigned int i = 0; i < width; i++)
-//        {
-//            int bin = i + leftEdge / binSize;
-//            reducedData.push_back(_cache[bin*2]);
-//            reducedData.push_back(_cache[bin*2 + 1]);
-//            _valueCount += 2;
-//        }
+glm::vec2 GraphItem2D::positionInGraph() const
+{
+    return _positionInGraph;
+}
 
-//        if (_valueCount > 0)
-//            _posAttrBuf->setData(reducedData);
-//    }
-//    else
-//    {
-//        _valueCount = samplesInWindow;
-//        _valueCount = glm::min(_valueCount, _signalData->sampleCount() - leftEdge);
-//        for (unsigned int i = 0; i < _valueCount; i++)
-//            reducedData.push_back(data[leftEdge + i]);
+void GraphItem2D::setPositionInGraph(const glm::vec2 &positionInGraph)
+{
+    _positionInGraph = positionInGraph;
+}
 
-//        if (_valueCount > 0)
-//            _posAttrBuf->setData(reducedData);
-//    }
-
-//    if (_valueCount > 0)
-//    {
-//        std::vector<unsigned int> indices;
-//        indices.push_back(0);
-//        for (unsigned int i = 0; i < _valueCount; i++)
-//            indices.push_back(i);
-//        indices.push_back(_valueCount - 1);
-//        _indicesBuf->setData(indices);
-//    }
-//}
 
 void GraphItem2D::setData(double startTime, double endTime, unsigned int width, bool clearCache)
 {

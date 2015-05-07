@@ -8,7 +8,7 @@
 class ElectrodePlacer2D
 {
 public:
-    static std::map<std::string, glm::vec2> place(float radius);
+    static std::map<std::string, glm::vec2> place();
 };
 
 #endif

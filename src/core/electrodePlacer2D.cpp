@@ -6,11 +6,11 @@
 #include <glm/gtx/vector_angle.hpp>
 #include "geometry.h"
 
-std::map<std::string, glm::vec2> ElectrodePlacer2D::place(float radius)
+std::map<std::string, glm::vec2> ElectrodePlacer2D::place()
 {
     std::map<std::string, glm::vec2> electrodeMap;
 
-    glm::vec2 placingVector(0.0f, 1.0f);
+    glm::vec2 placingVector(0.0f, 0.5f);
 
     // Place 2 most outer circles of electrodes
     float rotAngle = glm::pi<float>() / 10.0f;
@@ -23,8 +23,8 @@ std::map<std::string, glm::vec2> ElectrodePlacer2D::place(float radius)
     for (int i = 0; i < 20; i++)
     {
         glm::vec2 rotVector = glm::rotate(placingVector, i * rotAngle);
-        electrodeMap[names1[i]] = rotVector * radius;
-        electrodeMap[names2[i]] = rotVector * 0.8f * radius;
+        electrodeMap[names1[i]] = rotVector;
+        electrodeMap[names2[i]] = rotVector * 0.8f;
     }
 
     // Form middle cross, duplicate Cz will be overwritten
@@ -32,8 +32,8 @@ std::map<std::string, glm::vec2> ElectrodePlacer2D::place(float radius)
     std::string names4[] = {"C5", "C3", "C1", "Cz", "C2", "C4", "C6"};
     for (int i = 0; i < 7; i++)
     {
-        electrodeMap[names3[i]] = glm::vec2(0.0f, 0.6f - i * 0.2f) * radius;
-        electrodeMap[names4[i]] = glm::vec2(-0.6f + i * 0.2f, 0.0f) * radius;
+        electrodeMap[names3[i]] = glm::vec2(0.0f, 0.3f - i * 0.1f);
+        electrodeMap[names4[i]] = glm::vec2(-0.3f + i * 0.1f, 0.0f);
     }
 
     // Now place rest of the electrodes on circles made by circumscribing

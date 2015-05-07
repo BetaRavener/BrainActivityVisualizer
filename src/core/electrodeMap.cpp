@@ -24,20 +24,28 @@ ElectrodeMap::ElectrodeMap() :
     _header("Electrode map file v"),
     _version(100)
 {
-    auto elPos2D = ElectrodePlacer2D::place(50);
-    auto elPos3D = ElectrodeLoader::load("electrodes/electrodes.obj");
-
-    for (std::string elName : supportedElectrodes)
+    bool defPlacement = false;
+    try
     {
-        _electrodeMap.insert(std::pair<std::string, Electrode::Ptr>(
-                                 elName,
-                                 Electrode::create(elName)));
+        load("electrodes/default.elmap");
+        defPlacement = true;
+    }
+    catch(std::exception e)
+    {
+    }
 
-        if (elPos2D.count(elName))
-            _electrodeMap.at(elName)->position2D(elPos2D[elName]);
+    if (!defPlacement)
+    {
+        auto elPos2D = ElectrodePlacer2D::place();
+        for (std::string elName : supportedElectrodes)
+        {
+            _electrodeMap.insert(std::pair<std::string, Electrode::Ptr>(
+                                     elName,
+                                     Electrode::create(elName)));
 
-        if (elPos3D.count(elName))
-            _electrodeMap.at(elName)->position3D(elPos3D[elName]);
+            if (elPos2D.count(elName))
+                _electrodeMap.at(elName)->position2D(elPos2D[elName]);
+        }
     }
 }
 
@@ -189,4 +197,14 @@ void ElectrodeMap::load(std::string path)
     }
     else
         throw std::runtime_error("Failed to open file");
+}
+
+void ElectrodeMap::import3D(std::string path)
+{
+    auto elPos3D = ElectrodeLoader::load(path);
+    for (auto& electrodePair : _electrodeMap)
+    {
+        if (elPos3D.count(electrodePair.first))
+            electrodePair.second->position3D(elPos3D[electrodePair.first]);
+    }
 }

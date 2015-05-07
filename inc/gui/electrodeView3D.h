@@ -23,7 +23,6 @@ public:
     void electrodes(std::vector<Electrode::WeakPtr> electrodes);
 
 private:
-    std::vector<Electrode::WeakPtr> _electrodes;
     BrainRenderer* _brainRenderer;
     ElectrodeRenderer3D* _electrodeRenderer;
 

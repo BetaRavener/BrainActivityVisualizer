@@ -2,8 +2,8 @@
 #include <glm/trigonometric.hpp>
 #include <glm/gtc/constants.hpp>
 
-HammingWindow::HammingWindow(unsigned int halfLength, double alfa) :
-    FilterWindow(halfLength)
+HammingWindow::HammingWindow(unsigned int length, double alfa) :
+    FilterWindow(length)
 {
     double beta = 1.0 - alfa;
     double angularCoefficient = 2 * glm::pi<double>() / (_length - 1);

@@ -4,35 +4,23 @@
 #include <string>
 
 #include <glm/gtc/type_ptr.hpp>
+#include "glmHelpers.h"
 
-ElectrodeRenderer2D::ElectrodeRenderer2D(std::vector<Electrode::WeakPtr> electrodes) :
-    ElectrodeRenderer(electrodes)
+ElectrodeRenderer2D::ElectrodeRenderer2D() :
+    spacingRadius(100)
 {
 }
 
-void ElectrodeRenderer2D::update(glm::mat4 mvpMatrix)
+void ElectrodeRenderer2D::update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 rightDir, glm::mat4 mvpMatrix)
 {
+    ElectrodeRenderer::update(eyePos, upDir, rightDir, mvpMatrix);
     _radiusUnif->setSource(2.5f);
     _mvpMatrixUnif->setSource(glm::value_ptr(mvpMatrix), 16);
 }
 
 void ElectrodeRenderer2D::initializeShaders()
 {
-    // Prepare positions for buffer
-    std::vector<float> electrodePos;
-    _electrodeCount = 0;
-    for (auto electrode : _electrodes)
-    {
-        if (electrode->has2D())
-        {
-            glm::vec2 pos = electrode->position2D();
-            electrodePos.push_back(pos.x);
-            electrodePos.push_back(pos.y);
-            _electrodeCount++;
-        }
-    }
-
-    _electrodePosAttrBuf->setData(electrodePos);
+    ElectrodeRenderer::initializeShaders();
 
     auto vertexShader = us::ShaderObject::create();
     vertexShader->loadFile("shaders/electrodesOrtho.vert");
@@ -74,11 +62,32 @@ void ElectrodeRenderer2D::prepareColorBuffer()
         if (electrode->has2D())
         {
             glm::vec3 color = electrode->color();
-            colors.push_back(color.r);
-            colors.push_back(color.g);
-            colors.push_back(color.b);
+            glm::Helpers::pushBack(colors, color);
         }
     }
 
     _electrodeColorAttrBuf->setData(colors);
+}
+
+void ElectrodeRenderer2D::updateElectrodes()
+{
+    // Prepare positions for buffer
+    std::vector<float> electrodePos;
+    _electrodeCount = 0;
+    for (auto electrode : _electrodes)
+    {
+        if (electrode->has2D())
+        {
+            glm::vec3 pos = glm::vec3(electrode->position2D(), 0) * spacingRadius;
+            glm::Helpers::pushBack(electrodePos, pos);
+            _electrodeCount++;
+        }
+    }
+
+    _electrodePosAttrBuf->setData(electrodePos);
+}
+
+bool ElectrodeRenderer2D::electrodePresent(Electrode::WeakPtr electrode)
+{
+    return electrode->has2D();
 }

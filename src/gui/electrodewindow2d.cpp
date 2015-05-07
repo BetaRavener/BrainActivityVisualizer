@@ -2,7 +2,7 @@
 #include "ui_electrodewindow2d.h"
 
 ElectrodeWindow2D::ElectrodeWindow2D(QWidget *parent) :
-    QDialog(parent),
+    QMainWindow(parent),
     ui(new Ui::ElectrodeWindow2D)
 {
     ui->setupUi(this);

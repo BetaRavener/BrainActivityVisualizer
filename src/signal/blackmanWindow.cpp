@@ -2,8 +2,8 @@
 #include <glm/trigonometric.hpp>
 #include <glm/gtc/constants.hpp>
 
-BlackmanWindow::BlackmanWindow(unsigned int halfLength, double alfa) :
-    FilterWindow(halfLength)
+BlackmanWindow::BlackmanWindow(unsigned int length, double alfa) :
+    FilterWindow(length)
 {
     double a0 = (1.0 - alfa) * 0.5;
     double a1 = 0.5;

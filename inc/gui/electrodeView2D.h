@@ -22,7 +22,6 @@ public:
     void electrodes(std::vector<Electrode::WeakPtr> electrodes);
 
 private:
-    std::vector<Electrode::WeakPtr> _electrodes;
     ElectrodeRenderer2D* _electrodeRenderer;
 
     HybridCam _cam;

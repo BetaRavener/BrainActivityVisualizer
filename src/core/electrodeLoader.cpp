@@ -14,8 +14,7 @@ std::map<std::string, glm::vec3> ElectrodeLoader::load(std::string filename)
     std::string err = tinyobj::LoadObj(shapes, materials, filename.c_str());
 
     if (!err.empty()) {
-      std::cerr << err << std::endl;
-      throw std::runtime_error("Failed to load electrode file");
+        throw std::runtime_error("Failed to load electrode file");
     }
 
     for (auto shape : shapes)

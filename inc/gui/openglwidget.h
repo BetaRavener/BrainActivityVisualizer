@@ -27,6 +27,9 @@ protected:
 
     void activateGL();
     void deactivateGL();
+
+private:
+    bool _initialized;
 };
 
 #endif

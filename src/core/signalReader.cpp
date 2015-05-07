@@ -23,12 +23,18 @@ void SignalFileReader::open(std::string path)
     if (result < 0)
         throw std::runtime_error("Failed to open file.");
 
-    for (int i = 0; i < _edfHeader.datarecords_in_file; i++)
+    if (_edfHeader.file_duration < 0)
+        _edfHeader.file_duration = -_edfHeader.file_duration;
+
+    if (_edfHeader.datarecord_duration < 0)
+        _edfHeader.datarecord_duration = -_edfHeader.datarecord_duration;
+
+    for (int i = 0; i < _edfHeader.edfsignals; i++)
     {
         // Ignore unlabeled signals
         if ((std::string(_edfHeader.signalparam[i].label)).compare(""))
         {
-            _records.push_back(SignalRecord::create(_edfHeader.handle, i, &(_edfHeader.signalparam[i]), _edfHeader.file_duration));
+            _records.push_back(SignalRecord::create(&_edfHeader, i));
         }
     }
 

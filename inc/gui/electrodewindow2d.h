@@ -1,14 +1,14 @@
 #ifndef ELECTRODEWINDOW2D_H
 #define ELECTRODEWINDOW2D_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include "electrodeView2D.h"
 
 namespace Ui {
 class ElectrodeWindow2D;
 }
 
-class ElectrodeWindow2D : public QDialog
+class ElectrodeWindow2D : public QMainWindow
 {
     Q_OBJECT
 

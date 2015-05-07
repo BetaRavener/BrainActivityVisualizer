@@ -122,12 +122,28 @@ void MainWindow::on_actionPlayer_triggered()
 
 void MainWindow::on_actionShow_2D_triggered()
 {
-    _electrodeWindow2D.show();
+    try
+    {
+        _electrodeWindow2D.show();
+    }
+    catch(std::exception e)
+    {
+        QMessageBox::critical(this, "Error", QString("Missing components required by 2D view"));
+        _electrodeWindow2D.hide();
+    }
 }
 
 void MainWindow::on_actionShow_3D_triggered()
 {
-    _electrodeWindow3D.show();
+    try
+    {
+        _electrodeWindow3D.show();
+    }
+    catch(std::exception e)
+    {
+        QMessageBox::critical(this, "Error", QString("Missing components required by 3D view"));
+        _electrodeWindow3D.hide();
+    }
 }
 
 void MainWindow::on_actionElectrode_map_triggered()
@@ -138,7 +154,11 @@ void MainWindow::on_actionElectrode_map_triggered()
 void MainWindow::electrodeMapChanged()
 {
     if (_inputModule && _inputModule->signalBatch())
+    {
         _inputModule->signalBatch()->clearElectrodeMappings();
+    }
+    _electrodeWindow2D.electrodeView()->electrodes(_electrodeMap.allElectrodes());
+    _electrodeWindow3D.electrodeView()->electrodes(_electrodeMap.allElectrodes());
 }
 
 void MainWindow::on_actionBasic_triggered()

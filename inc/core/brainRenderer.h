@@ -18,6 +18,7 @@ public:
 
     void reloadShaders();
 
+    void init();
 private:
     void initializeShaders();
 
@@ -44,6 +45,9 @@ private:
     us::Uniform::Ptr _brainColorUnif;
 
     us::UniShader* _renderEngine;
+
+    bool _brainLoaded;
+    bool _initialized;
 };
 
 #endif

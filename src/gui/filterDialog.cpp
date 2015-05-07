@@ -48,13 +48,13 @@ void FilterDialog::on_filterButton_clicked()
     switch (ui->windowComboBox->currentIndex())
     {
     case 0:
-        window = new FilterWindow(halfLength);
+        window = new FilterWindow(halfLength * 2 + 1);
         break;
     case 1:
-        window = new HammingWindow(halfLength);
+        window = new HammingWindow(halfLength * 2 + 1);
         break;
     case 2:
-        window = new BlackmanWindow(halfLength);
+        window = new BlackmanWindow(halfLength * 2 + 1);
         break;
     }
 

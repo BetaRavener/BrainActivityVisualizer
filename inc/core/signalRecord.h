@@ -16,7 +16,7 @@ public:
     typedef SafePtr<SignalRecord> WeakPtr;
     typedef SafePtr<const SignalRecord> WeakPtrConst;
 
-    static Ptr create(int _signalFileHandle, int signalIdx, edf_param_struct* signalRecord, long long duration);
+    static Ptr create(edf_hdr_struct* header, int signalIdx);
 
     SignalData::Ptr load();
     std::string label() const;
@@ -24,10 +24,8 @@ public:
 private:
     SignalRecord();
 
-    int _signalFileHandle;
+    edf_hdr_struct* _header;
     int _signalIdx;
-    edf_param_struct* _signalRecord;
-    double _frequency;
 };
 
 #endif

@@ -1,8 +1,8 @@
 #include "signalWindow.h"
+#include <stdexcept>
 
-
-FilterWindow::FilterWindow(unsigned int halfLength) :
-    _length(2 * halfLength + 1)
+FilterWindow::FilterWindow(unsigned int length) :
+    _length(length)
 {
     _coefficients = new double[_length];
 
@@ -24,6 +24,24 @@ unsigned int FilterWindow::length()
 unsigned int FilterWindow::halfLength()
 {
     return _length / 2;
+}
+
+void FilterWindow::applyTo(std::vector<float> &vec)
+{
+    if (vec.size() != _length)
+        throw new std::range_error("Length of vector must be equal to length of the window.");
+
+    for (unsigned int i = 0; i < vec.size(); i++)
+        vec[i] *= _coefficients[i];
+}
+
+void FilterWindow::applyTo(std::vector<double>& vec)
+{
+    if (vec.size() != _length)
+        throw new std::range_error("Length of vector must be equal to length of the window.");
+
+    for (unsigned int i = 0; i < vec.size(); i++)
+        vec[i] *= _coefficients[i];
 }
 
 void FilterWindow::addSample(double sample)

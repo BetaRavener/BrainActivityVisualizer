@@ -2,16 +2,18 @@
 #define FILTER_WINDOW_H
 
 #include <deque>
-
+#include <vector>
 
 class FilterWindow
 {
 public:
-    FilterWindow(unsigned int halfLength);
+    FilterWindow(unsigned int length);
     virtual ~FilterWindow();
     unsigned int length();
     unsigned int halfLength();
 
+    void applyTo(std::vector<float> &vec);
+    void applyTo(std::vector<double> &vec);
     void addSample(double sample);
     void clear();
 

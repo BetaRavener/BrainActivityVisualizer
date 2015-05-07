@@ -6,7 +6,7 @@
 class HammingWindow : public FilterWindow
 {
 public:
-    HammingWindow(unsigned int halfLength, double alfa = 0.54);
+    HammingWindow(unsigned int length, double alfa = 0.54);
     virtual ~HammingWindow();
 };
 

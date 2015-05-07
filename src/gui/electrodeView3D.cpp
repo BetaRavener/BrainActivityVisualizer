@@ -2,14 +2,18 @@
 
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QMessageBox>
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 #include <glm/gtc/matrix_transform.hpp>
 
 ElectrodeView3D::ElectrodeView3D(QWidget *parrent) :
     OpenGLWidget(parrent),
+    _brainRenderer(new BrainRenderer()),
+    _electrodeRenderer(new ElectrodeRenderer3D()),
     m_frame(0),
     _showFps(false),
     _showCrosshair(false)
@@ -18,15 +22,22 @@ ElectrodeView3D::ElectrodeView3D(QWidget *parrent) :
 
 ElectrodeView3D::~ElectrodeView3D()
 {
+    activateGL();
+
+    delete _brainRenderer;
+    _brainRenderer = nullptr;
+
+    delete _electrodeRenderer;
+    _electrodeRenderer = nullptr;
+
+    deactivateGL();
 }
 
 void ElectrodeView3D::initialize()
 {
     installEventFilter(this);
 
-    _brainRenderer = new BrainRenderer();
-
-    _electrodeRenderer = new ElectrodeRenderer3D(_electrodes);
+    _brainRenderer->init();
     _electrodeRenderer->init();
 
     _cam.Reset(true);
@@ -60,7 +71,7 @@ void ElectrodeView3D::render()
     _brainRenderer->update(_cam.GetEye(), matrix, modelMatrix);
     _brainRenderer->render();
 
-    _electrodeRenderer->update(_cam.GetEye(), matrix);
+    _electrodeRenderer->update(_cam.GetEye(), _cam.GetUp(), _cam.GetRight(), matrix);
     _electrodeRenderer->render();
 
 
@@ -186,5 +197,5 @@ bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
 
 void ElectrodeView3D::electrodes(std::vector<Electrode::WeakPtr> electrodes)
 {
-    _electrodes = electrodes;
+    _electrodeRenderer->electrodes(electrodes);
 }

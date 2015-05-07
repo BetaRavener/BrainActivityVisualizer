@@ -21,6 +21,7 @@ public:
     void save(std::string path);
     void load(std::string path);
 
+    void import3D(std::string path);
 private:
     std::map<std::string, Electrode::Ptr> _electrodeMap;
 

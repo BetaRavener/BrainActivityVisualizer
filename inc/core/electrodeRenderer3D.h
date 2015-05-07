@@ -10,13 +10,15 @@
 class ElectrodeRenderer3D : public ElectrodeRenderer
 {
 public:
-    ElectrodeRenderer3D(std::vector<Electrode::WeakPtr> electrodes);
+    ElectrodeRenderer3D();
 
-    void update(glm::vec3 eyePos, glm::mat4 mvpMatrix);
+    void update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 rightDir, glm::mat4 mvpMatrix);
 
 private:
     virtual void initializeShaders();
     virtual void prepareColorBuffer();
+    virtual void updateElectrodes();
+    virtual bool electrodePresent(Electrode::WeakPtr electrode);
 
     // Attributes
     us::Attribute::Ptr _electrodePosAttr;

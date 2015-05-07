@@ -76,9 +76,10 @@ private:
     std::vector<float> _graphBackground;
     std::vector<float> _graphBackgroundColor;
     unsigned int _graphBackgroundCount;
-    ShapeRenderer2D* _shapeRenderer;
 
+    ShapeRenderer2D* _shapeRenderer;
     GraphRenderer2D* _graphRenderer;
+
     QScrollBar* _horizontalScrollBar;
     QScrollBar* _verticalScrollBar;
     QLayout* _horizontalLabels;

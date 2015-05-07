@@ -10,6 +10,7 @@
 
 ElectrodeView2D::ElectrodeView2D(QWidget *parrent) :
     OpenGLWidget(parrent),
+    _electrodeRenderer(new ElectrodeRenderer2D()),
     m_frame(0),
     _showFps(false)
 {
@@ -17,13 +18,18 @@ ElectrodeView2D::ElectrodeView2D(QWidget *parrent) :
 
 ElectrodeView2D::~ElectrodeView2D()
 {
+    activateGL();
+
+    delete _electrodeRenderer;
+    _electrodeRenderer = nullptr;
+
+    deactivateGL();
 }
 
 void ElectrodeView2D::initialize()
 {
     installEventFilter(this);
 
-    _electrodeRenderer = new ElectrodeRenderer2D(_electrodes);
     _electrodeRenderer->init();
 
     _cam.Reset(true);
@@ -52,7 +58,7 @@ void ElectrodeView2D::render()
     glm::mat4 modelViewMatrix = viewMatrix * modelMatrix;
     glm::mat4 matrix = projMatrix * modelViewMatrix;
 
-    _electrodeRenderer->update(matrix);
+    _electrodeRenderer->update(_cam.GetEye(), _cam.GetUp(), _cam.GetRight(), matrix);
     _electrodeRenderer->render();
 
     ++m_frame;
@@ -150,5 +156,5 @@ bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
 
 void ElectrodeView2D::electrodes(std::vector<Electrode::WeakPtr> electrodes)
 {
-    _electrodes = electrodes;
+    _electrodeRenderer->electrodes(electrodes);
 }

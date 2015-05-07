@@ -5,7 +5,9 @@
 
 #include <QFileDialog>
 #include <QString>
+#include <QMessageBox>
 #include <fstream>
+#include <stdexcept>
 
 OpenSignalFileDialog::OpenSignalFileDialog(QWidget *parent) :
     QDialog(parent),
@@ -51,22 +53,30 @@ void OpenSignalFileDialog::on_selectFile_clicked()
     if (path.isEmpty())
         return;
 
-    ui->filePath->setText(path);
-    _reader.open(path.toStdString());
-    std::vector<SignalRecord::Ptr> records = _reader.records();
-
-    ui->availableSignals->clear();
-    ui->chosenSignals->clear();
-    ui->availableElectrodes->clear();
-    ui->assignElectrode->setEnabled(false);
-
-    for (SignalRecord::Ptr record : records)
+    try
     {
-        QListWidgetItem* item = new SignalRecordItem(record);
-        ui->availableSignals->addItem(item);
-    }
+        _reader.open(path.toStdString());
 
-    initAvailableElectrodes();
+        std::vector<SignalRecord::Ptr> records = _reader.records();
+
+        ui->availableSignals->clear();
+        ui->chosenSignals->clear();
+        ui->availableElectrodes->clear();
+        ui->assignElectrode->setEnabled(false);
+
+        for (SignalRecord::Ptr record : records)
+        {
+            QListWidgetItem* item = new SignalRecordItem(record);
+            ui->availableSignals->addItem(item);
+        }
+
+        ui->filePath->setText(path);
+        initAvailableElectrodes();
+    }
+    catch (std::runtime_error e)
+    {
+        QMessageBox::critical(this, "Error", QString("Invalid EEG file"));
+    }
 }
 
 void OpenSignalFileDialog::on_addSignal_clicked()

@@ -106,6 +106,11 @@ void HybridCam::DrawCrosshair(){
     glDisable(GL_DEPTH_TEST);*/
 }
 
+const glm::vec3 &HybridCam::GetRight() const
+{
+    return glm::normalize(glm::cross(rLookAt, up));
+}
+
 void HybridCam::Clear(){
     /*glDeleteBuffers(1,&colorVBO);
     glDeleteBuffers(1,&vertexVBO);
@@ -150,9 +155,7 @@ void HybridCam::MoveA(const glm::vec3 &vec){
 }
 
 void HybridCam::MoveR(const glm::vec3 &vec){
-    glm::vec3 right = glm::cross(rLookAt, up);
-    right = glm::normalize(right);
-
+    glm::vec3 right = GetRight();
 
     if(orbit){
         lookAt += up * (invertedY ? vec.y : -vec.y);

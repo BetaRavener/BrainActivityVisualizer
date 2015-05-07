@@ -26,6 +26,8 @@ private slots:
 
     void on_exportButton_clicked();
 
+    void on_import3DButton_clicked();
+
 private:
     Ui::ElectrodeMapDialog *ui;
     ElectrodeMap* _electrodeMap;

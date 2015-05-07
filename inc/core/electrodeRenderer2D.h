@@ -10,13 +10,15 @@
 class ElectrodeRenderer2D : public ElectrodeRenderer
 {
 public:
-    ElectrodeRenderer2D(std::vector<Electrode::WeakPtr> electrodes);
+    ElectrodeRenderer2D();
 
-    void update(glm::mat4 mvpMatrix);
+    void update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 rightDir, glm::mat4 mvpMatrix);
 
 private:
     virtual void initializeShaders();
     virtual void prepareColorBuffer();
+    virtual void updateElectrodes();
+    virtual bool electrodePresent(Electrode::WeakPtr electrode);
 
     // Attributes
     us::Attribute::Ptr _electrodePosAttr;
@@ -24,6 +26,8 @@ private:
     // Uniforms
     us::Uniform::Ptr _radiusUnif;
     us::Uniform::Ptr _mvpMatrixUnif;
+
+    float spacingRadius;
 };
 
 #endif

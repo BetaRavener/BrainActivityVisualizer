@@ -28,7 +28,7 @@ void ElectrodeMapDialog::on_importButton_clicked()
     if (_electrodeMap == nullptr)
         return;
 
-    QString path = QFileDialog::getOpenFileName(this, "Select map file", "data", "Electrode map (*.elmap)");
+    QString path = QFileDialog::getOpenFileName(this, "Select map file", "electrodes", "Electrode map (*.elmap)");
     if (path == "")
         return;
 
@@ -48,13 +48,30 @@ void ElectrodeMapDialog::on_exportButton_clicked()
     if (_electrodeMap == nullptr)
         return;
 
-    QString path = QFileDialog::getSaveFileName(this, "Select map file", "data", "Electrode map (*.elmap)");
+    QString path = QFileDialog::getSaveFileName(this, "Select map file", "electrodes", "Electrode map (*.elmap)");
     if (path == "")
         return;
 
     try
     {
         _electrodeMap->save(path.toStdString());
+    }
+    catch (std::runtime_error re)
+    {
+        QMessageBox::critical(this, "Error", QString::fromStdString(re.what()));
+    }
+}
+
+void ElectrodeMapDialog::on_import3DButton_clicked()
+{
+    QString path = QFileDialog::getOpenFileName(this, "Select positions file", "electrodes", "Electrode positions (*.obj)");
+    if (path == "")
+        return;
+
+    try
+    {
+        _electrodeMap->import3D(path.toStdString());
+        emit electrodeMapImported();
     }
     catch (std::runtime_error re)
     {
