@@ -1,0 +1,1 @@
+TEST.EDF - file obtained publicly from <http://sccn.ucsd.edu/eeglab/download/TEST.EDF>

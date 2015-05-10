@@ -11,6 +11,7 @@
 ElectrodeView2D::ElectrodeView2D(QWidget *parrent) :
     OpenGLWidget(parrent),
     _electrodeRenderer(new ElectrodeRenderer2D()),
+    _electrodeAreaSize(100),
     m_frame(0),
     _showFps(false)
 {

@@ -7,6 +7,7 @@
 #include <QElapsedTimer>
 
 #include "electrodeRenderer2D.h"
+#include "shapeRenderer2D.h"
 #include "hybridCam.h"
 
 class ElectrodeView2D : public OpenGLWidget
@@ -30,6 +31,8 @@ private:
     QPoint _prevMousePos;
     float _moveSensitivity;
     float _scrollSensitivity;
+
+    float _electrodeAreaSize;
 
     int m_frame;
 

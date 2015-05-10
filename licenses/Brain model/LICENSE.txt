@@ -1,0 +1,9 @@
+Brain model was obtained from 
+<http://brainder.org/download/brain-for-blender/> 
+
+License 
+
+The models in this page are by A. M. Winkler and are licensed under a 
+Creative Commons Attribution-ShareAlike 3.0 Unported License. The 
+original work can be found at http://brainder.org/brain-for-blender. 
+

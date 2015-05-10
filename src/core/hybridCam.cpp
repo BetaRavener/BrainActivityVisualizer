@@ -106,7 +106,7 @@ void HybridCam::DrawCrosshair(){
     glDisable(GL_DEPTH_TEST);*/
 }
 
-const glm::vec3 &HybridCam::GetRight() const
+const glm::vec3 HybridCam::GetRight() const
 {
     return glm::normalize(glm::cross(rLookAt, up));
 }

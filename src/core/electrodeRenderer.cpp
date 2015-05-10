@@ -6,6 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "glmHelpers.h"
 
+#include "GL/glew.h"
+
 #include <QImage>
 #include <QPainter>
 #include <QString>
@@ -43,6 +45,7 @@ void ElectrodeRenderer::render()
     if (_electrodeCount > 0)
     {
         prepareColorBuffer();
+
         _renderEngine->render(us::PrimitiveType::POINTS, _electrodeCount);
 
         glEnable(GL_BLEND);

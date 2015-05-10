@@ -9,7 +9,6 @@ PlayerSettingsDialog::PlayerSettingsDialog(QWidget *parent) :
 
     ui->transformationComboBox->addItem("None");
     ui->transformationComboBox->addItem("FFT");
-    ui->transformationComboBox->addItem("DWT");
 }
 
 PlayerSettingsDialog::~PlayerSettingsDialog()
@@ -55,8 +54,6 @@ ElectrodeAdapter::TransformationType PlayerSettingsDialog::transformationType()
         return ElectrodeAdapter::TransformationType::None;
     case 1:
         return ElectrodeAdapter::TransformationType::FFT;
-    case 2:
-        return ElectrodeAdapter::TransformationType::DWT;
     default:
         return ElectrodeAdapter::TransformationType::None;
     }
@@ -71,9 +68,6 @@ void PlayerSettingsDialog::transformationType(ElectrodeAdapter::TransformationTy
         break;
     case ElectrodeAdapter::TransformationType::FFT:
         ui->transformationComboBox->setCurrentIndex(1);
-        break;
-    case ElectrodeAdapter::TransformationType::DWT:
-        ui->transformationComboBox->setCurrentIndex(2);
         break;
     }
 }

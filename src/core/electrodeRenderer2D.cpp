@@ -7,7 +7,7 @@
 #include "glmHelpers.h"
 
 ElectrodeRenderer2D::ElectrodeRenderer2D() :
-    spacingRadius(100)
+    _spacingRadius(1)
 {
 }
 
@@ -16,6 +16,12 @@ void ElectrodeRenderer2D::update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 ri
     ElectrodeRenderer::update(eyePos, upDir, rightDir, mvpMatrix);
     _radiusUnif->setSource(2.5f);
     _mvpMatrixUnif->setSource(glm::value_ptr(mvpMatrix), 16);
+}
+
+void ElectrodeRenderer2D::setSpacingRadius(float radius)
+{
+    _spacingRadius = radius;
+    _electrodesChanged = true;
 }
 
 void ElectrodeRenderer2D::initializeShaders()
@@ -78,7 +84,7 @@ void ElectrodeRenderer2D::updateElectrodes()
     {
         if (electrode->has2D())
         {
-            glm::vec3 pos = glm::vec3(electrode->position2D(), 0) * spacingRadius;
+            glm::vec3 pos = glm::vec3(electrode->position2D(), 0) * _spacingRadius;
             glm::Helpers::pushBack(electrodePos, pos);
             _electrodeCount++;
         }

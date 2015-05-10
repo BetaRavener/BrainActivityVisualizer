@@ -60,7 +60,6 @@ protected:
     us::UniShader* _renderEngine;
     us::UniShader* _namesEngine;
 
-private:
     bool _electrodesChanged;
 };
 

@@ -14,6 +14,7 @@ public:
 
     void update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 rightDir, glm::mat4 mvpMatrix);
 
+    void setSpacingRadius(float radius);
 private:
     virtual void initializeShaders();
     virtual void prepareColorBuffer();
@@ -27,7 +28,7 @@ private:
     us::Uniform::Ptr _radiusUnif;
     us::Uniform::Ptr _mvpMatrixUnif;
 
-    float spacingRadius;
+    float _spacingRadius;
 };
 
 #endif

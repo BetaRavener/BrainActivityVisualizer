@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 2.8.11)
 project(BrainActivityVisualizer C CXX)
 
+# Set some Win32 Specific Settings
+IF(WIN32)
+SET(GUI_TYPE WIN32)
+ENDIF(WIN32)
+# Set some Apple MacOS Specific settings
+IF (APPLE)
+SET(GUI_TYPE MACOSX_BUNDLE)
+ENDIF (APPLE)
+
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
@@ -15,7 +24,7 @@ find_package(GLM REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wextra -Wno-comment")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wextra -Wno-comment -Wuninitialized")
 add_definitions("-D_LARGEFILE64_SOURCE -D_LARGEFILE_SOURCE -DGLEW_MX")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
@@ -39,55 +48,23 @@ QT5_WRAP_UI(forms_headers ${forms})
 QT5_WRAP_CPP(gui_inc_moc ${gui_inc})
 QT5_ADD_RESOURCES(resources_rcc ${resources})
 
-add_executable(bac ${core_src} ${signal_src} ${gui_src} ${gui_inc_moc} ${forms_headers} ${resources_rcc})
+add_executable(bav ${GUI_TYPE} ${core_src} ${signal_src} ${gui_src} ${gui_inc_moc} ${forms_headers} ${resources_rcc})
 if (DEVEL_PROJ)
     add_custom_target(dummy_headers SOURCES ${core_inc} ${signal_inc} ${gui_inc})
 endif()
-target_link_libraries(bac Qt5::Widgets Qt5::Core Qt5::Gui)
-
-# set(tinyobj_inc_dir CACHE PATH "")
-# if(NOT DEFINED tinyobj_inc_dir)
-    # message( FATAL_ERROR "Tinyobjloader include directory not set.")
-# endif()
-# if(NOT EXISTS ${tinyobj_inc_dir})
-    # message( FATAL_ERROR "Tinyobjloader include directory does not exists: ${tinyobj_inc_dir}")
-# endif()
-# if(NOT EXISTS ${tinyobj_inc_dir}/tiny_obj_loader.h)
-    # message( FATAL_ERROR "Tinyobjloader headers not found at specified path.")
-# endif()
-    
-# set(tinyobj_lib CACHE FILEPATH "")
-# if(NOT DEFINED tinyobj_lib)
-    # message( FATAL_ERROR "Tinyobjloader library location not set.")
-# endif()
-# if(NOT EXISTS ${tinyobj_lib})
-    # message( FATAL_ERROR "Tinyobjloader library does not exist at specified path.")
-# endif()
-
-# include_directories(${tinyobj_inc_dir})
-# # add imported target
-# add_library(imp_tinyobj STATIC IMPORTED)
-# # point the imported target at the real file
-# set_property(TARGET imp_tinyobj PROPERTY IMPORTED_LOCATION ${tinyobj_lib})
-# target_link_libraries(bac imp_tinyobj)
+target_link_libraries(bav Qt5::Widgets Qt5::Core Qt5::Gui)
 
 include_directories(${TINYOBJLOADER_INCLUDE_DIR})
 # add imported target
 add_library(imp_tinyobj STATIC IMPORTED)
 # point the imported target at the real file
 set_property(TARGET imp_tinyobj PROPERTY IMPORTED_LOCATION ${TINYOBJLOADER_LIBRARY})
-target_link_libraries(bac imp_tinyobj)
-
-# POST_BUILD copy model to binary
-#TODO: MyTarget
-#add_custom_command(TARGET MyTarget POST_BUILD
-#                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-#                      ${CMAKE_SOURCE_DIR}/models $<TARGET_FILE_DIR:MyTarget>)
+target_link_libraries(bav imp_tinyobj)
 
 include_directories(${UNISHADER_INCLUDE_DIR})
-target_link_libraries(bac ${UNISHADER_LIBRARY})
+target_link_libraries(bav ${UNISHADER_LIBRARY})
 
 include_directories(${GLM_INCLUDE_DIR})
 
 include_directories(${GLEW_INCLUDE_PATH})
-target_link_libraries(bac ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY})
+target_link_libraries(bav ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY})

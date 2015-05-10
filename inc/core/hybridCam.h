@@ -39,7 +39,7 @@ public:
     const glm::vec3 &GetEye() const {return eye;}
     const glm::vec3 &GetLookAt() const {return lookAt;}
     const glm::vec3 &GetUp() const {return up;}
-    const glm::vec3 &GetRight() const;
+    const glm::vec3 GetRight() const;
     float getZoom() const {return orbitDist;}
 	bool IsOrbiting() const { return orbit; }
     void MoveA(const glm::vec3 &vec);

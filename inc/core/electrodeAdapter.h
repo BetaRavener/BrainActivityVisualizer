@@ -16,7 +16,7 @@ public:
     double gain();
     void gain(double gain);
 
-    enum class TransformationType{None, FFT, DWT};
+    enum class TransformationType{None, FFT};
 
     TransformationType transformationType();
     void transformationType(TransformationType type);
