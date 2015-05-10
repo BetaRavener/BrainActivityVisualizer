@@ -33,7 +33,7 @@ double SignalData::getSampleAtTime(double time, bool normalize) const
 
 unsigned int SignalData::getIdxAtTime(double time) const
 {
-    return glm::min((unsigned int)(time * _samplingFreq), _data.size() - 1);
+    return glm::min((unsigned int)(time * _samplingFreq), (unsigned int)(_data.size() - 1));
 }
 
 double SignalData::normalizeSample(double sample) const
