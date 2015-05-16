@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "fileInputModule.h"
@@ -28,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _electrodeWindow3D.electrodeView()->setFormat(format);
     _electrodeWindow2D.electrodeView()->setFormat(format2);
     ui->graphView2D->setFormat(format3);
+
     ui->graphView2D->addLabels(ui->horizontalGraphLabels, ui->verticalGraphLabels);
     ui->graphView2D->addScrollBars(ui->graphHorizontalScroll, ui->graphVerticalScroll);
     connect(ui->graphView2D, SIGNAL(requestTime(double)), &_player, SLOT(changeTime(double)));
@@ -37,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->verticalScrollArea->viewport()->installEventFilter(&dummyFilter);
     ui->graphHorizontalScroll->installEventFilter(&dummyFilter);
     ui->graphVerticalScroll->installEventFilter(&dummyFilter);
+    connect(ui->trackCheckBox, SIGNAL(toggled(bool)), ui->graphView2D, SLOT(trackPlayback(bool)));
 
     _electrodeWindow2D.electrodeView()->electrodes(_electrodeMap.allElectrodes());
     _electrodeWindow3D.electrodeView()->electrodes(_electrodeMap.allElectrodes());
@@ -52,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&_filterDialog, SIGNAL(dataFiltered()), ui->graphView2D, SLOT(dataChanged()));
 
     _player.assignPlayButton(ui->playButton);
+    _player.assignTimeLabel(ui->currentTimeLabel);
     connect(&_player, SIGNAL(timeChanged(double)), ui->graphView2D, SLOT(timeChanged(double)));
     connect(&_player, SIGNAL(timeChanged(double)), _electrodeWindow2D.electrodeView(), SLOT(repaint()));
     connect(&_player, SIGNAL(timeChanged(double)), _electrodeWindow3D.electrodeView(), SLOT(repaint()));
@@ -66,12 +72,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
     closeWindows();
-}
-
-void MainWindow::showWindows()
-{
-    _electrodeWindow2D.show();
-    _electrodeWindow3D.show();
 }
 
 void MainWindow::closeWindows()

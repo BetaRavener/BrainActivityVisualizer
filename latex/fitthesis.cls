@@ -234,6 +234,11 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \newpage\fontfamily{\familydefault}\selectfont%
 }
 
+\newcommand\makespecification{%
+\mktxt{30}{SEM ZADANIE :-)}
+\newpage
+}
+
 %-----------------------------------------------------------------------------
 %Abstrakt, klicovaslova \makeabstract
 %-----------------------------------------------------------------------------
@@ -243,11 +248,12 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \mktxt@b{16}{\@abstract@CS}\noindent\@tabstract@CS
 
 \vfill
+\newpage
+\thispagestyle{empty}\null%
+\vfill
 
 \mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
 
-\vfill
-\newpage
 \vfill
 
 \mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
@@ -350,6 +356,8 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \mktxt{11}{BRNO \@year}
 
 \newpage\fontfamily{\familydefault}\selectfont%
+%=================================================================================
+%\makespecification
 %=================================================================================
 \makeabstract\makedeclaration
 \clearpage

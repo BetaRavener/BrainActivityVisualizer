@@ -27,30 +27,30 @@ A brain is a central organ of a human nervous system and as such it has a very
 important role in almost every human activity. When performing conscious and subconscious tasks, the brain exhibits an electrical activity caused by communication between neurons -- elementary units of a neural tissue \cite{brainFacts}. The complexity of the brain makes it difficult to study and understand. This is further complicated by the fact that a person must be alive and conscious during many trials.
 
 % Uvod do EEG
-Because of that, the brain activity can provide a valuable insight into mental processes and brain functions. The activity can be measured using multiple approaches. This thesis is concerned with electroencephalography (EEG), a non-invasive method that measures the activity from a scalp using electrodes and additional electronic equipment. 
+Because of that, the brain activity can provide a valuable insight into mental processes and brain functions. The activity can be measured using multiple approaches. This thesis is interested in \emph{electroencephalography} (EEG), a non-invasive method that measures the activity from a scalp using electrodes and additional electronic equipment. 
 
 % Pouzitie EEG, uvod do BCI
-EEG has many usages. It can be used to diagnose patients and represents an important tool for studying human brain. Many brain-computer interfaces (BCI) are also based on EEG. These are devices that provide direct communication pathway between the brain and an external device, typically personal computer. BCIs can be used to provide severely impaired patients a way to interact with surroundings \cite{bcComm}, but they can be also used by healthy persons to augment cognitive or mental functions \cite{compForBrainStudy}. 
+EEG has many uses. It can be used to diagnose patients and represents an important tool for studying human brain. Many brain-computer interfaces (BCI) are also based on EEG. These are devices that provide direct communication pathway between the brain and an external device, typically personal computer. BCIs can be used to provide severely impaired patients a way to interact with their surroundings \cite{bcComm}, but they can be also used by healthy persons to augment cognitive or mental functions, for example to control a device without any motor movement. \cite{compForBrainStudy}. 
 
-Data measured by modern EEG are usually just signal amplitude values in digital form, which are hard for humans to interpret. Another issue is that, generally, users are not interested in raw values but in some features that the signal carries, such as intensity at certain frequency or specific patterns that represent a certain activity performed by a measured subject \cite{eegClass}. 
+Data measured by modern EEG are usually just signal amplitude values in digital form, which are hard for humans to interpret. Another issue is that, generally, users are not interested in raw values but in some features that the EEG signal carries, such as intensity at certain frequency or specific patterns that represent a certain activity performed by a measured subject \cite{eegClass}. 
 
-This creates a need for applications capable of presenting measured data interactively. However, these applications would not be possible without the rapid development in the field of electronics in recent decades. Particularly an ever increasing computational power of personal computers allowed developing sophisticated and feature-rich applications that considerably help researchers to analyze measured data by providing means for signal processing and visualization.
+This creates a need for applications capable of presenting measured data interactively. There are already existing applications for this purpose, some of which are analyzed as a part of this thesis. However, these applications are often incomplete and either offer only basic visualizations, miss any methods of signal processing, or have performance issues with large datasets. This requires a user to use two or more applications and switch between them.
 
 % Ciele
-The goal of this work is to create a modern application that could serve as an EEG data analysis tool. The application will implement a chosen set of data processing methods, including signal filtering and classification by frequency. More importantly, the application will provide visualization methods, such as charts showing waveform of measured signal in time domain, and both a two and a three-dimensional models displaying brain activity. Another task will be to create an intuitive and clean, yet customizable graphical user interface that will be responsive for real-time signal inputs. However, the application should be able to process also large offline data measured earlier without noticeable performance decrease.
+The goal of this work is to create a single, modern application that could serve as an EEG data analysis tool. The application will implement a chosen set of data processing methods, including signal filtering and classification by frequency. More importantly, the application will provide visualization methods, such as charts showing waveform of measured signal in time domain, and both a two and a three-dimensional models displaying brain activity. Another task will be to create an intuitive and clean, yet customizable graphical user interface that will be responsive for real-time signal inputs. However, the application should be able to process also large offline data measured earlier without noticeable performance decrease.
 
 % O com to tu je
 The text is structured into chapters that start as a general theory and
 progressively get more specific, concluded by an application concept and
 implementation. 
 
-Chapter \ref{humanBrain} offers introduction to a human brain and methods for measuring its activity using \gls{eeg}.
+Chapter \ref{humanBrain} offers an introduction to a human brain and methods for measuring its activity using \gls{eeg}.
 
-Moving on, Chapter \ref{appProcVis} provides required foundations of signal processing and computer visualization. 
+Moving on, Chapter \ref{appProcVis} provides fundamentals of signal processing and computer visualization relevant for this thesis. 
 
-Chapter \ref{existSol} contains reviews of few existing solutions in field that serve as an inspiration for this work.
+Chapter \ref{existSol} contains reviews of several existing solutions for biosignals visualization, which serve as an inspiration for this work.
 
-The concept for the application is introduced in Chapter \ref{concept} and eventually transforms into the implementation, which is described in Chapter \ref{implementation}.
+The concept for the application is introduced in Chapter \ref{concept} and eventually transformed into the implementation, which is described in Chapter \ref{implementation}.
  
 \chapter{Human Brain} \label{humanBrain}
 A human brain is a central unit of a human nervous system and has an important role in almost
@@ -83,7 +83,6 @@ each with a different role \cite{brainFacts}:
 \end{description}
 Figure \ref{fig:brainAnatomy} shows all the discussed structures on a model of the brain.
 
-%TODO: footnote is on other page
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=1\linewidth]{fig/BrainAnatomy.jpg}
@@ -96,7 +95,6 @@ Figure \ref{fig:brainAnatomy} shows all the discussed structures on a model of t
 The neural tissue is made of cells called neurons that communicate with each
 other and represent basic working units of the brain.
 The neuron consists of a cell body, dendrites and an axon, which can be seen in Figure \ref{fig:neuron}.
-%TODO: footnote is on other page
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.8\linewidth]{fig/neuron2.jpg}
@@ -116,13 +114,13 @@ The neurotransmitters diffuse across the synapse and bind to receptors on the su
 of a target cell's dendrite, which causes response in the target \cite{brainFacts}.
 
 \section{Electroencephalography}
-As has been presented, the nature of the human nervous system is electrical. When many neurons are active at the same time, the collective charge of ions is large enough to propagate as a wave to the surface of a brain or even to a scalp. Therefore, it is possible to observe a brain activity in underlying brain structures by measuring the variation of the surface electrical potential on the scalp. This is done by placing a conductive electrodes on the scalp and taking a measurement of the potential. The method just described is known as electroencephalography (\gls{eeg}) and it is a noninvasive way to monitor and study human brain. Earliest works used galvanometers and sophisticated techniques to take measurements \cite{eegHistory}, which has been since substituted by A/D converters and computers or other equipment for recording digital data. The recorded data can be then subjected to further digital signal processing (\gls{dsp}) \cite{eegClass}.
+As has been presented, the nature of the human nervous system is electrical. When many neurons are active at the same time, the collective charge of ions is large enough to propagate as a wave to the surface of a brain or even to a scalp. Therefore, it is possible to observe a brain activity in underlying brain structures by measuring the variation of the surface electrical potential on the scalp. This is done by placing a conductive electrodes on the scalp and taking a measurement of the potential. The method just described is known as \emph{electroencephalography} (\gls{eeg}) and it is a noninvasive way to monitor and study human brain. Earliest works used galvanometers and sophisticated techniques to take measurements \cite{eegHistory}, which has been since substituted by A/D converters and computers or other equipment for recording digital data. The recorded data can be then subjected to further \emph{digital signal processing} (\gls{dsp}) \cite{eegClass}.
 
-The main advantage of \gls{eeg} over other methods for monitoring brain activity, namely \gls{mri} and \gls{pet}, is speed as it can record responses
+The main advantage of \gls{eeg} over other methods for monitoring brain activity, namely \gls{mri}\footnote{\emph{Magnetic resonance imaging} is using magnetic fields and radio waves to form images of the body.} and \gls{pet}\footnote{\emph{Positron emission tomography} is using radioactive tracers to map functional processes in the body.}, is speed as it can record responses
 to a stimulus within fractions of a second \cite{eegFund}. Applications of \gls{eeg}
 include:
 \begin{itemize}
-  \item Research -- monitoring of brain activity during cognitive and motoric tasks
+  \item Research -- monitoring of brain activity during cognitive and motoric tasks in high time resolution
   \item Medical -- diagnosis of brain diseases or confirmation of brain death 
   \item Human computer interaction -- execution of commands using brain activity  
 \end{itemize}
@@ -146,7 +144,7 @@ The setup used for encephalographic measurements usually consists of:
 \end{itemize}
 
 % Electrodes
-\paragraph{Electrode Caps}
+\paragraph{Electrode Caps --\kern-0.5em}
 Electrodes exist in various forms but this thesis will focus on
 headsets and electrode caps, such as one displayed in Figure \ref{fig:eegCap}.
 These caps usually consist of small discs serving as electrodes made
@@ -158,15 +156,6 @@ contact impedance and improve readings at the lowest level. It also helps
 electrodes to stick to the scalp surface so accidental shift in a position is less likely. 
 
 There is also another type of electrodes that doesn't require application of gel. These are called dry electrodes and they use additional electronics to lower skin impedance, such as local impedance converting amplifier. Because of this, systems using dry electrodes are more bulky and more expensive but they don't require skin preparation and usage of gels that cause skin irritation \cite{dryElectrodes}. 
-
-%TODO: footnote is on other page
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=1\linewidth]{fig/eegCap.jpg}
-	\caption[Caption for LOF]{Electrode cap\protect\footnotemark}
-	\label{fig:eegCap}
-\end{figure}
-\footnotetext{Image source \url{http://www.psychologie.uzh.ch/fachrichtungen/plasti/Labor/\gls{eeg}-03.jpg}}
 
 % Cap
 The electrodes are prepositioned on a silicon cap in locations according to
@@ -180,7 +169,7 @@ calculate position of each electrode from few distance and angle measurements by
 utilizing specific properties of standard placement system \cite{rapidPos}.
 
 % Amplifiers
-\paragraph{Amplifiers}
+\paragraph{Amplifiers --\kern-0.5em}
 The strength of the signal measured by electrodes is in order of microvolts and
 normally range from \SIrange{10}{500}{\uV} \cite{neuralAmp}. Therefore, an amplifier is needed to bring the amplitude to higher voltage levels that can be processed
 by other electrical circuits and components. The requirements on amplifiers for
@@ -197,7 +186,7 @@ Consequently, energy efficient amplifiers are being designed lately that are ver
 long periods of time and dissipate only little heat \cite{neuralAmp}.
 
 % Filters
-\paragraph{Filters}
+\paragraph{Filters --\kern-0.5em}
 An analog band pass filter is used to limit frequencies into a certain range of
 interest after a signal amplification. In some cases it may be already a part of the amplifier.
 Another common filter is a notch filter, which can used to filter out noise
@@ -206,8 +195,16 @@ at frequency of a power line. Depending on a country, it may be set to
 \cite{deltaCompNREM}. Such filter is required only if it is desirable to keep also
 high frequencies. Otherwise, a low pass filter would be sufficient because the interesting frequency bands usually lies bellow the frequency of the power line.
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=1\linewidth]{fig/eegCap.jpg}
+	\caption[Caption for LOF]{Electrode cap\protect\footnotemark}
+	\label{fig:eegCap}
+\end{figure}
+\footnotetext{Image source \url{http://www.psychologie.uzh.ch/fachrichtungen/plasti/Labor/\gls{eeg}-03.jpg}}
+
 % A/D converter
-\paragraph{A/D Converter}
+\paragraph{A/D Converter --\kern-0.5em}
 An A/D converter unit is used to convert filtered analog values to digital
 representation. The converter should have a resolution of at least 12 bits and
 ideally 16 bits or more. With a high number of electrodes, analog multiplexers are
@@ -219,7 +216,7 @@ fundamental for correct signal reconstruction without aliasing artifact. The
 preferred sampling frequency is \SIrange{256}{400}{\Hz} \cite{guidDigEEG}.
 
 % Recording device
-\paragraph{Recording Device}
+\paragraph{Recording Device --\kern-0.5em}
 Converted samples from A/D converters are stored in a digital memory for further
 processing which will be discussed later in this section \ref{sub:dataAnalysis}.
 A recording device may be represented by a computer or by a
@@ -260,15 +257,6 @@ original contours and combines the labels of these original contours to create
 new label. For example, a contour lying between original contours F and C is labeled FC \cite{placeSys}. The positions of electrodes according to this
 system are shown in Figure \ref{fig:system1010}. 
 
-%TODO: footnote is on other page
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=1\linewidth]{fig/system10-10.png}
-	\caption[Caption for LOF]{International 10-20 (black) and 10-10 (gray) system of \gls{eeg} sensor placement\protect\footnotemark}
-	\label{fig:system1010}
-\end{figure}
-\footnotetext{Image source \cite{placeSys}}
-
 % Popis 10-5
 The 10-5 electrode placement system further extends the 10-10 system to allow an
 even higher number of channels to be used as systems with over 128 channels are
@@ -276,20 +264,12 @@ not uncommon anymore and have become commercially available\footnote{\url{http:/
 The total number of possible locations supported by 10-5 system is 345 \cite{placeSys}.
 This system is in a proposition stage and is yet to be recognized as a standard.
 
-%TODO: Delete if not needed
-%\subsection{Measurement procedure}
-%Before a measurement, the electrodes are cleaned thoroughly to remove any
-%impurities that could have an impact on it. The skin is also cleaned from oils
-%and brushed from dried parts. It is important to adhere to a strict hygiene as
-%this might cause irritation and inflammation, and with repeated measurements may
-%develop into an infection \cite{eegFund}. The subject is then seated comfortably
-%to eliminate any unnecessary movement because it could spoil the measured data.
-%Electrodes or an electrode cap are placed on subject's scalp and recording can begin.
-%In case of a research oriented session, the subject is usually instructed to
-%perform specific tasks such as imagining moving a certain part of a body, rotating
-%an object in \gls{3d} space, or focusing on a specific area of a display device \cite{bcComm}. For other
-%purposes, such as medical diagnosis, subjects may be monitored while laying on
-%their back with closed eyes or during sleep.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=1\linewidth]{fig/system10-10.png}
+	\caption[Caption for LOF]{International 10-20(black) and 10-10(gray) system of \gls{eeg} sensor placement\cite{placeSys}}
+	\label{fig:system1010}
+\end{figure}
 
 \subsection{Data Analysis} \label{sub:dataAnalysis}
 The recorded data are subject to further processing using numerical filters and
@@ -329,14 +309,15 @@ Common approach to this problem is to train a neural network that can classify
 patterns in brain waves with accuracy high enough for normal usage.
 
 \chapter{Approaches to Signal Processing and Visualization} \label{appProcVis}
-Once the data from electrodes have been recorded they can be processed and visualized according to chosen analysis method. This chapter will provide information about methods that are commonly used for processing signals and visualization of such data. A more specific terminology will used in the following text. The term \emph{signal processing} will be from now on restricted to digital signal processing as the processing will be performed on software level. Likewise, the term \emph{signal} will be restricted to a discrete-time signals represented by a sequence of numbers. 
+Once the data from electrodes have been recorded they can be processed and visualized according to chosen analysis method. This chapter will provide information about methods that are commonly used for processing EEG signals. The chapter will also discuss general data visualization methods and how these methods can be performed on modern graphics card to produce a visual output in form of a raster graphics.
+A more specific terminology will used in the following text. The term \emph{signal processing} will be from now on restricted to digital signal processing as the processing will be performed on software level. Likewise, the term \emph{signal} will be restricted to a discrete-time signals represented by a sequence of numbers. 
 
 \section{Signal Processing} \label{sec:sigProc}
 In general, signal processing is concerned with representation, transformation, and manipulation of signals and the information they contain. For example, it can be used after an EEG measurement to ease analysis of recorded data by filtering out noise and selecting signal features, as presented in Section \ref{sub:dataAnalysis}. This section, therefore, provides general information about
 methods of signal processing and specific implementation details are discussed in Section \ref{sec:implFIRfilters}. 
 
 \subsection{Discrete Fourier Transform}
-Discrete Fourier transform (\gls{dft}) is an operation that produces a corresponding frequency spectrum for any given sequence of numbers. Formally the \gls{dft} is defined by Equation \ref{eq:DFT} where the sequence $x(n)$ represents the input, usually a signal \cite[p. 401]{DSP3}. 
+\emph{Discrete Fourier transform} (\gls{dft}) is an operation that produces a corresponding frequency spectrum for any given sequence of numbers. Formally the \gls{dft} is defined by Equation \ref{eq:DFT} where the sequence $x(n)$ represents the input, usually a signal \cite[p. 401]{DSP3}. 
 
 \begin{equation}
 \label{eq:DFT}
@@ -527,26 +508,15 @@ brain activity map that displays each frequency band in \gls{2d}. The settings,
 such as gain factor and buffer size, are not shared in any way between the
 applications, resulting in different behavior which can be quite confusing.
 However, the focus on ordinary computer users can be felt as the applications
-are visually appealing and user-friendly. The TestBench and 3D activity map are displayed in figures \ref{fig:emotivTest} and \ref{fig:emotiv3d} respectively. 
+are visually appealing and user-friendly. The TestBench and 3D activity map are displayed in figure \ref{fig:emotivTest}. 
 
-%TODO: footnote is on other page
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\linewidth]{fig/emotivTest.jpg}
-	\caption[Caption for LOF]{Emotiv TestBench\protect\footnotemark}
+	\includegraphics[width=0.47\linewidth]{fig/emotivTest.jpg}
+	\includegraphics[width=0.47\linewidth]{fig/epoc3d.jpg}
+	\caption[Caption for LOF]{Emotiv TestBench and 3D brain activity map\protect\footnotemark}
 	\label{fig:emotivTest}
 \end{figure}
-\footnotetext{Image source \url{http://common.ziffdavisinternet.com/util_get_image/22/0,1425,sz=1&i=221770,00.jpg}}
-
-%TODO: footnote is on other page
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\linewidth]{fig/epoc3d.jpg}
-	\caption[Caption for LOF]{Emotiv 3D brain activity map\protect\footnotemark}
-	\label{fig:emotiv3d}
-\end{figure}
-\footnotetext{Image source \url{https://emotiv.com/upload/iblock/801/mainscreen.jpg}}
-
 Feature-wise, the applications are ranging from visualization software and data
 importers to games. One important feature that seems to be missing from most of
 the applications is lack of any control of time, meaning they are only able to
@@ -560,6 +530,7 @@ headsets. These headsets come with built-in amplifiers, filters and A/D
 converters, and communicate wirelessly with \gls{pc} through bluetooth.
 
 \section{Svarog}
+\footnotetext{Image source \url{http://common.ziffdavisinternet.com/util_get_image/22/0,1425,sz=1&i=221770,00.jpg} and \url{https://emotiv.com/upload/iblock/801/mainscreen.jpg}}
 Svarog is an acronym that stands for Signal Viewer, Analyzer and Recorded on GPL. 
 It is intended for use as an advanced analysis tool capable
 of both online and offline signal viewing and processing. The data may be in any
@@ -625,7 +596,7 @@ The analyzed solutions are diverse enough so that comparison can be made. From t
 It is usually a good idea to create a concept before implementing a non-trivial project. A concept development process helps to make clear which are the important parts of the project and how they are going to communicate and work together to provide desired results. The concept also helps to maintain a good code structure and class hierarchy. Therefore, the text in this chapter defines the concept that will be used during development of the application. Unless explicitly stated otherwise, the term \emph{application} will further refer to a program that has been developed as a practical part of this thesis. 
 
 \section{Logical Division}
-The application should serve as an EEG signal browser with support for a 2D and a 3D electrode visualization. It is apparent from this that the application will be graphical. A part of the application will have to support reading EEG data and another part will be responsible for displaying the data. Because the data are digital signals, a built-in support for signal processing would further improve usability of the application. After a deeper analysis of the problem it is possible to split the whole application into individual subsystems:
+The application should serve as an EEG signal browser with support for a 2D and a 3D electrode visualization. Therefore, the application will be mostly graphical, as opposed to textual. A part of the application will have to support reading EEG data and another part will be responsible for displaying the data. Because the data are digital signals, a built-in support for signal processing would further improve usability of the application. After a deeper analysis of the problem it is possible to split the whole application into individual subsystems:
 \begin{itemize}
 	\item GUI
 	\item Model importer
@@ -637,8 +608,8 @@ The application should serve as an EEG signal browser with support for a 2D and 
 \end{itemize}
 
 The following sections will address each subsystem individually.
-\subsection{User Interface}
-A user interface provides both a user input to the application and an output or feedback from the application. The graphical user interface (\gls{gui}) is a user interfaced composed of graphical elements, such as windows, buttons, text areas, scrollbars, etc. The elements can be grouped and create layouts that are visually appealing. 
+\subsection{Graphical User Interface}
+A user interface provides both a user input to the application and an output or feedback from the application. The \emph{graphical user interface} (\gls{gui}) is a user interfaced composed of graphical elements, such as windows, buttons, text areas, scrollbars, etc. The elements can be grouped and create layouts that are visually appealing. 
 
 An important question to ask is who will be the target audience. The difference between targeting ordinary users and researchers can be seen in Chapter \ref{existSol}. For example. The original assignment predetermines this work to be used primarily for academic purposes. Nevertheless, the ideas of visually appealing graphical elements and friendly user interface will be also incorporated as they can dramatically improve the experience.
 
@@ -686,7 +657,7 @@ The rendering system provides a necessary functionality to produce a visual outp
 
 The whole rendering system is hardware accelerated in order to provide a good performance. The hardware acceleration is provided by the OpenGL \gls{api} and graphics pipeline introduced in Section \ref{sec:pipeline}. Because of that, a shader program is needed for each rendering task. The implementations details of shader programs are discussed in Section \ref{sec:implRendering}. 
 
-A \emph{Unishader}\footnote{\url{https://github.com/BetaRavener/UniShader}} library is used to load and utilize the shader programs. The Unishader is previous work by authors of this thesis that creates an automatized wrapper around OpenGL focusing on the shader support. It greatly simplifies the setup and rendering using shader programs. For example, it can automatically query a shader variable type and use appropriate functions, compile and link programs when needed, perform configuration checks, and manage GPU resources. It also helps to keep OpenGL context in a valid state, which is a non trivial task that requires tracking of all the performed operations.
+A \emph{Unishader}\footnote{\url{https://github.com/BetaRavener/UniShader}} library is used to load and utilize the shader programs. The Unishader is previous work by author of this thesis that creates an automatized wrapper around OpenGL focusing on the shader support. It greatly simplifies the setup and rendering using shader programs. For example, it can automatically query a shader variable type and use appropriate functions, compile and link programs when needed, perform configuration checks, and manage GPU resources. It also helps to keep OpenGL context in a valid state, which is a non trivial task that requires tracking of all the performed operations.
 
 \subsection{Animation System}
 \label{ssec:concAnimSystem}
@@ -719,7 +690,7 @@ It is possible to use a custom layout and electrode labels by importing \texttt{
 If there is a file \texttt{default.elmap} present inside \texttt{electrodes} folder during the application startup, it will be used to load electrode positions. Otherwise, electrodes will be named according to the 10-10 electrode placement system presented in Section \ref{ssec:elPlacement} and \gls{2d} positions will be generated by program but no \gls{3d} positions will be available because automatic \gls{3d} placement is not supported. The \gls{2d} layout tries to resemble those found in scientific papers. The \gls{3d} positions may be additionally loaded from \texttt{.obj} file. The objects inside this file must be named after electrodes so mapping can be made. The shape of the object doesn't matter as long as the object's center of gravity is in desired position. The Figure \ref{fig:3DSMaxPlacement} illustrates this process using Autodesk 3ds Max. 
 \begin{enumerate}
 	\item The brain model that is used in application is imported to 3ds Max.
-	\item The model of brain is then fitted by a model of skull\footnote{\url{http://www.sharecg.com/get_file.php?upload_file_id=43787&PSID=7e83ca0fc9bc28c873e73f17939f7b13}} that provides features necessary for electrode placement, such as nassion, inion, and auricular points.
+	\item The model of brain is then fitted by a model of skull\footnote{The model of skull was obtained from \url{http://www.sharecg.com/get_file.php?upload_file_id=43787&PSID=7e83ca0fc9bc28c873e73f17939f7b13}} that provides features necessary for electrode placement, such as nassion, inion, and auricular points.
 	\item The important contours are marked according to Section \ref{ssec:elPlacement} and objects, in this case boxes, are spaced evenly along the contours. The contour is obtained by slicing the skull with a plane that passes through marked points. 
 	\item The objects are named after the electrodes.
 	\item \texttt{electrodes.obj} file is exported from 3ds Max.
@@ -733,7 +704,7 @@ This file can be imported into application to provide \gls{3d} electrode positio
 	\label{fig:3DSMaxPlacement}
 \end{figure}
 
-As mentioned before, the 2D layout can generated by the application if the default file was not found. This is done by following procedure:
+As mentioned before, the 2D layout can be generated by the application if the default file was not found. This is done by following procedure:
 \begin{enumerate}
 	\item A horizontal and a vertical line is created so that their middle points cross at a coordinate space origin. Both lines have length of 1. The lines are evenly divided into 10 segments. The end of each segment represents an electrode position.
 	\item Two circles are created with center at the origin. First circle has a radius of 0.5 and second has a radius of 0.4. Both circles are evenly divided into 19 segments. Again, the end of each segment represents an electrode position.
@@ -752,7 +723,6 @@ The result is the 2D layout centered at the origin and bounded by a square with 
 \label{sec:implFIRfilters}
 As discussed in Section \ref{sec:sigProc}, the filtering is done by convolution of the input signal with a filter's impulse response. The filter's impulse response is computed directly from the equations presented in Section \ref{ssec:FIRandIIR}. To implement convolution, a sliding window of predefined length is first created. The order of the filter determines the length of the sliding window. The sliding window moves over the signal and at each step it is filled by values it covers. The values are then multiplied by the filter's impulse response and window function coefficients. The values are summed and stored as a single element in a new, filtered sequence. The process is illustrated by Figure \ref{fig:ImplFilter}.
 
-%TODO: Calculate correct output value in the image
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=1\linewidth]{fig/implFilter.pdf}
@@ -760,7 +730,7 @@ As discussed in Section \ref{sec:sigProc}, the filtering is done by convolution 
 	\label{fig:ImplFilter}
 \end{figure}
 
-However, there is a problem at the beginning and end of the input signal because there are not enough values to fill the sliding window. This is solved by prepending and appending the input sequence with initial and final conditions respectively. These are short sequences that are generated for each signal individually before it is processed. They may be just filled with zeros, repeat the value at the edge of the signal, or copy the signal values in reversed order. The choice usually depends on the type of the filter.
+However, there is a problem at the beginning of the input signal because there are not enough values to fill the sliding window. This is solved by prepending the input sequence with initial conditions. This is a short sequence which per-fills the sliding window with values, so that first input sample can already produce an output sample. The conditions are generated for each signal individually before it is processed. They may be just filled with zeros, repeat the value at the edge of the signal, or copy the signal values in reversed order. The choice usually depends on the type of the filter.
 
 In order to test the implementation, the results were compared with MATLAB output. First, a set of testing data was created in plain-text format. This data was then processed by the implementation described here using multiple combinations of cut off frequencies, window lengths and window functions. The output was stored in a new file and compared to the output produced by MATLAB filters with the same configuration. The difference between the two was only marginal and can be attributed to floating point errors.
 
@@ -805,11 +775,9 @@ The application user interface was created with emphasis on simplicity and clean
 \label{sec:implRendering}
 All the rendering tasks are hardware accelerated using OpenGL in order to provide a reasonable performance. Because OpenGL is only a low level API, a group of shader programs had to be developed to provide required rendering support. The first shader program allows shaded mesh objects to be rendered in a \gls{3d} space. A shader program that is used for electrode visualization is described in Section \ref{ssec:implElVis}. Another shader program provides functionality to render signals in time domain using lines with custom thickness. More details about this shader program are provided in Section \ref{ssec:ChartView}. Finally, a general purpose shader program for rendering \gls{2d} geometry is included that can be used to render miscellaneous objects in orthogonal projection.  
 
-%TODO: Graphics ontext setup?
 \subsection{Electrode Visualization}
 \label{ssec:implElVis}
 The visual appearance of electrodes should resemble an illuminated sphere. Normally this would be done by creating a mesh of the sphere that could be rendered the usual way. However, in order to save memory and to demonstrate capabilities of shader programs, we used a different approach. The input to the shader program consists only of a sphere center position, a color, and a radius. The vertex shader passes the data unaltered to geometry shader. The geometry shader then generates a triangle fan around the center position that is always directed towards the camera. The number of triangles in the fan is variable and when high enough, the fan starts to resemble a circle. The result is then passed to the fragment shader that applies Phong shading. The shading gives a \gls{3d} effect to the circle which now looks like a sphere. Figure \ref{fig:ElRender} illustrates the described rendering process.
-%TODO: If not enough, describe phong shading
 
 \begin{figure}[htb]
 	\centering
@@ -863,18 +831,21 @@ x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}
 
 \chapter{Conclusion and Future Directions}
 % Aky je ciel prace
-The goal of this thesis was to implement an application for visualization of brain activity measured by EEG. Visualization methods had to include two- and three-dimensional brain models along with methods for graphical representation of brain signals, and a graphical element for browsing EEG signals.   
+The goal of this thesis was to implement an application for visualization of brain activity measured by EEG. Visualization methods were expected to include two- and three-dimensional brain models along with methods for graphical representation of brain signals, and a graphical element for browsing EEG signals.   
 
 % Co bolo nutne pre dosiahnutie ciela pochopit
-To accomplish this, the thesis provides information necessary to understand the problem, beginning with an introduction to a human brain and description of neuronal activity that occurs within the brain. EEG, a method for measuring this activity, is presented in detail along with information about electrode placement, which was required later for correct electrode positioning. This work also provides information about basic methods of signal processing, such as DFT and signal filtering, and presents modern techniques of data visualization using GPU accelerated shader programs.
+To better understand the problem, the thesis provided necessary information, beginning with an introduction to a human brain and description of neuronal activity that occurs within the brain. EEG, a method for measuring this activity, was presented in detail along with information about electrode placement, which was required later for correct electrode positioning. This work also provided information about basic methods of signal processing, such as DFT and signal filtering, and presented modern techniques of data visualization using GPU accelerated shader programs.
 
 % Ako sa podarilo ciel dosiahnut
-Following the theoretical background, a concept for a computer application is presented. The concept builds upon previously analyzed applications created by other individuals or companies and defines structure of the application. This concept transforms into an implementation. Significant algorithms along with solutions to problems that arose during implementation are described. One such problem was that the amount of data produced by EEG recording was large and had to be optimized in order to be visualized with a reasonable performance. The performance had to be considered also when designing the signal processing module as it encompasses demanding operations.
+Following the theoretical background, a concept for a multi-platform application was presented. The concept built upon previously analyzed applications created by other individuals or companies and defined the structure of the application. This concept was later transformed into an implementation. Significant algorithms along with solutions to problems that arose during implementation were described. One such problem was that the amount of data produced by EEG recording was large and had to be optimized in order to be visualized with a reasonable performance. The performance had to be considered also when designing the signal processing module as it encompasses demanding operations.
 
-All rendering tasks are hardware accelerated by GPU. Therefore, the host application that is executed on CPU had to be accompanied with a set of shader programs that can render brain, electrodes, signal waveforms and other visual elements. The hardware acceleration allows large data sets and models to be rendered in quality that would not be possible with software rendering.
+All rendering tasks were hardware accelerated by a GPU. Therefore, the host application, which was executed on a CPU, had to be accompanied with a set of shader programs that can render brain, electrodes, signal waveforms, and other visual elements. The hardware acceleration allowed large data sets and models to be rendered in quality that would not be possible with software rendering.
 
 % Aky je prinos prace
-The work provides solid foundations for an application that can serve as an EEG data analysis tool. The application combines the ability to browse signals with interactive graphical visualizations and capability to replay measured data. A built-in signal processing module allows data to be filtered directly by the application, which obviates the need for another application and data reloading.
+The work provides solid foundations for an application which can serve as an EEG data analysis tool. The application combines the ability to browse signals with interactive graphical visualizations and capability to replay measured data. A built-in signal processing module allows data to be filtered directly by the application, which obviates the need for another application and data reloading.
+
+% Testy, vysledky
+The application was tested under operating systems Windows 7 and 8, which were the targeted platform. The application was also compiled, linked, and executed successfully under Linux distribution Lubuntu. The signal processing methods were tested against MATLAB implementation. 
 
 % V com sa da dalej pokracovat
 EEG, signal processing, and data visualization are broad subjects and as such provide room for a lot of improvements. The application was formerly designed as both an online and an offline data analyzer and visualizer. However, only the offline part was implemented due to complications with real-time signal processing and unavailability of recording equipment.
@@ -883,6 +854,6 @@ Therefore, the plans for the future development include the real-time input modu
 
 Other than that, the application could benefit from a wider range of data processing tools and visualization methods, such as frequency spectrum chart that could display a result of FFT. There could be a window with a grid of charts, where each chart would belong to a single signal and would display it's frequency spectrum at the current animation time. Such visualization would be very useful when analyzing EEG data for brain waves. These new methods of visualization are important because they provide better insight into analyzed data and highlight signal features. 
 
-The plans for future development also include a plugin system. Currently, only way to provide a new feature is to add source code to application and recompile. A better approach would be to create the plugin system which could automatically load new functionality from libraries at the application startup. 
+The plans for future development also include a plugin system. Currently, the only way to provide a new feature is to add source code to application and recompile. A better approach would be to create the plugin system which could automatically load new functionality from libraries at the application startup. 
 
 %=========================================================================

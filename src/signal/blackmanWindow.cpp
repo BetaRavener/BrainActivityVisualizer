@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "blackmanWindow.h"
 #include <glm/trigonometric.hpp>
 #include <glm/gtc/constants.hpp>

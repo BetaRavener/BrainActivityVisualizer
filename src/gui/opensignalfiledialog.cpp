@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "opensignalfiledialog.h"
 #include "ui_opensignalfiledialog.h"
 #include "signalReader.h"
@@ -75,7 +78,7 @@ void OpenSignalFileDialog::on_selectFile_clicked()
     }
     catch (std::runtime_error e)
     {
-        QMessageBox::critical(this, "Error", QString("Invalid EEG file"));
+        QMessageBox::critical(this, "Error", QString::fromStdString(e.what()));
     }
 }
 

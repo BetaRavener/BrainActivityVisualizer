@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "electrodeRenderer.h"
 
 #include <iostream>
@@ -48,10 +51,13 @@ void ElectrodeRenderer::render()
 
         _renderEngine->render(us::PrimitiveType::POINTS, _electrodeCount);
 
-        glEnable(GL_BLEND);
-        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        _namesEngine->render(us::PrimitiveType::POINTS, _electrodeCount);
-        glDisable(GL_BLEND);
+        if (_showNames)
+        {
+            glEnable(GL_BLEND);
+            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            _namesEngine->render(us::PrimitiveType::POINTS, _electrodeCount);
+            glDisable(GL_BLEND);
+        }
     }
 }
 
@@ -59,7 +65,6 @@ void ElectrodeRenderer::update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 righ
 {
     _namesEyePosUnif->setSource(glm::value_ptr(eyePos), 3);
     _namesUpDirUnif->setSource(glm::value_ptr(upDir), 3);
-    // Negate the right dir because if we are looking at something, it has its sides mirrored
     _namesRightDirUnif->setSource(glm::value_ptr(rightDir), 3);
     _namesMvpMatrixUnif->setSource(glm::value_ptr(mvpMatrix), 16);
 }
@@ -84,6 +89,11 @@ void ElectrodeRenderer::reloadShaders()
         _renderEngine = new us::UniShader();
     }
     initializeShaders();
+}
+
+void ElectrodeRenderer::showNames(bool show)
+{
+    _showNames = show;
 }
 
 void ElectrodeRenderer::initializeShaders()

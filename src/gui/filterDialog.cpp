@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "filterDialog.h"
 #include "ui_filterDialog.h"
 
@@ -43,7 +46,7 @@ void FilterDialog::on_filterButton_clicked()
     if (!_signalBatch)
         return;
 
-    FilterWindow* window;
+    FilterWindow* window = nullptr;
     unsigned int halfLength = ui->halfLengthSpinBox->value();
     switch (ui->windowComboBox->currentIndex())
     {

@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "player.h"
 
 Player::Player()
@@ -28,6 +31,11 @@ void Player::assignPlayButton(QPushButton *playButton)
     _playButton = playButton;
 }
 
+void Player::assignTimeLabel(QLabel *timeLabel)
+{
+    _timeLabel = timeLabel;
+}
+
 void Player::play()
 {
     _playButton->setText("||");
@@ -36,6 +44,7 @@ void Player::play()
         return;
 
     _timer.start(_interval * 1000);
+    _controlTimer.restart();
 }
 
 void Player::pause()
@@ -51,6 +60,7 @@ void Player::pause()
 void Player::rewind()
 {
     _animationTime = 0;
+    updateTime(_animationTime);
 }
 
 bool Player::isPlaying()
@@ -70,7 +80,9 @@ void Player::changeTime(double time)
 
 void Player::tick()
 {
-    updateTime(_animationTime + _interval * _speedFactor);
+    int elapsed = _controlTimer.elapsed();
+    _controlTimer.restart();
+    updateTime(_animationTime + (double)elapsed / 1000.0 * _speedFactor);
 }
 
 void Player::settingsChanged()
@@ -111,5 +123,6 @@ void Player::updateTime(double time)
         pause();
     }
     _electrodeAdapter.setTime(_animationTime);
+    _timeLabel->setText(QString::number(_animationTime));
     emit timeChanged(_animationTime);
 }

@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "fourierTransform.h"
 
 #include <algorithm>
@@ -7,9 +10,9 @@
 #include "hammingWindow.h"
 
 FourierTransform::FourierTransform() :
+    _window(0),
     _configuration(nullptr),
-    _length(0),
-    _window(0)
+    _length(0)
 {
 }
 

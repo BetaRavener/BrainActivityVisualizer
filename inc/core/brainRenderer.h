@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #ifndef BRAIN_RENDERER_H
 #define BRAIN_RENDERER_H
 
@@ -9,15 +12,34 @@
 
 #include <glm/common.hpp>
 
+/**
+ * @brief The BrainRenderer class provides methods for rendering brain using GPU.
+ */
 class BrainRenderer
 {
 public:
     BrainRenderer();
+    /**
+     * @brief Updates the brain renderer configuration.
+     * @param eyePos New position of the camera.
+     * @param mvpMatrix ModelViewProjection matrix that manipualtes 3D space.
+     * @param modelMatrix Model matrix individually.
+     */
     void update(glm::vec3 eyePos, glm::mat4 mvpMatrix, glm::mat4 modelMatrix);
+
+    /**
+     * @brief Renders the brain with actual settings.
+     */
     void render();
 
+    /**
+     * @brief Reloads and reinitializes the shader program.
+     */
     void reloadShaders();
 
+    /**
+     * @brief Initializes the renderer.
+     */
     void init();
 private:
     void initializeShaders();

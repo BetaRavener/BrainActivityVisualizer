@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "graphItem2D.h"
 
 #include <iostream>
@@ -62,7 +65,6 @@ void GraphItem2D::buildCache(unsigned int horizontalZoom, bool clearCache)
     for (unsigned int i = 0; i < horizontalZoom; i++)
         binSize *= 2;
 
-    //TODO condition?
     for (unsigned int i = 0; i < dataSampleCount / binSize; i++)
     {
         unsigned int binIdx = i * binSize;
@@ -90,42 +92,29 @@ void GraphItem2D::buildCache(unsigned int horizontalZoom, bool clearCache)
 
     _cacheZoom = horizontalZoom;
 }
-glm::vec3 GraphItem2D::backgroundColor() const
-{
-    return _backgroundColor;
-}
 
-void GraphItem2D::setBackgroundColor(const glm::vec3 &backgroundColor)
+void GraphItem2D::updateIndices(unsigned int previousValueCount)
 {
-    _backgroundColor = backgroundColor;
-}
+    if (previousValueCount == _valueCount)
+        return;
 
-glm::vec2 GraphItem2D::sizeInGraph() const
-{
-    return _sizeInGraph;
+    if (_valueCount > 0)
+    {
+        std::vector<unsigned int> indices;
+        indices.push_back(0);
+        for (unsigned int i = 0; i < _valueCount; i++)
+            indices.push_back(i);
+        indices.push_back(_valueCount - 1);
+        _indicesBuf->setData(indices);
+    }
 }
-
-void GraphItem2D::setSizeInGraph(const glm::vec2 &sizeInGraph)
-{
-    _sizeInGraph = sizeInGraph;
-}
-
-glm::vec2 GraphItem2D::positionInGraph() const
-{
-    return _positionInGraph;
-}
-
-void GraphItem2D::setPositionInGraph(const glm::vec2 &positionInGraph)
-{
-    _positionInGraph = positionInGraph;
-}
-
 
 void GraphItem2D::setData(double startTime, double endTime, unsigned int width, bool clearCache)
 {
     // Add 1 sample because we need to form N lines, which are defined by N+1 points
     const auto& data = _signalData->data();
 
+    unsigned int previousValueCount = _valueCount;
     unsigned int firstSample = _signalData->getIdxAtTime(startTime);
     unsigned int lastSample = _signalData->getIdxAtTime(endTime);
     unsigned int samplesCount = lastSample - firstSample;
@@ -171,13 +160,5 @@ void GraphItem2D::setData(double startTime, double endTime, unsigned int width, 
             _posAttrBuf->setData(reducedData);
     }
 
-    if (_valueCount > 0)
-    {
-        std::vector<unsigned int> indices;
-        indices.push_back(0);
-        for (unsigned int i = 0; i < _valueCount; i++)
-            indices.push_back(i);
-        indices.push_back(_valueCount - 1);
-        _indicesBuf->setData(indices);
-    }
+    updateIndices(previousValueCount);
 }

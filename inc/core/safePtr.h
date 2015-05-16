@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #ifndef BAV_SHARED_PTR_H
 #define BAV_SHARED_PTR_H
 

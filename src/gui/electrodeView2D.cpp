@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "electrodeView2D.h"
 
 #include <QMouseEvent>
@@ -32,10 +35,9 @@ void ElectrodeView2D::initialize()
     installEventFilter(this);
 
     _electrodeRenderer->init();
+    _electrodeRenderer->setSpacingRadius(_electrodeAreaSize);
 
-    _cam.Reset(true);
-    _cam.InvertY();
-    _cam.ZoomR(-100);
+    resetView();
 
     _moveSensitivity = 1.0f;
     _scrollSensitivity = 5.0f;
@@ -87,9 +89,7 @@ bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_R)
         {
-            _cam.Reset(true);
-            _cam.InvertY();
-            _cam.ZoomR(-200);
+            resetView();
             needsRepaint = true;
         }
         else if (keyEvent->key() == Qt::Key_F)
@@ -158,4 +158,19 @@ bool ElectrodeView2D::eventFilter(QObject *obj, QEvent *event)
 void ElectrodeView2D::electrodes(std::vector<Electrode::WeakPtr> electrodes)
 {
     _electrodeRenderer->electrodes(electrodes);
+}
+
+void ElectrodeView2D::resetView(bool repaintView)
+{
+    _cam.Reset(true);
+    _cam.InvertY();
+    _cam.ZoomR(-100);
+    if (repaintView)
+        repaint();
+}
+
+void ElectrodeView2D::showElectrodeNames(bool show)
+{
+    _electrodeRenderer->showNames(show);
+    repaint();
 }

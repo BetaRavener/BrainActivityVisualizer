@@ -68,3 +68,8 @@ include_directories(${GLM_INCLUDE_DIR})
 
 include_directories(${GLEW_INCLUDE_PATH})
 target_link_libraries(bav ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY})
+
+if (TEST_PROJ)
+    file(GLOB test_src src/test/*.cpp)
+    add_executable(sigTest ${signal_src} ${test_src})
+endif()

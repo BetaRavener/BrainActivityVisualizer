@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "graphView2D.h"
 
 #include <QMouseEvent>
@@ -102,7 +105,6 @@ void GraphView2D::render()
         _shapeRenderer->render(us::PrimitiveType::LINES, _graphGridCount);
     }
 
-    //TODO: Use horizontalSeparators (must return firstItemIdx)
     glm::vec2 size = itemSize();
     glm::vec2 position(0.f, height() + _verticalScroll);
     position = glm::vec2(0.f, height() + _verticalScroll);
@@ -170,6 +172,8 @@ bool GraphView2D::eventFilter(QObject *obj, QEvent *event)
         if (mouseEvent->buttons().testFlag(Qt::RightButton))
         {
             double time = _viewStartTime + (double)mouseEvent->pos().x() / width() * _viewDuration;
+            time = glm::max(time, 0.0);
+            time = glm::min(time, _signalBatch->duration());
             emit requestTime(time);
         }
     }
@@ -269,6 +273,8 @@ void GraphView2D::signalBatch(SignalBatch::WeakPtr signalBatch)
 void GraphView2D::timeChanged(double time)
 {
     _playbackTime = time;
+    if (_trackPlayback)
+        focusOnTime(_playbackTime);
     repaint();
 }
 
@@ -282,9 +288,16 @@ void GraphView2D::dataChanged()
     update();
 }
 
+void GraphView2D::trackPlayback(bool track)
+{
+    _trackPlayback = track;
+    if (_trackPlayback)
+        focusOnTime(_playbackTime);
+}
+
 void GraphView2D::horizontallyScrolled(int value)
 {
-    if (_updatingScroll)
+    if (_updatingScroll || _trackPlayback)
         return;
 
     _viewStartTime = (double)value / _horizontalScrollMultiplier;
@@ -374,7 +387,10 @@ void GraphView2D::updateLabels()
 
         for (GraphItem2D item : _items)
         {
-            QLabel* label = new QLabel(QString::fromStdString(item.signalData()->label()));
+            std::string labelStr = item.signalData()->label();
+            if (item.signalData()->electrode())
+                labelStr += "\n(" + item.signalData()->electrode()->name() + ")";
+            QLabel* label = new QLabel(QString::fromStdString(labelStr));
             label->setFixedSize(QSize(100, itemSize().y));
             label->setStyleSheet("border: 1px solid grey");
             _verticalLabels->addWidget(label);
@@ -414,6 +430,15 @@ void GraphView2D::checkView()
 int GraphView2D::maxVericallScroll()
 {
     return (int)(itemSize().y * _items.size() - height());
+}
+
+void GraphView2D::focusOnTime(double time)
+{
+    time = glm::max(time - _viewDuration / 2.0, 0.0);
+    _viewStartTime = glm::min(time, _signalBatch->duration() - _viewDuration);
+    updateData();
+    updateScrollBars();
+    update();
 }
 
 std::vector<float> GraphView2D::horizontalSeparators()

@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "electrodeLoader.h"
 #include <tiny_obj_loader.h>
 #include <stdexcept>
@@ -23,7 +26,7 @@ std::map<std::string, glm::vec3> ElectrodeLoader::load(std::string filename)
         glm::vec3 position;
 
         const std::vector<float>& positions = shape.mesh.positions;
-        for (int i = 0; i < positions.size(); i += 3)
+        for (unsigned int i = 0; i < positions.size(); i += 3)
         {
             auto vertex = glm::vec3(positions[i], positions[i + 1], positions[i + 2]);
             position += vertex;

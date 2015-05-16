@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "electrode.h"
 
 #define INACTIVE_COLOR glm::vec3(0.3, 0.3, 0.3)

@@ -1,27 +1,5 @@
-/*
-* UniShader-Demo - Showcase programs for UniShader Interface
-* Copyright (c) 2011-2013 Ivan Sevcik - ivan-sevcik@hotmail.com
-*
-* This software is provided 'as-is', without any express or
-* implied warranty. In no event will the authors be held
-* liable for any damages arising from the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute
-* it freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented;
-*    you must not claim that you wrote the original software.
-*    If you use this software in a product, an acknowledgment
-*    in the product documentation would be appreciated but
-*    is not required.
-*
-* 2. Altered source versions must be plainly marked as such,
-*    and must not be misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any
-*    source distribution.
-*/
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
 
 #pragma once
 #ifndef HYBRID_CAM_H
@@ -30,39 +8,109 @@
 #include <limits>
 #include <glm/vec3.hpp>
 
+/**
+ * @brief The HybridCam class represents a camera for a scene and allows basic operations
+ * such as translation and rotation. These operations may be done relative to the camera
+ * position (freeform) or relative to the camera focus point (orbital), therefore hybrid.
+ */
 class HybridCam{
 public:
 	HybridCam();
-	void Init();
-	void Clear();
-	void DrawCrosshair();
-    const glm::vec3 &GetEye() const {return eye;}
-    const glm::vec3 &GetLookAt() const {return lookAt;}
-    const glm::vec3 &GetUp() const {return up;}
-    const glm::vec3 GetRight() const;
+
+    /**
+     * @brief Initializes the class before usage.
+     */
+    void Init();
+
+    /**
+     * @brief Getter.
+     * @return The position of the camera.
+     */
+    glm::vec3 GetEye() const {return eye;}
+
+    /**
+     * @brief Getter.
+     * @return The camera focus point.
+     */
+    glm::vec3 GetLookAt() const {return lookAt;}
+
+    /**
+     * @brief Gettter.
+     * @return The vector pointing up from the camera.
+     */
+    glm::vec3 GetUp() const {return up;}
+
+    /**
+     * @brief Getter.
+     * @return The vector pointing right from the camera.
+     */
+    glm::vec3 GetRight() const;
+
+    /**
+     * @brief Getter.
+     * @return Ammount of zoom (orbital distance in orbiting mode).
+     */
     float getZoom() const {return orbitDist;}
+
+    /**
+     * @brief Getter.
+     * @return True if the camera is orbiting.
+     */
 	bool IsOrbiting() const { return orbit; }
+
+    /**
+     * @brief Moves camera into position (absolute vector).
+     * @param vec Position where the camera will be moved.
+     */
     void MoveA(const glm::vec3 &vec);
+
+    /**
+     * @brief Moves camera by a relative vector.
+     * @param vec Vector by which the camera position will change.
+     */
     void MoveR(const glm::vec3 &vec);
+
+    /**
+     * @brief Rotates camera to a specified angle (x,y,z absolute rotation).
+     * @param vec The triple of angles.
+     */
     void RotateA(const glm::vec3 &vec);
+
+    /**
+     * @brief Rotates camera by a specified angle (x,y,z relative rotation).
+     * @param vec The triple of angles.
+     */
     void RotateR(const glm::vec3 &vec);
+
+    /**
+     * @brief Inverts the operations for the y axis (up-down is inverted).
+     */
 	void InvertY(){invertedY = !invertedY;}
+
+    /**
+     * @brief Switch between camera modes.
+     * @param orbit If true, the camera will orbit the focus point, otherwise
+     * the focus point will be moved and the camera will remain static.
+     */
 	void SwitchCamMode(bool orbit);
+
+    /**
+     * @brief Adds zoom to current value.
+     * @param zoom Relative zoom value.
+     */
 	void ZoomR(const float& zoom);
+
+    /**
+     * @brief Resets the camera into initial state.
+     * @param orb If true, the camera will be orbiting.
+     */
     void Reset(bool orb);
 protected:
     glm::vec3 eye, lookAt, up;
     bool invertedY, orbit;
-	float orbitDist;
+    float orbitDist;
     glm::vec3 rLookAt;
     glm::vec3 rotations;
-
-	//croshair variables
-	bool remakeAxis;
-	float *axisColors;
-	float *axisEnds;
-    unsigned int colorVBO, vertexVBO;
-    unsigned int crosshairEndVAO, crosshairLineVAO;
 };
 
 #endif

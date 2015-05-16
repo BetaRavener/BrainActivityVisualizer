@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "glmHelpers.h"
 
 void glm::Helpers::pushBack(std::vector<float> &vector, const glm::vec2 &point)

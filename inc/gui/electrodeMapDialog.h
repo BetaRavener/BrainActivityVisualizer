@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #ifndef ELECTRODEMAPDIALOG_H
 #define ELECTRODEMAPDIALOG_H
 
@@ -8,17 +11,28 @@ namespace Ui {
 class ElectrodeMapDialog;
 }
 
+/**
+ * @brief The ElectrodeMapDialog class represents a dialog for importing and exporting electrode maps
+ * and electrode positions
+ */
 class ElectrodeMapDialog : public QDialog
 {
     Q_OBJECT
 
 signals:
+    /**
+     * @brief Signal fires when new electrode map was imported.
+     */
     void electrodeMapImported();
 
 public:
     explicit ElectrodeMapDialog(QWidget *parent = 0);
     ~ElectrodeMapDialog();
 
+    /**
+     * @brief Assigns electrode map which the dialog will work with.
+     * @param electrodeMap
+     */
     void assignElectrodeMap(ElectrodeMap* electrodeMap);
 
 private slots:

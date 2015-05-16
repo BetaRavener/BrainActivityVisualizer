@@ -1,0 +1,64 @@
+In order to run the application, a graphics card supporting at least OpenGL 3.3
+is required. If this requirement is not met, the application will start, but all
+OpenGL output windows will be black.
+
+Controls available in chart view:
+    <ctrl + scroll>     - Horizontal zoom
+    <shift + scroll>    - Vertical zoom
+    <alt + scroll>      - Vertical signal stretch
+    
+Controls available in 2D view:
+    <right mouse + move>    - View panning
+    <scroll>                - Zoom
+    
+Controls available in 3D view:
+    <right mouse + move>    - View panning in X and Y axis
+    <middle mouse + move>   - View panning in Z axis
+    <left mouse + move>     - Rotation in X and Y axis
+    <scroll>                - Zoom
+
+To open a signal file:
+    - Select <File -> Open signal file> from menu. A new dialog will appear.
+    
+    - Click <...> button to select a signal file. The file will be opened and
+      available signals listed in the left list.
+      
+    - Choose signals you want to work with using the arrow buttons. You can
+      choose multiple signals at once using CTRL or select range using SHIFT.
+      
+    - To visualize waveform in 2D or 3D view, electrodes must be assigned to
+      signals. Select one signal from right list and the <Assign> button will
+      become available. Select a desired electrode from the list and click the
+      button. To clear assignment, use <Clear> button. Multiple signals can be
+      selected in this case. To clear all assignments, use <Clear all> button.
+      Button <Auto assign> can be used if the signals were named exactly the
+      same as the electrodes, in which case it will pair the signals with
+      electrodes automatically. The assignements can be also imported from a
+      file, which was previously exported from the application.
+    
+    - After clicking <OK> button, the chosen signals will be displayed.
+    
+To redefine electrode positions:
+    - Select <File -> Electrode map>.
+    
+    - Use <Import Map> to select an "elmap" file with new electrode positions.
+    
+    - Use <Import 3D Positions> to import 3D positions from an "obj" file. The
+      objects with names matching the electrodes will be vertex averaged to find
+      their center of mass, which will define the new position.
+      
+To filter a signal:
+    - Select <Filter -> Basic> from menu. A new dialog will appear.
+    
+    - Select filter type: Lowpass or Highpass. Lowpass filter will attenuate all
+      frequencies above the cutoff frequency and Highpass will attenuate all
+      frequencies below that.
+    
+    - Select cutoff frequency.
+    
+    - Select filtering window. It is prefferable to use Hamming or Blackman as
+      these compensate for the finitie impulse response and thus provide better
+      filtering results.
+      
+    - Select length of the window. This is related to filter order:
+      Order = 2 * Half length

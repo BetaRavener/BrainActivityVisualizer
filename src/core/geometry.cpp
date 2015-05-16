@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "geometry.h"
 #include <glm/gtc/epsilon.hpp>
 #include <glm/gtx/rotate_vector.hpp>
@@ -69,7 +72,7 @@ bool Line::intersects(const Line& line, Intersections* intersections,
     float u = (vecA.x * diff.y - vecA.y * diff.x) / denominator;
 
     // Test if intersection belongs to geometry
-    bool belongs1, belongs2;
+    bool belongs1 = false, belongs2 = false;
 
     switch(m1)
     {

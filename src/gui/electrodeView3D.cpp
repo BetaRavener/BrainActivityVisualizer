@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "electrodeView3D.h"
 
 #include <QMouseEvent>
@@ -40,9 +43,7 @@ void ElectrodeView3D::initialize()
     _brainRenderer->init();
     _electrodeRenderer->init();
 
-    _cam.Reset(true);
-    _cam.InvertY();
-    _cam.ZoomR(-200);
+    resetView();
 
     _rotateSensitivity = .01f;
     _moveSensitivity = 1.0f;
@@ -108,9 +109,7 @@ bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_R)
         {
-            _cam.Reset(true);
-            _cam.InvertY();
-            _cam.ZoomR(-200);
+            resetView();
             needsRepaint = true;
         }
         else if (keyEvent->key() == Qt::Key_F)
@@ -198,4 +197,19 @@ bool ElectrodeView3D::eventFilter(QObject *obj, QEvent *event)
 void ElectrodeView3D::electrodes(std::vector<Electrode::WeakPtr> electrodes)
 {
     _electrodeRenderer->electrodes(electrodes);
+}
+
+void ElectrodeView3D::resetView(bool repaintView)
+{
+    _cam.Reset(true);
+    _cam.InvertY();
+    _cam.ZoomR(-200);
+    if (repaintView)
+        repaint();
+}
+
+void ElectrodeView3D::showElectrodeNames(bool show)
+{
+    _electrodeRenderer->showNames(show);
+    repaint();
 }

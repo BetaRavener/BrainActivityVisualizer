@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #include "signalFilter.h"
 #include <utility>
 
@@ -42,21 +45,13 @@ void SignalFilter::process(const SignalData::Ptr signal, FilterWindow &window)
     window.clear();
     result.reserve(count);
 
-    for (unsigned int i = 0; i < window.halfLength(); i++)
+    for (unsigned int i = 0; i < window.length() - 1; i++)
         window.addSample(initialConditions(i, signal));
 
     for (unsigned int i = 0; i < count; i++)
     {
         window.addSample(data[i]);
-        if (window.isFilled())
-            result.push_back(filter(window));
-    }
-
-    for (unsigned int i = 0; i < window.halfLength(); i++)
-    {
-        window.addSample(finalConditions(i, signal));
-        if (window.isFilled())
-            result.push_back(filter(window));
+        result.push_back(filter(window));
     }
 
     signal->data(std::move(result));

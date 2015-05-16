@@ -1,3 +1,6 @@
+// Author: Ivan Sevcik <ivan-sevcik@hotmail.com>
+// Licensed under BSD 3-Clause License (see licenses/LICENSE.txt)
+
 #ifndef ELECTRODE_RENDERER_H
 #define ELECTRODE_RENDERER_H
 
@@ -7,21 +10,50 @@
 
 #include "electrodeMap.h"
 
+/**
+ * @brief The ElectrodeRenderer class is a base class for electrode renderers.
+ */
 class ElectrodeRenderer
 {
 public:
     ElectrodeRenderer();
     virtual ~ElectrodeRenderer();
 
+    /**
+     * @brief Initializes the class before usage.
+     */
     virtual void init();
 
+    /**
+     * @brief Renders the electrodes.
+     */
     void render();
 
+    /**
+     * @brief Updates the rendering configuration.
+     * @param eyePos New camera position.
+     * @param upDir Up vector of the camera.
+     * @param rightDir Right vector of the camera.
+     * @param mvpMatrix ModelViewProjection matrix.
+     */
     virtual void update(glm::vec3 eyePos, glm::vec3 upDir, glm::vec3 rightDir, glm::mat4 mvpMatrix);
 
+    /**
+     * @brief Assigns electrodes to the renderer.
+     * @param electrodes
+     */
     void electrodes(std::vector<Electrode::WeakPtr> electrodes);
 
+    /**
+     * @brief Reloads and reinitializes the shader programs.
+     */
     void reloadShaders();
+
+    /**
+     * @brief Setter.
+     * @param show If true, the names of the electrodes will be rendered.
+     */
+    void showNames(bool show);
 
 protected:
     virtual void initializeShaders();
@@ -61,6 +93,7 @@ protected:
     us::UniShader* _namesEngine;
 
     bool _electrodesChanged;
+    bool _showNames;
 };
 
 #endif
