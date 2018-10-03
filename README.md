@@ -1,6 +1,8 @@
 BrainActivityVisualizer
 =======================
 
+### Read [Documentation in English](http://www.fit.vutbr.cz/study/DP/BP.php.cs?id=16538&file=t).
+
 Compiling on Windows:
 Prerequisites:
 - CMake
